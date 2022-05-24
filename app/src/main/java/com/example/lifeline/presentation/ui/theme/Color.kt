@@ -1,4 +1,4 @@
-package com.example.lifeline.ui.theme
+package com.example.lifeline.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

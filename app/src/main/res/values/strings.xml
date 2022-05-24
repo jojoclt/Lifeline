@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Lifeline</string>
+    <string name="home_screen">Home</string>
+    <string name="calendar_screen">Calendar</string>
+    <string name="today_screen">Today</string>
 </resources>
