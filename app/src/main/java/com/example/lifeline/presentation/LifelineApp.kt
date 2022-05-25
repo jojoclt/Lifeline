@@ -44,13 +44,15 @@ fun LifelineApp() {
             )
         }
         Scaffold(
-            topBar = { val navBackStackEntry by navController.currentBackStackEntryAsState()
+            topBar = {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
                 when (val currentRoute = navBackStackEntry?.destination?.route) {
                     "home_screen" -> TopNav(title = R.string.home_screen)
                     "calendar_screen" -> TopNav(title = R.string.calendar_screen, isCalendar = true)
                     "today_screen" -> TopNav(title = R.string.today_screen)
                     else -> TopNav(title = R.string.app_name)
-                } },
+                }
+                     },
             bottomBar = {
                 BottomNav(
                     navController = navController,
