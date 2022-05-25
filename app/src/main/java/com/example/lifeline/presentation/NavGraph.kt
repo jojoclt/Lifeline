@@ -6,12 +6,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.example.lifeline.presentation.calendar.composables.CalendarScreen
 import com.example.lifeline.presentation.home.composables.HomeScreen
+import com.example.lifeline.presentation.today.composables.TodayScreen
 import com.example.lifeline.util.Screen
 
 @Composable
@@ -24,10 +28,16 @@ fun NavGraph(
             HomeScreen(navController)
         }
         composable(route = Screen.CalendarScreen.route) {
-
+            CalendarScreen(navController)
         }
         composable(route = Screen.TodayScreen.route) {
-
+            TodayScreen(navController)
         }
+    }
+}
+
+fun NavGraphBuilder.welcomeGraph(navController: NavController) {
+    navigation(startDestination = "welcome_1", route = "welcome") {
+
     }
 }

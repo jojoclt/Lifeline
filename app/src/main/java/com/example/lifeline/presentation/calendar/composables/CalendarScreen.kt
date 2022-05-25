@@ -1,4 +1,4 @@
-package com.example.lifeline.presentation.home.composables
+package com.example.lifeline.presentation.calendar.composables
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,13 +15,13 @@ import androidx.navigation.NavController
 import com.example.lifeline.R
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun CalendarScreen(navController: NavController) {
     Scaffold(modifier = Modifier.fillMaxWidth(),
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(id = R.string.home_screen)
+                        text = stringResource(id = R.string.calendar_screen)
                     )
                 },
                 elevation = 0.dp
