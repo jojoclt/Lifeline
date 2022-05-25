@@ -19,7 +19,7 @@ abstract class TaskDatabase : RoomDatabase() {
                         instance = Room.databaseBuilder(
                             context,
                             TaskDatabase::class.java,
-                            "vocabulary.db"
+                            "task.db"
                         )
                             .build()
                     }
