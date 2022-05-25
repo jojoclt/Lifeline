@@ -19,11 +19,7 @@ fun TopNav(
     modifier: Modifier = Modifier, title: String
 ) {
     TopAppBar(
-        title = {
-            Text(
-                text = title
-            )
-        },
+        title = { Text(text = title) },
         actions = {
 
             if (title == Screen.Calendar.name) {
