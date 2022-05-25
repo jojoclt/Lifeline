@@ -25,7 +25,6 @@ fun TopNav(
         },
         actions = {
 
-
             if (isCalendar) {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(

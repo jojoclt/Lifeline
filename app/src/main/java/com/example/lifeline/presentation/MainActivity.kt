@@ -37,29 +37,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navController = rememberNavController()
-            LifelineTheme {
-                Scaffold(
-                    bottomBar = {
-                        BottomNav(
-                            navController = navController,
-                            modifier = Modifier.clip(
-                                shape = RoundedCornerShape(
-                                    topStart = 20.dp,
-                                    topEnd = 20.dp
-                                )
-                            )
-                        )
-                    },
-                    floatingActionButton = {
-                        FloatingActionButton(onClick = { /*TODO*/ }) {
-                            Icon(Icons.Filled.Add, "", tint = Color.White)
-                        }
-                    }
-                ) {
-                    NavGraph(navController)
-                }
-            }
+            LifelineApp()
         }
     }
 }

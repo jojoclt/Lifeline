@@ -35,7 +35,7 @@ fun BottomNav(navController: NavController, modifier: Modifier = Modifier) {
                     Icon(
                         painterResource(screen.iconId),
                         contentDescription = null,
-                        modifier = Modifier.fillMaxSize(0.5F)
+                        modifier = Modifier.size(24.dp)
                     )
                 },
                 label = { Text(stringResource(screen.resourceId)) },
