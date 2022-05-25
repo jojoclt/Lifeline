@@ -44,7 +44,6 @@ fun LifelineApp() {
             )
         }
         Scaffold(
-
             topBar = { val navBackStackEntry by navController.currentBackStackEntryAsState()
                 when (val currentRoute = navBackStackEntry?.destination?.route) {
                     "home_screen" -> TopNav(title = R.string.home_screen)
