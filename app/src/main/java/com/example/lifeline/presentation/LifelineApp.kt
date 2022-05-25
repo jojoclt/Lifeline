@@ -45,7 +45,7 @@ fun LifelineApp() {
         val currentScreen = Screen.fromRoute(backstackEntry.value?.destination?.route)
 
         Scaffold(
-            topBar = {},
+            topBar = { TopNav(title = currentScreen.name)},
             bottomBar = {
                 BottomNav(
                     allScreens = allScreens,

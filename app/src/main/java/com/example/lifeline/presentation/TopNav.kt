@@ -1,31 +1,32 @@
 package com.example.lifeline.presentation
 
-import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.lifeline.R
+import com.example.lifeline.util.Screen
 
 @Composable
 fun TopNav(
-    modifier: Modifier = Modifier, @StringRes title: Int, isCalendar: Boolean = false,
+    modifier: Modifier = Modifier, title: String
 ) {
     TopAppBar(
         title = {
             Text(
-                text = stringResource(id = title)
+                text = title
             )
         },
         actions = {
 
-            if (isCalendar) {
+            if (title == Screen.Calendar.name) {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         painterResource(id = R.drawable.ic_today),
