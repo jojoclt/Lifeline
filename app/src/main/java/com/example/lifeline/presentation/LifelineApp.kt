@@ -10,6 +10,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -43,7 +45,12 @@ fun LifelineApp() {
         val allScreens = Screen.values().toList()
         val backstackEntry = navController.currentBackStackEntryAsState()
         val currentScreen = Screen.fromRoute(backstackEntry.value?.destination?.route)
+        val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
 
+        bottomBarState.value = when (currentScreen) {
+            Screen.Calendar -> false
+            else -> true
+        }
         Scaffold(
             topBar = { TopNav(title = currentScreen.name)},
             bottomBar = {
