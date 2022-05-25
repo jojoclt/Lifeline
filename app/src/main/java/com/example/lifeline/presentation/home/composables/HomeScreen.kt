@@ -13,20 +13,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.lifeline.R
+import com.example.lifeline.presentation.TopNav
 
 @Composable
 fun HomeScreen(navController: NavController) {
     Scaffold(modifier = Modifier.fillMaxWidth(),
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.home_screen)
-                    )
-                },
-                elevation = 0.dp
-            )
-        }) {
+        topBar = { TopNav(title = R.string.home_screen)}) {
 
     }
 }
