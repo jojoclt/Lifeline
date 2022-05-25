@@ -17,8 +17,5 @@ import com.example.lifeline.presentation.TopNav
 
 @Composable
 fun CalendarScreen(navController: NavController) {
-    Scaffold(modifier = Modifier.fillMaxWidth(),
-        topBar = { TopNav(title = R.string.calendar_screen, isCalendar = true) }) {
 
-    }
 }
