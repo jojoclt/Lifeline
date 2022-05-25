@@ -4,6 +4,7 @@ import java.util.*
 
 data class Task(
     var id: Int,
+    var isChecked: Boolean,
     var taskName: String,
     var taskType: Type,
     var date: Date,

@@ -10,6 +10,7 @@ import java.util.*
 @Entity
 data class TaskData(
     @PrimaryKey(autoGenerate = true) var id: Int,
+    @ColumnInfo(name = "is_checked") var isChecked: Boolean,
     @ColumnInfo(name = "name") var taskName: String,
     @ColumnInfo(name = "type") var taskType: Type,
     @ColumnInfo(name = "date") var date: Date,
