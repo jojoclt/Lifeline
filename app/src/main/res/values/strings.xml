@@ -4,4 +4,7 @@
     <string name="calendar_screen">Calendar</string>
     <string name="today_screen">Today</string>
     <string name="add_todo_screen">Add Todo</string>
+    <string name="edit_todo_screen">Edit Todo</string>
+    <string name="add_deadline_screen">Add Deadline</string>
+    <string name="edit_deadline_screen">Edit Deadline</string>
 </resources>

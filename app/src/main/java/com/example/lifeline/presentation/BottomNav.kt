@@ -28,7 +28,7 @@ fun BottomNav(
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
 
     bottomBarState.value = when (currentScreen) {
-        Screen.CalendarScreen -> false
+        Screen.AddTodoScreen -> false
         else -> true
     }
     if (bottomBarState.value)

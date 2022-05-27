@@ -15,52 +15,64 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.lifeline.R
+import com.example.lifeline.util.AddTaskItems
 import com.example.lifeline.util.Screen
 
 @Composable
 fun TopNav(
     currentScreen: Screen, modifier: Modifier = Modifier
 ) {
-    val topBarState = rememberSaveable { (mutableStateOf(true)) }
-    val calendarState = rememberSaveable { (mutableStateOf(true)) }
-
+    val taskScreen = rememberSaveable { mutableStateOf(true) }
+    val calendarState = rememberSaveable { mutableStateOf(true) }
+    val editScreen = rememberSaveable { mutableStateOf(true) }
     calendarState.value = when (currentScreen) {
         Screen.CalendarScreen -> true
         else -> false
     }
-    topBarState.value = when (currentScreen) {
-        Screen.CalendarScreen -> false
-        else -> true
+    taskScreen.value = AddTaskItems.contains(currentScreen)
+    editScreen.value = when (currentScreen) {
+        Screen.EditTodoScreen, Screen.EditDeadlineScreen -> true
+        else -> false
     }
     TopAppBar(
         title = { Text(text = stringResource(id = currentScreen.resourceId)) },
         actions = {
-
-            if (calendarState.value) {
+            if (!taskScreen.value) {
+                if (calendarState.value) {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            painterResource(id = R.drawable.ic_today),
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
-                        painterResource(id = R.drawable.ic_today),
+                        painterResource(id = R.drawable.ic_help),
                         contentDescription = null,
                         modifier = Modifier.size(24.dp)
                     )
                 }
-            }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    painterResource(id = R.drawable.ic_help),
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    Icons.Filled.Settings,
-                    contentDescription = null,
-                    modifier = Modifier.size(24.dp)
-                )
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        Icons.Filled.Settings,
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp)
+                    )
 
+                }
+            } else {
+                if (editScreen.value) {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            painterResource(id = R.drawable.ic_delete),
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
             }
-
         },
         elevation = 0.dp
     )

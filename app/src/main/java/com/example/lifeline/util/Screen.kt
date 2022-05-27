@@ -13,6 +13,9 @@ sealed class Screen(
     object CalendarScreen : Screen("calendar_screen", R.string.calendar_screen, R.drawable.ic_calendar)
     object TodayScreen : Screen("today_screen", R.string.today_screen, R.drawable.ic_cup)
     object AddTodoScreen : Screen("add_todo_screen", R.string.add_todo_screen, null)
+    object EditTodoScreen : Screen("edit_todo_screen", R.string.edit_todo_screen, null)
+    object AddDeadlineScreen : Screen("add_deadline_screen", R.string.add_deadline_screen, null)
+    object EditDeadlineScreen : Screen("edit_deadline_screen", R.string.edit_deadline_screen, null)
 
     companion object {
         fun fromRoute(route: String?): Screen =
@@ -33,4 +36,11 @@ val bottomNavItems = listOf(
     Screen.HomeScreen,
     Screen.CalendarScreen,
     Screen.TodayScreen
+)
+
+val AddTaskItems = listOf(
+    Screen.AddTodoScreen,
+    Screen.EditTodoScreen,
+    Screen.AddDeadlineScreen,
+    Screen.EditDeadlineScreen
 )
