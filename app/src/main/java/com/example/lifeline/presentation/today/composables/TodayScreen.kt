@@ -1,11 +1,11 @@
 package com.example.lifeline.presentation.today.composables
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,7 +16,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
 import com.example.lifeline.presentation.BottomNav
@@ -50,20 +49,20 @@ fun CupCanvas() {
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview
 @Composable
 fun TodayScreenPreview() {
     val navController = rememberNavController()
-    val allScreens = Screen.values().toList()
+    val currentScreen = Screen.TodayScreen
     LifelineTheme {
         Scaffold(
-            topBar = { TopNav(title = "Today") },
+            topBar = { TopNav(currentScreen) },
             content = { TodayScreen(navController) },
             bottomBar = {
                 BottomNav(
-                    allScreens = allScreens,
-                    onTabSelected = {},
-                    currentScreen = Screen.Today
+                    navController = navController,
+                    currentScreen = currentScreen
                 )
             }
         )

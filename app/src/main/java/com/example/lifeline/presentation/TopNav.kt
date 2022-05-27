@@ -8,21 +8,35 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.lifeline.R
 import com.example.lifeline.util.Screen
 
 @Composable
 fun TopNav(
-    modifier: Modifier = Modifier, title: String
+    currentScreen: Screen, modifier: Modifier = Modifier
 ) {
+    val topBarState = rememberSaveable { (mutableStateOf(true)) }
+    val calendarState = rememberSaveable { (mutableStateOf(true)) }
+
+    calendarState.value = when (currentScreen) {
+        Screen.CalendarScreen -> true
+        else -> false
+    }
+    topBarState.value = when (currentScreen) {
+        Screen.CalendarScreen -> false
+        else -> true
+    }
     TopAppBar(
-        title = { Text(text = title) },
+        title = { Text(text = stringResource(id = currentScreen.resourceId)) },
         actions = {
 
-            if (title == Screen.Calendar.name) {
+            if (calendarState.value) {
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         painterResource(id = R.drawable.ic_today),

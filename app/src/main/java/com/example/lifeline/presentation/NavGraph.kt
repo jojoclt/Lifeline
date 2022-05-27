@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.example.lifeline.presentation.calendar.composables.CalendarScreen
 import com.example.lifeline.presentation.home.composables.HomeScreen
+import com.example.lifeline.presentation.task.composables.AddTodoScreen
 import com.example.lifeline.presentation.today.composables.TodayScreen
 import com.example.lifeline.util.Screen
 
@@ -20,17 +21,20 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.name,
+        startDestination = Screen.HomeScreen.route,
         modifier = modifier
     ) {
-        composable(Screen.Home.name) {
+        composable(Screen.HomeScreen.route) {
             HomeScreen(navController)
         }
-        composable(Screen.Calendar.name) {
+        composable(Screen.CalendarScreen.route) {
             CalendarScreen(navController)
         }
-        composable(Screen.Today.name) {
+        composable(Screen.TodayScreen.route) {
             TodayScreen(navController)
+        }
+        composable(Screen.AddTodoScreen.route) {
+            AddTodoScreen()
         }
     }
 }

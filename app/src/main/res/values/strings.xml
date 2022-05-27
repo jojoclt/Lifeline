@@ -3,4 +3,5 @@
     <string name="home_screen">Home</string>
     <string name="calendar_screen">Calendar</string>
     <string name="today_screen">Today</string>
+    <string name="add_todo_screen">Add Todo</string>
 </resources>

@@ -10,8 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -23,6 +21,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.util.Screen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+
+private const val TAG = "MyActivity"
 
 @Preview
 @Composable
@@ -42,35 +42,14 @@ fun LifelineApp() {
             )
         }
         val navController = rememberNavController()
-        val allScreens = Screen.values().toList()
         val backstackEntry = navController.currentBackStackEntryAsState()
         val currentScreen = Screen.fromRoute(backstackEntry.value?.destination?.route)
-        val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
 
-        bottomBarState.value = when (currentScreen) {
-            Screen.Calendar -> false
-            else -> true
-        }
         Scaffold(
-            topBar = { TopNav(title = currentScreen.name)},
+            topBar = { TopNav(currentScreen = currentScreen) },
             bottomBar = {
                 BottomNav(
-                    allScreens = allScreens,
-                    onTabSelected = { screen ->
-                        navController.navigate(screen.name) {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            // on the back stack as users select items
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            // Avoid multiple copies of the same destination when
-                            // reselecting the same item
-                            launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
-                            restoreState = true
-                        }
-                    },
+                    navController = navController,
                     currentScreen = currentScreen,
                     modifier = Modifier.clip(
                         shape = RoundedCornerShape(
@@ -81,11 +60,22 @@ fun LifelineApp() {
                 )
             },
             floatingActionButton = {
-                FloatingActionButton(onClick = { /*TODO*/ }) {
-                    Icon(Icons.Filled.Add, "", tint = Color.White)
-                }
-            }
-        ) { innerPadding ->
+                FloatingActionButton(onClick = {
+                    navController.navigate(Screen.AddTodoScreen.route) {
+                        // Pop up to the start destination of the graph to
+                        // avoid building up a large stack of destinations
+                        // on the back stack as users select items
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        // Avoid multiple copies of the same destination when
+                        // reselecting the same item
+                        launchSingleTop = true
+                        // Restore state when reselecting a previously selected item
+                        restoreState = true
+                    }
+                }) { Icon(Icons.Filled.Add, "", tint = Color.White) }
+            }) { innerPadding ->
             NavGraph(navController, modifier = Modifier.padding(innerPadding))
         }
     }

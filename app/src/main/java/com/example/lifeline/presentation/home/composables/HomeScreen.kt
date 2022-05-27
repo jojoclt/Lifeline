@@ -16,7 +16,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
-import com.example.lifeline.presentation.calendar.composables.CalendarScreen
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.util.Screen
 
@@ -30,20 +29,20 @@ fun HomeScreen(navController: NavController) {
     }
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview
 @Composable
 fun HomeScreenPreview() {
     val navController = rememberNavController()
-    val allScreens = Screen.values().toList()
+    val currentScreen = Screen.HomeScreen
     LifelineTheme {
         Scaffold(
-            topBar = { TopNav(title = "Calendar") },
+            topBar = { TopNav(currentScreen) },
             content = { HomeScreen(navController) },
             bottomBar = {
                 BottomNav(
-                    allScreens = allScreens,
-                    onTabSelected = {},
-                    currentScreen = Screen.Home
+                    navController = navController,
+                    currentScreen = currentScreen
                 )
             }
         )

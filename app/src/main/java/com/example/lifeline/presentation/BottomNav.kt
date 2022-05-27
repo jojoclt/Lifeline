@@ -6,34 +6,57 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.lifeline.util.Screen
+import com.example.lifeline.util.bottomNavItems
 
 @Composable
 fun BottomNav(
-    allScreens: List<Screen>,
-    onTabSelected: (Screen) -> Unit,
+    navController: NavController,
     currentScreen: Screen,
     modifier: Modifier = Modifier
 ) {
-    BottomNavigation(backgroundColor = Color.White, elevation = 16.dp, modifier = modifier) {
-        allScreens.forEach { screen ->
-            BottomNavigationItem(
-                icon = {
-                    Icon(
-                        painterResource(screen.icon),
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-                    )
-                },
-                label = { Text(screen.name) },
-                onClick = { onTabSelected(screen) },
-                selected = screen == currentScreen
 
-            )
-        }
+    val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
+
+    bottomBarState.value = when (currentScreen) {
+        Screen.CalendarScreen -> false
+        else -> true
     }
+    if (bottomBarState.value)
+        BottomNavigation(backgroundColor = Color.White, elevation = 16.dp, modifier = modifier) {
+
+            bottomNavItems.forEach { screen ->
+                BottomNavigationItem(
+                    icon = {
+                        Icon(
+                            painterResource(screen.iconId!!),
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    },
+                    label = { Text(stringResource(screen.resourceId)) },
+                    onClick = {
+                        navController.navigate(screen.route) {
+
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+
+                            restoreState = true
+                        }
+                    },
+                    selected = screen == currentScreen
+                )
+            }
+        }
 }

@@ -59,16 +59,15 @@ fun WeekDay() {
 @Composable
 fun CalendarScreenPreview() {
     val navController = rememberNavController()
-    val allScreens = Screen.values().toList()
+    val currentScreen = Screen.CalendarScreen
     LifelineTheme {
         Scaffold(
-            topBar = { TopNav(title = "Calendar") },
+            topBar = { TopNav(currentScreen) },
             content = { CalendarScreen(navController) },
             bottomBar = {
                 BottomNav(
-                    allScreens = allScreens,
-                    onTabSelected = {},
-                    currentScreen = Screen.Calendar
+                    navController = navController,
+                    currentScreen = currentScreen
                 )
             }
         )
