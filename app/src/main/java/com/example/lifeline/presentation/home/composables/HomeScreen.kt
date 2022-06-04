@@ -9,8 +9,10 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
@@ -21,10 +23,13 @@ import com.example.lifeline.util.Screen
 
 @Composable
 fun HomeScreen(navController: NavController) {
-    Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
+    Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
         Image(
             imageVector = ImageVector.vectorResource(id = R.drawable.open_2),
             contentDescription = null,
+            modifier = Modifier.fillMaxWidth()
         )
     }
 }
