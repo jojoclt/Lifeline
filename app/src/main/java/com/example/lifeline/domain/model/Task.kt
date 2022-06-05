@@ -6,7 +6,7 @@ data class Task(
     var id: Int,
     var isChecked: Boolean,
     var taskName: String,
-    var taskType: Type,
+    var taskType: TaskType,
     var date: Date,
     var duration: String, // Todo
     var time: String, // Deadline
@@ -14,10 +14,15 @@ data class Task(
     var description: String
 )
 
-enum class Type {
+enum class TaskType {
     TODO, DEADLINE
 }
 
 enum class Priority {
     ESPRESSO, MILK, ICE
 }
+
+data class Link(
+    var ptr: Int,
+    var taskType: TaskType
+)
