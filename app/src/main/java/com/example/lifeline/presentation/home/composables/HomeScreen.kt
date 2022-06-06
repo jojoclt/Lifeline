@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
 import com.example.lifeline.presentation.BottomNav
+import com.example.lifeline.presentation.LifelineApp
 import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.util.Screen
@@ -25,13 +26,19 @@ import com.example.lifeline.util.Screen
 fun HomeScreen(navController: NavController) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
-    Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-        Image(
-            imageVector = ImageVector.vectorResource(id = R.drawable.open_2),
-            contentDescription = null,
-            modifier = Modifier.fillMaxWidth()
-        )
+    val currentScreen = Screen.HomeScreen
+
+
+    Scaffold(topBar = { TopNav(currentScreen) }) { _ ->
+        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+            Image(
+                imageVector = ImageVector.vectorResource(id = R.drawable.open_2),
+                contentDescription = null,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
+
 }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -42,7 +49,6 @@ fun HomeScreenPreview() {
     val currentScreen = Screen.HomeScreen
     LifelineTheme {
         Scaffold(
-            topBar = { TopNav(currentScreen) },
             content = { HomeScreen(navController) },
             bottomBar = {
                 BottomNav(

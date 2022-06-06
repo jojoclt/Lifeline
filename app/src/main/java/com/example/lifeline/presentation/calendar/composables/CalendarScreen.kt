@@ -20,9 +20,12 @@ import com.example.lifeline.util.Screen
 
 @Composable
 fun CalendarScreen(navController: NavController) {
-    Surface() {
-        Column {
-            WeekDay()
+    val currentScreen = Screen.CalendarScreen
+    Scaffold(topBar = { TopNav(currentScreen) }) { _ ->
+        Surface() {
+            Column {
+                WeekDay()
+            }
         }
     }
 }
@@ -62,7 +65,6 @@ fun CalendarScreenPreview() {
     val currentScreen = Screen.CalendarScreen
     LifelineTheme {
         Scaffold(
-            topBar = { TopNav(currentScreen) },
             content = { CalendarScreen(navController) },
             bottomBar = {
                 BottomNav(

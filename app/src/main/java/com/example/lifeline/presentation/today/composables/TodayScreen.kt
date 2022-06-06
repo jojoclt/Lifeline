@@ -27,30 +27,31 @@ import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.util.Screen
 
 
-
 @Composable
 fun TodayScreen(navController: NavController) {
     val configuration = LocalConfiguration.current
-
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Estimated Time to Completed"
-        )
-        CupCanvas()
-        Row(){
-            Text( text = "To dos") //later make it be on left
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "See More") //later make it be on right
-        }
-        LazyColumn(
+    val currentScreen = Screen.TodayScreen
+    Scaffold(topBar = { TopNav(currentScreen) }) { _ ->
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Estimated Time to Completed"
+            )
+            CupCanvas()
+            Row() {
+                Text(text = "To dos") //later make it be on left
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = "See More") //later make it be on right
+            }
+            LazyColumn(
 
-        ){
-            item{Text(text = "wait for data")}
+            ) {
+                item { Text(text = "wait for data") }
+            }
         }
     }
 }
@@ -79,7 +80,6 @@ fun TodayScreenPreview() {
     val currentScreen = Screen.TodayScreen
     LifelineTheme {
         Scaffold(
-            topBar = { TopNav(currentScreen) },
             content = { TodayScreen(navController) },
             bottomBar = {
                 BottomNav(

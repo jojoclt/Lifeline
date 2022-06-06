@@ -2,6 +2,8 @@ package com.example.lifeline.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.SnackbarDefaults.backgroundColor
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
@@ -53,3 +55,43 @@ fun LifelineTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composab
         content = content
     )
 }
+
+@Composable
+fun myAppTextFieldColors(
+    textColor: Color = Color.Black,
+    disabledTextColor: Color = Color.Black,
+    focusedLabelColor: Color = Color.Black,
+    backgroundColor: Color = textBoxBg,
+    cursorColor: Color = Color.Black,
+    errorCursorColor: Color = Red700
+) = TextFieldDefaults.textFieldColors(
+    textColor = textColor,
+    disabledTextColor = disabledTextColor,
+    focusedLabelColor = focusedLabelColor,
+    backgroundColor = backgroundColor,
+    cursorColor = cursorColor,
+    errorCursorColor = errorCursorColor,
+
+)
+
+//textColor: Color,
+//disabledTextColor: Color,
+//backgroundColor: Color,
+//cursorColor: Color,
+//errorCursorColor: Color,
+//focusedIndicatorColor: Color,
+//unfocusedIndicatorColor: Color,
+//disabledIndicatorColor: Color,
+//errorIndicatorColor: Color,
+//leadingIconColor: Color,
+//disabledLeadingIconColor: Color,
+//errorLeadingIconColor: Color,
+//trailingIconColor: Color,
+//disabledTrailingIconColor: Color,
+//errorTrailingIconColor: Color,
+//focusedLabelColor: Color,
+//unfocusedLabelColor: Color,
+//disabledLabelColor: Color,
+//errorLabelColor: Color,
+//placeholderColor: Color,
+//disabledPlaceholderColor: Color

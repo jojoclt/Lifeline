@@ -11,4 +11,5 @@ val Amber500 = Color(228,156,71)
 val Amber700 = Color(215,131,62)
 val Red700 = Color(211,47,47)
 val PrimaryColor = Color(249,247,245)
+val textBoxBg = Color(0xFFF3F3F3)
 

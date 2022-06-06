@@ -7,4 +7,5 @@
     <string name="edit_todo_screen">Edit Todo</string>
     <string name="add_deadline_screen">Add Deadline</string>
     <string name="edit_deadline_screen">Edit Deadline</string>
+    <string name="task_name">Task Name</string>
 </resources>

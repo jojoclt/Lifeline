@@ -16,65 +16,67 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.lifeline.R
 import com.example.lifeline.util.AddTaskItems
+import com.example.lifeline.util.EditTaskItems
 import com.example.lifeline.util.Screen
 
 @Composable
 fun TopNav(
     currentScreen: Screen, modifier: Modifier = Modifier
 ) {
-    val taskScreen = rememberSaveable { mutableStateOf(true) }
-    val calendarState = rememberSaveable { mutableStateOf(true) }
-    val editScreen = rememberSaveable { mutableStateOf(true) }
-    calendarState.value = when (currentScreen) {
-        Screen.CalendarScreen -> true
-        else -> false
-    }
-    taskScreen.value = AddTaskItems.contains(currentScreen)
-    editScreen.value = when (currentScreen) {
-        Screen.EditTodoScreen, Screen.EditDeadlineScreen -> true
-        else -> false
-    }
+
     TopAppBar(
         title = { Text(text = stringResource(id = currentScreen.resourceId)) },
         actions = {
-            if (!taskScreen.value) {
-                if (calendarState.value) {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            painterResource(id = R.drawable.ic_today),
-                            contentDescription = null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                }
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        painterResource(id = R.drawable.ic_help),
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        Icons.Filled.Settings,
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-                    )
-
-                }
-            } else {
-                if (editScreen.value) {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            painterResource(id = R.drawable.ic_delete),
-                            contentDescription = null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                }
+            when (currentScreen) {
+                Screen.CalendarScreen -> CalendarScreenAction()
+                in AddTaskItems -> {}
+                in EditTaskItems -> EditTaskAction()
+                else -> NormalScreenAction()
             }
         },
-        elevation = 0.dp
+        modifier = modifier,
+        elevation = 0.dp,
+
     )
 
+}
+
+@Composable
+fun NormalScreenAction() {
+    IconButton(onClick = { /*TODO*/ }) {
+        Icon(
+            painterResource(id = R.drawable.ic_help),
+            contentDescription = null,
+            modifier = Modifier.size(24.dp)
+        )
+    }
+    IconButton(onClick = { /*TODO*/ }) {
+        Icon(
+            Icons.Filled.Settings,
+            contentDescription = null,
+            modifier = Modifier.size(24.dp)
+        )
+    }
+}
+@Composable
+fun CalendarScreenAction() {
+    IconButton(onClick = { /*TODO*/ }) {
+        Icon(
+            painterResource(id = R.drawable.ic_today),
+            contentDescription = null,
+            modifier = Modifier.size(24.dp)
+        )
+    }
+    NormalScreenAction()
+}
+
+@Composable
+fun EditTaskAction() {
+    IconButton(onClick = { /*TODO*/ }) {
+        Icon(
+            painterResource(id = R.drawable.ic_delete),
+            contentDescription = null,
+            modifier = Modifier.size(24.dp)
+        )
+    }
 }

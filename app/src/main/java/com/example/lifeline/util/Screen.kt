@@ -40,7 +40,11 @@ val bottomNavItems = listOf(
 
 val AddTaskItems = listOf(
     Screen.AddTodoScreen,
+    Screen.AddDeadlineScreen
+)
+
+val EditTaskItems = listOf(
     Screen.EditTodoScreen,
-    Screen.AddDeadlineScreen,
     Screen.EditDeadlineScreen
 )
+

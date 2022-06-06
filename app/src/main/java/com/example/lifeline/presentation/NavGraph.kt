@@ -34,7 +34,7 @@ fun NavGraph(
             TodayScreen(navController)
         }
         composable(Screen.AddTodoScreen.route) {
-            AddTodoScreen()
+            AddTodoScreen(navController)
         }
     }
 }
