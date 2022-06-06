@@ -1,6 +1,8 @@
 package com.example.lifeline.presentation.task.composables
 
 import android.annotation.SuppressLint
+import android.provider.ContactsContract
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -18,9 +20,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
+import com.example.lifeline.data.local.TaskData
+import com.example.lifeline.data.local.TaskDatabase.Companion.getDatabase
+import com.example.lifeline.domain.Repository
+import com.example.lifeline.domain.use_case.UseCases
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.components.PrioritySelector
@@ -29,6 +36,10 @@ import com.example.lifeline.presentation.ui.theme.Shapes
 import com.example.lifeline.presentation.ui.theme.myAppTextFieldColors
 import com.example.lifeline.util.Screen
 import com.example.lifeline.util.clearFocusOnKeyboardDismiss
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -40,7 +51,7 @@ fun AddTodoScreen(navController: NavController) {
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
-
+    val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = { TopNav(currentScreen, modifier = Modifier.background(Color.White)) },
         backgroundColor = Color.White
@@ -58,7 +69,7 @@ fun AddTodoScreen(navController: NavController) {
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
-                        .height(80.dp)
+                        .height(100.dp)
                 ) {
                     TextField(
                         value = taskName,
@@ -116,7 +127,20 @@ fun AddTodoScreen(navController: NavController) {
                 Button(onClick = { /*TODO*/ }) {
                     Text(text = "Cancel")
                 }
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = {
+//                    coroutineScope.launch {
+//                        try {
+//                            useCases.editTask(
+//                                TaskData(
+//                                    taskName = taskName
+//                                )
+//                            )
+//
+//                        } catch (e: Exception) {
+//                            Log.e("ADDTODO", e.toString())
+//                        }
+//                    }
+                }) {
                     Text(text = "DONE")
                 }
             }
