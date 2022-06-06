@@ -1,12 +1,11 @@
 package com.example.lifeline.domain.use_case
 
 import com.example.lifeline.domain.Repository
-import com.example.lifeline.domain.model.Task
 
-class GetAllTasks(
+class UpdateLink(
     private val repository: Repository
 ) {
-    operator fun invoke() {
-        repository.getAllTasks()
+    suspend operator fun invoke(ptr: Int, id: Int) {
+        repository.updateLink(ptr, id)
     }
 }
