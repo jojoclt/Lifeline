@@ -17,19 +17,42 @@ import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.presentation.ui.theme.PrimaryColor
 import com.example.lifeline.util.Screen
+import io.github.boguszpawlowski.composecalendar.SelectableCalendar
+import io.github.boguszpawlowski.composecalendar.day.Day
+import io.github.boguszpawlowski.composecalendar.day.DayState
+import io.github.boguszpawlowski.composecalendar.rememberCalendarState
+import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
+import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
+import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
+import java.time.LocalDate
+import java.time.Year
+import java.time.YearMonth
 
 @Composable
 fun CalendarScreen(navController: NavController) {
     val currentScreen = Screen.CalendarScreen
+    val calendarState = rememberSelectableCalendarState()
+    calendarState.monthState.currentMonth = YearMonth.of(2020, 5)
+    calendarState.selectionState.selection = listOf(LocalDate.parse("2020-05-02"))
+    calendarState.selectionState.selectionMode = SelectionMode.Single
     Scaffold(topBar = { TopNav(currentScreen) }) { _ ->
-        Surface() {
-            Column {
-                WeekDay()
-            }
+        Surface {
+//            Column {
+//                WeekDay()
+//            }
+            SelectableCalendar(
+//                dayContent = {dayState -> MyDay(dayState) }
+                calendarState = calendarState
+            )
         }
     }
 }
 
+@Composable
+fun MyDay(dayState: DayState<DynamicSelectionState>) {
+    Text(dayState.date.dayOfMonth.toString())
+    
+}
 @Composable
 fun WeekDay() {
     val weeks = arrayOf(

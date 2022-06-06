@@ -27,10 +27,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
+import com.example.lifeline.presentation.components.PrioritySelector
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.presentation.ui.theme.Shapes
 import com.example.lifeline.presentation.ui.theme.myAppTextFieldColors
 import com.example.lifeline.util.Screen
+import com.example.lifeline.util.clearFocusOnKeyboardDismiss
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -55,7 +57,9 @@ fun AddTodoScreen(navController: NavController) {
         )
         {
             Box(
-                modifier = Modifier.fillMaxWidth().height(80.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
             ) {
 
                 TextField(
@@ -71,13 +75,15 @@ fun AddTodoScreen(navController: NavController) {
                             focusManager.clearFocus()
                         }
                     ),
-                    singleLine = true
+                    singleLine = true,
+                    modifier = Modifier.clearFocusOnKeyboardDismiss()
                 )
 
 
             }
             Divider(thickness = 4.dp)
             Text("GEL")
+
         }
 //        BackHandler(true) {
 //            focusManager.clearFocus()

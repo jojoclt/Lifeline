@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import com.example.lifeline.presentation.ui.theme.Red700
 import com.example.lifeline.util.Screen
 import com.example.lifeline.util.bottomNavItems
 
@@ -55,7 +56,9 @@ fun BottomNav(
                             restoreState = true
                         }
                     },
-                    selected = screen == currentScreen
+                    selected = screen == currentScreen,
+                    selectedContentColor = Red700,
+                    unselectedContentColor = Color.LightGray
                 )
             }
         }
