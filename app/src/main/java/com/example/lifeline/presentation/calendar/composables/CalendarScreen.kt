@@ -41,7 +41,7 @@ fun CalendarScreen(navController: NavController) {
 //                WeekDay()
 //            }
             SelectableCalendar(
-//                dayContent = {dayState -> MyDay(dayState) }
+//                dayContent = {dayState -> MyDay(dayState) },
                 calendarState = calendarState
             )
         }
@@ -51,6 +51,7 @@ fun CalendarScreen(navController: NavController) {
 @Composable
 fun MyDay(dayState: DayState<DynamicSelectionState>) {
     Text(dayState.date.dayOfMonth.toString())
+    Text("A")
     
 }
 @Composable

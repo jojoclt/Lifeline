@@ -2,14 +2,10 @@ package com.example.lifeline.presentation.task.composables
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Divider
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -38,36 +34,66 @@ import com.example.lifeline.util.clearFocusOnKeyboardDismiss
 @Composable
 fun AddTodoScreen(navController: NavController) {
     var taskName by rememberSaveable { mutableStateOf("") }
+    var desc by rememberSaveable { mutableStateOf("") }
     val currentScreen = Screen.AddTodoScreen
 
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
 
-
-
     Scaffold(
         topBar = { TopNav(currentScreen, modifier = Modifier.background(Color.White)) },
         backgroundColor = Color.White
-    ) { _ ->
+    ) { innerPadding ->
         Column(
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
+
         )
         {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp)
-            ) {
+            Column {
+                Spacer(modifier = Modifier.height(20.dp))
 
+                Box(
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp)
+                        .height(80.dp)
+                ) {
+                    TextField(
+                        value = taskName,
+                        onValueChange = { taskName = it },
+                        colors = myAppTextFieldColors(),
+                        shape = Shapes.large,
+                        label = { Text(stringResource(R.string.task_name)) },
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                focusManager.clearFocus()
+                            }
+                        ),
+                        singleLine = true,
+                        modifier = Modifier
+                            .clearFocusOnKeyboardDismiss()
+                            .fillMaxWidth()
+                    )
+
+
+                }
+                Divider(thickness = 2.dp)
+                Column(modifier = Modifier.padding(vertical = 20.dp)) {
+
+                }
+                Divider(thickness = 2.dp)
+                PrioritySelector()
+                Divider(thickness = 2.dp)
                 TextField(
-                    value = taskName,
-                    onValueChange = { taskName = it },
+                    value = desc,
+                    onValueChange = { desc = it },
                     colors = myAppTextFieldColors(),
                     shape = Shapes.large,
-                    label = { Text(stringResource(R.string.task_name)) },
+                    label = { Text(stringResource(R.string.description)) },
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
 
                     keyboardActions = KeyboardActions(
@@ -75,19 +101,28 @@ fun AddTodoScreen(navController: NavController) {
                             focusManager.clearFocus()
                         }
                     ),
-                    singleLine = true,
-                    modifier = Modifier.clearFocusOnKeyboardDismiss()
+                    modifier = Modifier
+                        .clearFocusOnKeyboardDismiss()
+                        .fillMaxWidth()
                 )
-
-
             }
-            Divider(thickness = 4.dp)
-            Text("GEL")
+
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f, false)
+                    .padding(innerPadding)
+            ) {
+                Button(onClick = { /*TODO*/ }) {
+                    Text(text = "Cancel")
+                }
+                Button(onClick = { /*TODO*/ }) {
+                    Text(text = "DONE")
+                }
+            }
 
         }
-//        BackHandler(true) {
-//            focusManager.clearFocus()
-//        }
+
     }
 }
 

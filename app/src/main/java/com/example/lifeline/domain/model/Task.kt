@@ -1,5 +1,6 @@
 package com.example.lifeline.domain.model
 
+import androidx.annotation.DrawableRes
 import java.util.*
 
 data class Task(
@@ -25,4 +26,9 @@ enum class Priority {
 data class Link(
     var ptr: Int,
     var taskType: TaskType
+)
+
+data class PriorityRes(
+    @DrawableRes val img: Int,
+    var priority: Priority
 )

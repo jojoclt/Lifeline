@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,30 +22,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.example.lifeline.R
+import com.example.lifeline.domain.model.Priority
+import com.example.lifeline.domain.model.PriorityRes
 
+var items = listOf(
+    PriorityRes(R.drawable.p_coffee, Priority.ESPRESSO),
+    PriorityRes(R.drawable.p_milk, Priority.MILK),
+    PriorityRes(R.drawable.p_ice, Priority.ICE)
+)
 @Preview
 @Composable
 fun PrioritySelector() {
+    val selectedValue = remember { mutableStateOf(Priority.ESPRESSO)}
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
-        PriorityElement(R.drawable.p_coffee)
-        PriorityElement(R.drawable.p_milk)
-        PriorityElement(R.drawable.p_ice)
-    }
-}
-
-@Preview
-@Composable
-fun PriorityElement(@DrawableRes img: Int = R.drawable.p_coffee) {
-    val col = remember { mutableStateOf(Color.Red)}
-    Box(
-        modifier = Modifier
-            .size(100.dp)
-            .clip(shape = RoundedCornerShape(10.dp))
-            .background(col.value)
-            .fillMaxWidth()
-            .wrapContentSize(Alignment.Center)
-            .clickable (onClick = {col.value = Color.Blue})
-    ) {
-        Image(painter = painterResource(id = img), contentDescription = "")
+        items.forEach { item ->
+            Box(
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(shape = RoundedCornerShape(10.dp))
+                    .background(if (selectedValue.value == item.priority) Color.Red else Color.Blue)
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.Center)
+                    .clickable(onClick = { selectedValue.value = item.priority })
+            ) {
+                Image(painter = painterResource(id = item.img), contentDescription = "")
+            }
+        }
     }
 }
