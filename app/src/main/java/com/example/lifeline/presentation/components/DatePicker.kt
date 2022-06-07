@@ -20,6 +20,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -47,9 +48,10 @@ fun DatePicker(
     minDate: Long? = null,
     maxDate: Long? = null,
     onDateSelected: (Date) -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
+    selDate: MutableState<Date>
 ) {
-    val selDate = remember { mutableStateOf(Calendar.getInstance().time) }
+
     Log.e(TAG, "succesfully remembered")
     // todo - add strings to resource after POC
     Dialog(onDismissRequest = { onDismissRequest() }, properties = DialogProperties()) {

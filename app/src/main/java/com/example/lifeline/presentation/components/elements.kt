@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import com.example.lifeline.R
 import com.example.lifeline.domain.model.Priority
 import com.example.lifeline.domain.model.PriorityRes
+import com.example.lifeline.presentation.ui.theme.PrimaryColor
 import com.example.lifeline.presentation.ui.theme.SelectorColour
-import com.example.lifeline.presentation.ui.theme.UnselectedColour
 
 var items = listOf(
     PriorityRes(R.drawable.p_coffee, Priority.ESPRESSO),
@@ -46,7 +46,7 @@ fun PrioritySelector() {
                     .size(100.dp)
                     .clip(shape = RoundedCornerShape(10.dp))
                     .clickable(onClick = { selectedValue.value = item.priority })
-                     .background(if (selectedValue.value == item.priority) SelectorColour else UnselectedColour)
+                     .background(if (selectedValue.value == item.priority) SelectorColour else PrimaryColor)
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.Center)
             ) {
