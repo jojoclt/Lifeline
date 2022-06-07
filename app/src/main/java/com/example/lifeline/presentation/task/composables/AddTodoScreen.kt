@@ -65,7 +65,6 @@ fun AddTodoScreen(navController: NavController) {
         {
             Column {
                 Spacer(modifier = Modifier.height(20.dp))
-
                 Box(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
@@ -97,7 +96,9 @@ fun AddTodoScreen(navController: NavController) {
 
                 }
                 Divider(thickness = 2.dp)
-                PrioritySelector()
+                Box(modifier = Modifier.padding(20.dp)) {
+                    PrioritySelector()
+                }
                 Divider(thickness = 2.dp)
                 TextField(
                     value = desc,

@@ -30,22 +30,25 @@ var items = listOf(
     PriorityRes(R.drawable.p_milk, Priority.MILK),
     PriorityRes(R.drawable.p_ice, Priority.ICE)
 )
+
 @Preview
 @Composable
 fun PrioritySelector() {
-    val selectedValue = remember { mutableStateOf(Priority.ESPRESSO)}
+    val selectedValue = remember { mutableStateOf(Priority.ESPRESSO) }
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
         items.forEach { item ->
             Box(
                 modifier = Modifier
                     .size(100.dp)
                     .clip(shape = RoundedCornerShape(10.dp))
-                    .background(if (selectedValue.value == item.priority) Color.Red else Color.Blue)
+                    .clickable(onClick = { selectedValue.value = item.priority })
+                     .background(if (selectedValue.value == item.priority) Color.Red else Color.Blue)
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.Center)
-                    .clickable(onClick = { selectedValue.value = item.priority })
             ) {
-                Image(painter = painterResource(id = item.img), contentDescription = "")
+                Image(
+                    painter = painterResource(id = item.img),
+                    contentDescription = "")
             }
         }
     }

@@ -139,7 +139,7 @@ fun CupCanvas() {
     Canvas(
         modifier = Modifier
             .padding(20.dp)
-            .size(screenWidth)
+            .fillMaxHeight(0.5F).fillMaxWidth()
     ) {
         drawRect(
             color = Color.Black,
