@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,14 +33,20 @@ import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.components.PrioritySelector
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
+import com.example.lifeline.presentation.ui.theme.SelectorColour
 import com.example.lifeline.presentation.ui.theme.Shapes
 import com.example.lifeline.presentation.ui.theme.myAppTextFieldColors
 import com.example.lifeline.util.Screen
 import com.example.lifeline.util.clearFocusOnKeyboardDismiss
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -52,6 +59,11 @@ fun AddTodoScreen(navController: NavController) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
     val coroutineScope = rememberCoroutineScope()
+
+    var showPicker by rememberSaveable { mutableStateOf(false) }
+
+
+
     Scaffold(
         topBar = { TopNav(currentScreen, modifier = Modifier.background(Color.White)) },
         backgroundColor = Color.White
@@ -92,31 +104,61 @@ fun AddTodoScreen(navController: NavController) {
 
                 }
                 Divider(thickness = 2.dp)
-                Column(modifier = Modifier.padding(vertical = 20.dp)) {
+                Row(modifier = Modifier.padding(vertical = 20.dp)) {
+                    /* TODO add duration */
+                    val dialogState = rememberMaterialDialogState()
+                    MaterialDialog(
+                        dialogState = dialogState,
+                        buttons = {
+                            positiveButton("Ok", textStyle = TextStyle(color = Color.Black))
+                            negativeButton("Cancel", textStyle = TextStyle(color = Color.Black))
+                        }
+                    ) {
+                        datepicker (
+                            initialDate = LocalDate.now(),
+                            colors = DatePickerDefaults.colors(headerBackgroundColor = SelectorColour, dateActiveBackgroundColor = SelectorColour)
+                            // Do stuff with java.time.LocalDate object which is passed in
+                        )
+                    }
+
+                    /* This should be called in an onClick or an Effect */
+                    Button(
+                        onClick = { dialogState.show() },
+                        modifier = Modifier.
+                            padding(horizontal = 20.dp)
+                    ) {
+                        Text(text = "Date picker")
+                    }
+
 
                 }
+                Log.e("todo", "after show picker")
+
                 Divider(thickness = 2.dp)
                 Box(modifier = Modifier.padding(20.dp)) {
                     PrioritySelector()
                 }
                 Divider(thickness = 2.dp)
-                TextField(
-                    value = desc,
-                    onValueChange = { desc = it },
-                    colors = myAppTextFieldColors(),
-                    shape = Shapes.large,
-                    label = { Text(stringResource(R.string.description)) },
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                Box(modifier = Modifier.padding(20.dp)) {
+                    TextField(
+                        value = desc,
+                        onValueChange = { desc = it },
+                        colors = myAppTextFieldColors(),
+                        shape = Shapes.large,
+                        label = { Text(stringResource(R.string.description)) },
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
 
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            focusManager.clearFocus()
-                        }
-                    ),
-                    modifier = Modifier
-                        .clearFocusOnKeyboardDismiss()
-                        .fillMaxWidth()
-                )
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                focusManager.clearFocus()
+                            }
+                        ),
+                        modifier = Modifier
+                            .clearFocusOnKeyboardDismiss()
+                            .fillMaxWidth()
+                            .height(120.dp)
+                    )
+                }
             }
 
             Row(
