@@ -3,10 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Chala/git-demo/Lifeline/app/src/main/res/drawable/coffeeempty.xml" value="0.1" />
-        <entry key="..\:/Users/Chala/git-demo/Lifeline/app/src/main/res/drawable/coffeemask.xml" value="0.1" />
+        <entry key="../../../../../layout/compose-model-1654602286181.xml" value="0.25" />
+        <entry key="../../../../../layout/compose-model-1654602379803.xml" value="0.25" />
+        <entry key="../../../../../layout/compose-model-1654603951867.xml" value="0.2195945945945946" />
+        <entry key="../../../../../layout/compose-model-1654604835360.xml" value="0.36666666666666664" />
+        <entry key="../../../../../layout/compose-model-1654611187032.xml" value="0.36666666666666664" />
+        <entry key="../../../../../layout/compose-model-1654616413188.xml" value="0.33" />
+        <entry key="../../../../../layout/compose-model-1654616988710.xml" value="0.67" />
+        <entry key="../../../../../layout/compose-model-1654617440729.xml" value="0.22" />
+        <entry key="../../../../../layout/compose-model-1654618208073.xml" value="0.2074074074074074" />
+        <entry key="../../../../../layout/compose-model-1654618524167.xml" value="0.2204391891891892" />
+        <entry key="../../../../../layout/compose-model-1654619769101.xml" value="0.2" />
+        <entry key="../../../../../layout/compose-model-1654622277573.xml" value="1.0" />
+        <entry key="../../../../../layout/compose-model-1654622324088.xml" value="0.5" />
         <entry key="..\:/Users/Chala/git-demo/lifeline/app/src/main/res/drawable/ic_back.xml" value="0.1" />
         <entry key="..\:/Users/Chala/git-demo/lifeline/app/src/main/res/drawable/ic_calendar.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_deadline.xml" value="0.198" />
+        <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.198" />
+        <entry key="app/src/main/res/drawable/open_1.xml" value="0.198" />
+        <entry key="app/src/main/res/drawable/open_2.xml" value="0.198" />
+        <entry key="app/src/main/res/drawable/open_3.xml" value="0.198" />
+        <entry key="app/src/main/res/drawable/p_coffee.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/p_ice.xml" value="0.198" />
+        <entry key="app/src/main/res/drawable/p_milk.xml" value="0.1" />
       </map>
     </option>
   </component>

@@ -31,6 +31,7 @@ import com.example.lifeline.domain.Repository
 import com.example.lifeline.domain.use_case.UseCases
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
+import com.example.lifeline.presentation.components.DatePicker
 import com.example.lifeline.presentation.components.PrioritySelector
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.presentation.ui.theme.SelectorColour
@@ -38,10 +39,6 @@ import com.example.lifeline.presentation.ui.theme.Shapes
 import com.example.lifeline.presentation.ui.theme.myAppTextFieldColors
 import com.example.lifeline.util.Screen
 import com.example.lifeline.util.clearFocusOnKeyboardDismiss
-import com.vanpra.composematerialdialogs.MaterialDialog
-import com.vanpra.composematerialdialogs.datetime.date.DatePickerDefaults
-import com.vanpra.composematerialdialogs.datetime.date.datepicker
-import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -106,31 +103,15 @@ fun AddTodoScreen(navController: NavController) {
                 Divider(thickness = 2.dp)
                 Row(modifier = Modifier.padding(vertical = 20.dp)) {
                     /* TODO add duration */
-                    val dialogState = rememberMaterialDialogState()
-                    MaterialDialog(
-                        dialogState = dialogState,
-                        buttons = {
-                            positiveButton("Ok", textStyle = TextStyle(color = Color.Black))
-                            negativeButton("Cancel", textStyle = TextStyle(color = Color.Black))
-                        }
-                    ) {
-                        datepicker (
-                            initialDate = LocalDate.now(),
-                            colors = DatePickerDefaults.colors(headerBackgroundColor = SelectorColour, dateActiveBackgroundColor = SelectorColour)
-                            // Do stuff with java.time.LocalDate object which is passed in
-                        )
-                    }
+                    if (showPicker)
+                        DatePicker(onDateSelected = {
 
-                    /* This should be called in an onClick or an Effect */
-                    Button(
-                        onClick = { dialogState.show() },
-                        modifier = Modifier.
-                            padding(horizontal = 20.dp)
-                    ) {
+                        }, onDismissRequest = {
+                            showPicker = false
+                        })
+                    Button(onClick = { showPicker = true }) {
                         Text(text = "Date picker")
                     }
-
-
                 }
                 Log.e("todo", "after show picker")
 
