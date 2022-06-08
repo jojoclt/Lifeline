@@ -45,7 +45,7 @@ fun CupCanvas() {
         ) {
 
             drawRect(
-                color = Color.Yellow,
+                color = Color.Transparent,
                 size = size,
             )
             drawImage(

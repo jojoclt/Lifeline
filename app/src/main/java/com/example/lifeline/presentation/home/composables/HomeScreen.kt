@@ -1,6 +1,7 @@
 package com.example.lifeline.presentation.home.composables
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,7 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.drawscope.inset
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -40,16 +44,28 @@ fun HomeScreen(navController: NavController) {
 //    )
     Scaffold(
         topBar = { TopNav(currentScreen = currentScreen)}
-    ) { contentPadding->
+    ) { contentPadding ->
         //val padding = 40.dp
+        val vector = ImageVector.vectorResource(id = R.drawable.sun)
+        val painter = rememberVectorPainter(image = vector)
         Box(modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()){
-            Image(
-                imageVector = ImageVector.vectorResource(id = R.drawable.sun),
-                contentDescription = null,
-                modifier = Modifier.scale(2.55f)
-            )
+//            Image(
+//                imageVector = ImageVector.vectorResource(id = R.drawable.sun),
+//                contentDescription = null,
+//                modifier = Modifier.scale(2f)
+//            )
+            Canvas(modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp)) {
+
+                inset (horizontal = -0.7f * size.width, vertical = -0.32f * size.height) {
+                    with(painter) {
+                        draw(painter.intrinsicSize)
+                    }
+                }
+            }
             Column(
                 //modifier = Modifier
                     //.fillMaxHeight()
@@ -78,14 +94,14 @@ fun HomeScreen(navController: NavController) {
                         Spacer(modifier = Modifier
                             .padding(5.dp))
                 }
-                Image(
-                    painter = painterResource(id = R.drawable.avatar),
-                    contentDescription = null,
-                    modifier = Modifier
-                        //.align(Alignment.Center)
-                        .padding(top = 180.dp, start = 70.dp)
-                        .scale(2f)
-                )
+//                Image(
+//                    painter = painterResource(id = R.drawable.avatar),
+//                    contentDescription = null,
+//                    modifier = Modifier
+//                        //.align(Alignment.Center)
+//                        .padding(top = 180.dp, start = 70.dp)
+//                        .scale(2f)
+//                )
                 Text(text = "hi")
                 Text(text = "lol")
 
@@ -156,13 +172,14 @@ fun getTime(
 //    val tsLong = System.currentTimeMillis() / 1000
 //    val secLong = tsLong/1000
     //String ts = tsLong.toString();
-
-    val result = Calendar.getInstance().time
+    if (delta == 0) return "NOW"
+    val result = Calendar.getInstance()
+    result.add(Calendar.HOUR_OF_DAY,delta)
     //val result1= Calendar.HOUR + delta
     //val result2 = Calendar.MINUTE
     val dateFormat = SimpleDateFormat("HH:mm")
 //    val str:String = "${result1}:${result2}"
-    val ts = dateFormat.format(result)
+    val ts = dateFormat.format(result.time)
 
     return ts
 }
