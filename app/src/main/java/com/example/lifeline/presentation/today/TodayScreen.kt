@@ -1,6 +1,8 @@
 package com.example.lifeline.presentation.today.composables
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -13,12 +15,19 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -39,6 +48,7 @@ fun TodayScreen(navController: NavController) {
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
     val currentScreen = Screen.TodayScreen
+
     Scaffold(topBar = { TopNav(currentScreen) }) { _ ->
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -132,24 +142,9 @@ fun TimeRemain(){
     }
 }
 
-@Composable
-fun CupCanvas() {
-    val configuration = LocalConfiguration.current
-    val screenWidth = configuration.screenWidthDp.dp
-    Canvas(
-        modifier = Modifier
-            .padding(20.dp)
-            .size(screenWidth)
-    ) {
-        drawRect(
-            color = Color.Black,
-            size = size,
-        )
-    }
-}
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview
+//@Preview
 @Composable
 fun TodayScreenPreview() {
     val navController = rememberNavController()
