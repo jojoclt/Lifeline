@@ -8,10 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,7 +56,7 @@ fun TodayScreen(navController: NavController) {
             )
             TimeRemain()
             CupCanvas()
-            Row() {
+            Row {
                 Text(text = "To dos") //later make it be on left
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(text = "See More") //later make it be on right
@@ -88,12 +85,72 @@ fun TaskCard(t: SampleTask){
         shape = MaterialTheme.shapes.medium,
         elevation = 1.dp,
     ) {
-        Text( text = t.detail)
+        Row() {
+            val isChecked = remember { mutableStateOf(false) }
+            Checkbox(
+                checked = isChecked.value,
+                onCheckedChange = {
+                    isChecked.value = it
+                },
+                colors = CheckboxDefaults.colors(Color.Blue)
+            )
+            Text(text = t.name)
+            when (t.type) {
+                "COFFEE" -> {
+                    Text(text = "2hr")
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.p_coffee),
+                        contentDescription = null
+                    )
+                }
+                "MILK" -> {
+                    Text(text = "1hr")
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.p_milk),
+                        contentDescription = null
+                    )
+                }
+                "ICE" -> {
+                    Text(text = "30min")
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.p_ice),
+                        contentDescription = null
+                    )
+                }
+            }
+
+        }
+    }
+}
+
+@Composable
+fun CheckBoxDemo() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text("Color Check Box")
+        Spacer(modifier = Modifier.size(16.dp))
+        Row {
+            val isChecked = remember { mutableStateOf(false) }
+            Checkbox(
+                checked = isChecked.value,
+                onCheckedChange = {
+                    isChecked.value = it
+                },
+                colors = CheckboxDefaults.colors(Color.Red)
+            )
+            Spacer(modifier = Modifier.size(16.dp))
+            Text("Apple")
+        }
     }
 }
 
 @Composable
 fun TimeRemain(){
+
+    /*
     var remainingHour by remember {
         mutableStateOf(24L)
     }
@@ -140,6 +197,8 @@ fun TimeRemain(){
             color = Color.Red
         )
     }
+
+     */
 }
 
 
