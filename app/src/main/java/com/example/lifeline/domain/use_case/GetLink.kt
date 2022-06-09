@@ -5,7 +5,7 @@ import com.example.lifeline.domain.Repository
 class GetLink(
     private val repository: Repository
 ) {
-    suspend operator fun invoke(id: Int) {
-        repository.getLink(id)
-    }
+//    suspend operator fun invoke(id: Int) {
+//        repository.getLink(id)
+//    }
 }
