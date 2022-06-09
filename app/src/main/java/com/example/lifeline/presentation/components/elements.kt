@@ -23,11 +23,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.lifeline.R
 import com.example.lifeline.domain.model.Priority
 import com.example.lifeline.domain.model.PriorityRes
+import com.example.lifeline.presentation.task.composables.AddEditTodoEvent
+import com.example.lifeline.presentation.task.composables.AddEditTodoViewModel
 import com.example.lifeline.presentation.ui.theme.PrimaryColor
 import com.example.lifeline.presentation.ui.theme.SelectorColour
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 var items = listOf(
     PriorityRes(R.drawable.p_coffee, Priority.ESPRESSO),
@@ -35,18 +39,23 @@ var items = listOf(
     PriorityRes(R.drawable.p_ice, Priority.ICE)
 )
 
-@Preview
+
 @Composable
-fun PrioritySelector() {
-    val selectedValue = remember { mutableStateOf(Priority.ESPRESSO) }
+fun PrioritySelector(viewModel: AddEditTodoViewModel) {
+    val selectedValue = remember {
+        mutableStateOf(Priority.ESPRESSO)
+    }
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
         items.forEach { item ->
             Box(
                 modifier = Modifier
                     .size(100.dp)
                     .clip(shape = RoundedCornerShape(10.dp))
-                    .clickable(onClick = { selectedValue.value = item.priority })
-                     .background(if (selectedValue.value == item.priority) SelectorColour else PrimaryColor)
+                    .clickable(onClick = {
+                        viewModel.onEvent(AddEditTodoEvent.EnteredPriority(item.priority))
+                        selectedValue.value = item.priority
+                    })
+                    .background(if (selectedValue.value == item.priority) SelectorColour else PrimaryColor)
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.Center)
             ) {

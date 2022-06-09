@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ddb873d3865e2a385acd43b68133b2f3",
+    "identityHash": "3c81f57faefcbf961762540d18745725",
     "entities": [
       {
         "tableName": "TaskData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `is_checked` INTEGER NOT NULL, `name` TEXT NOT NULL, `type` TEXT, `date` TEXT, `duration` TEXT, `time` TEXT, `priority` TEXT, `description` TEXT, `linked_id` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `is_checked` INTEGER NOT NULL, `name` TEXT NOT NULL, `type` TEXT NOT NULL, `date` TEXT NOT NULL, `duration` TEXT NOT NULL, `time` TEXT NOT NULL, `priority` TEXT NOT NULL, `description` TEXT NOT NULL, `linked_id` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -30,37 +30,37 @@
             "fieldPath": "taskType",
             "columnName": "type",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "date",
             "columnName": "date",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "duration",
             "columnName": "duration",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "time",
             "columnName": "time",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "priority",
             "columnName": "priority",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "description",
             "columnName": "description",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "ptr",
@@ -82,7 +82,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ddb873d3865e2a385acd43b68133b2f3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3c81f57faefcbf961762540d18745725')"
     ]
   }
 }

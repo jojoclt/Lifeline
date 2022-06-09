@@ -8,6 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lifeline.domain.model.TaskData
+import com.example.lifeline.domain.model.TaskType
 import com.example.lifeline.domain.use_case.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +38,12 @@ class AddEditTodoViewModel @Inject constructor(
                     try {
                         useCases.editTask(
                             TaskData(
-                                taskName = taskEntry.value.taskName
+                                id = currentTaskId,
+                                taskName = taskEntry.value.taskName,
+                                date = taskEntry.value.date,
+                                priority = taskEntry.value.priority,
+                                description = taskEntry.value.desc,
+                                taskType = TaskType.TODO
                             )
 
                         )
@@ -58,6 +64,23 @@ class AddEditTodoViewModel @Inject constructor(
                 )
             }
 
+            is AddEditTodoEvent.EnteredDescription -> {
+                _taskEntry.value = taskEntry.value.copy(
+                    desc = event.value
+                )
+            }
+
+            is AddEditTodoEvent.EnteredDate -> {
+                _taskEntry.value = taskEntry.value.copy(
+                    date = event.value
+                )
+            }
+
+            is AddEditTodoEvent.EnteredPriority -> {
+                _taskEntry.value = taskEntry.value.copy(
+                    priority = event.value
+                )
+            }
         }
 
     }

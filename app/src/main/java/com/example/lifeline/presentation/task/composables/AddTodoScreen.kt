@@ -98,15 +98,13 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
                 Row(modifier = Modifier.padding(vertical = 20.dp)) {
                     /* TODO add duration */
                     if (showPicker)
-                        DatePicker(onDateSelected = {
-
-                        }, onDismissRequest = {
+                        DatePicker(onDismissRequest = {
                             showPicker = false
-                        }, selDate = selDate)
+                        }, viewModel = viewModel)
 
                     /* for calendar format  */
                     val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US)
-                    val strDate = dateFormat.format(selDate.value)
+                    val strDate = dateFormat.format(viewModel.taskEntry.value.date)
                     TextField(
                         value = strDate,
                         leadingIcon = {
@@ -124,24 +122,19 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
 
                         enabled = false
                     )
-//                    Button(
-//                        modifier = Modifier.padding(horizontal = 20.dp),
-//                        onClick = { showPicker = true }
-//                    ) {
-//                        Text(text = "Date picker")
-//                    }
+
                 }
                 Log.e("todo", "after show picker")
 
                 Divider(thickness = 2.dp)
                 Box(modifier = Modifier.padding(20.dp)) {
-                    PrioritySelector()
+                    PrioritySelector(viewModel)
                 }
                 Divider(thickness = 2.dp)
                 Box(modifier = Modifier.padding(20.dp)) {
                     TextField(
                         value = task.value.desc,
-                        onValueChange = { task.value.desc = it },
+                        onValueChange = { viewModel.onEvent(AddEditTodoEvent.EnteredDescription(it)) },
                         colors = myAppTextFieldColors(),
                         shape = Shapes.large,
                         label = { Text(stringResource(R.string.description)) },
@@ -170,7 +163,7 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
                     Text(text = "Cancel")
                 }
                 Button(onClick = {
-                   viewModel.onEvent(AddEditTodoEvent.SaveNote)
+                    viewModel.onEvent(AddEditTodoEvent.SaveNote)
                 }) {
                     Text(text = "DONE")
                 }
@@ -180,6 +173,7 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
 
     }
 }
+
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview
