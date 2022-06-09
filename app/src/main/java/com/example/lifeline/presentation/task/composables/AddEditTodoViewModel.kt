@@ -10,9 +10,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.lifeline.domain.model.TaskData
 import com.example.lifeline.domain.use_case.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+const val TAG = "AddEditTodoViewModel"
 @HiltViewModel
 class AddEditTodoViewModel @Inject constructor(
     private val useCases: UseCases,
@@ -31,22 +33,21 @@ class AddEditTodoViewModel @Inject constructor(
     fun onEvent(event: AddEditTodoEvent) {
         when (event) {
             is AddEditTodoEvent.SaveNote -> {
-                viewModelScope.launch {
+                viewModelScope.launch(Dispatchers.IO) {
                     try {
                         useCases.editTask(
                             TaskData(
                                 taskName = taskEntry.value.taskName
                             )
+
                         )
+                        Log.v(TAG, "finish adding to database")
                     }
                     catch (e: Exception) {
                         Log.e("ERROR", "ERROR IN CODE: $e")
                         // this is the line that prints out the location in
                         // the code where the error occurred.
-                        e.printStackTrace();
-                    }
-                    finally {
-                        Log.d("AddEditTodoViewModel", "task added!")
+                        e.printStackTrace()
                     }
                 }
             }
