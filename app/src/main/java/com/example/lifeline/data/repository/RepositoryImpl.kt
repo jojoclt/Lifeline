@@ -1,9 +1,8 @@
 package com.example.lifeline.data.repository
 
-import com.example.lifeline.data.local.TaskData
 import com.example.lifeline.data.local.TaskDatabase
 import com.example.lifeline.domain.Repository
-import com.example.lifeline.domain.model.Link
+import com.example.lifeline.domain.model.TaskData
 import com.example.lifeline.domain.model.TaskType
 import kotlinx.coroutines.flow.Flow
 
@@ -36,16 +35,16 @@ class RepositoryImpl constructor(
     override suspend fun markedTask(isComplete: Boolean, id: Int) {
         taskDao.markedTask(isComplete, id)
 
-        val curTask = getLink(id)
-        if (curTask.taskType == TaskType.DEADLINE && curTask.ptr != -1) taskDao.markedTask(isComplete, curTask.ptr)
+//        val curTask = getLink(id)
+//        if (curTask.taskType == TaskType.DEADLINE && curTask.ptr != -1) taskDao.markedTask(isComplete, curTask.ptr)
     }
 
     override suspend fun updateLink(ptr: Int, id: Int) {
         taskDao.updateLink(ptr, id)
     }
 
-    override suspend fun getLink(id: Int): Link =
-        taskDao.getLink(id)
+//    override suspend fun getLink(id: Int): Link =
+//        taskDao.getLink(id)
 
     override suspend fun getUnplannedDeadlines(): Flow<List<TaskData>> =
         taskDao.getUnplannedTask(TaskType.DEADLINE)
