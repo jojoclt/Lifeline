@@ -1,6 +1,5 @@
 package com.example.lifeline.domain.use_case
 
-import com.example.lifeline.data.local.TaskData
 import com.example.lifeline.domain.Repository
 
 class DeleteTask(

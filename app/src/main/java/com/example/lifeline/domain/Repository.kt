@@ -1,7 +1,6 @@
 package com.example.lifeline.domain
 
-import com.example.lifeline.data.local.TaskData
-import com.example.lifeline.domain.model.Link
+import com.example.lifeline.domain.model.TaskData
 import com.example.lifeline.domain.model.TaskType
 import kotlinx.coroutines.flow.Flow
 
@@ -21,7 +20,7 @@ interface Repository {
 
     suspend fun updateLink(ptr: Int, id: Int)
 
-    suspend fun getLink(id: Int): Link
+//    suspend fun getLink(id: Int): Link
 
     suspend fun getUnplannedDeadlines(): Flow<List<TaskData>>
 

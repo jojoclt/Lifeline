@@ -30,6 +30,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.lifeline.R
+import com.example.lifeline.presentation.task.composables.AddEditTodoEvent
+import com.example.lifeline.presentation.task.composables.AddEditTodoViewModel
 import java.util.Calendar
 import java.util.Date
 
@@ -47,11 +49,12 @@ private const val TAG = "DatePicker"
 fun DatePicker(
     minDate: Long? = null,
     maxDate: Long? = null,
-    onDateSelected: (Date) -> Unit,
+    onDateSelected: (Date) -> Unit = {},
     onDismissRequest: () -> Unit,
-    selDate: MutableState<Date>
+    viewModel: AddEditTodoViewModel
 ) {
 
+    val selDate = remember { mutableStateOf(viewModel.taskEntry.value.date) }
     Log.e(TAG, "succesfully remembered")
     // todo - add strings to resource after POC
     Dialog(onDismissRequest = { onDismissRequest() }, properties = DialogProperties()) {
@@ -129,6 +132,7 @@ fun DatePicker(
                                 )
                             )
                         )
+                        viewModel.onEvent(AddEditTodoEvent.EnteredDate(newDate))
                         onDismissRequest()
                     },
                     colors = ButtonDefaults.textButtonColors(),

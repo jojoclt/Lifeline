@@ -10,7 +10,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -23,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
@@ -41,11 +41,10 @@ import java.util.*
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AddTodoScreen(navController: NavController) {
-    var taskName by rememberSaveable { mutableStateOf("") }
-    var desc by rememberSaveable { mutableStateOf("") }
+fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel = hiltViewModel()) {
     val currentScreen = Screen.AddTodoScreen
 
+    val task = viewModel.taskEntry
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
@@ -75,8 +74,8 @@ fun AddTodoScreen(navController: NavController) {
                         .height(100.dp)
                 ) {
                     TextField(
-                        value = taskName,
-                        onValueChange = { taskName = it },
+                        value = task.value.taskName,
+                        onValueChange = { viewModel.onEvent(AddEditTodoEvent.EnteredTitle(it)) },
                         colors = myAppTextFieldColors(),
                         shape = Shapes.large,
                         label = { Text(stringResource(R.string.task_name)) },
@@ -99,18 +98,21 @@ fun AddTodoScreen(navController: NavController) {
                 Row(modifier = Modifier.padding(vertical = 20.dp)) {
                     /* TODO add duration */
                     if (showPicker)
-                        DatePicker(onDateSelected = {
-
-                        }, onDismissRequest = {
+                        DatePicker(onDismissRequest = {
                             showPicker = false
-                        }, selDate = selDate)
+                        }, viewModel = viewModel)
 
                     /* for calendar format  */
                     val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US)
-                    val strDate = dateFormat.format(selDate.value)
+                    val strDate = dateFormat.format(viewModel.taskEntry.value.date)
                     TextField(
                         value = strDate,
-                        leadingIcon = { Icon(imageVector = Icons.Default.DateRange, contentDescription = "DateRange") },
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.DateRange,
+                                contentDescription = "DateRange"
+                            )
+                        },
                         onValueChange = {},
                         colors = myAppTextFieldColors(),
                         modifier = Modifier
@@ -120,24 +122,19 @@ fun AddTodoScreen(navController: NavController) {
 
                         enabled = false
                     )
-//                    Button(
-//                        modifier = Modifier.padding(horizontal = 20.dp),
-//                        onClick = { showPicker = true }
-//                    ) {
-//                        Text(text = "Date picker")
-//                    }
+
                 }
                 Log.e("todo", "after show picker")
 
                 Divider(thickness = 2.dp)
                 Box(modifier = Modifier.padding(20.dp)) {
-                    PrioritySelector()
+                    PrioritySelector(viewModel)
                 }
                 Divider(thickness = 2.dp)
                 Box(modifier = Modifier.padding(20.dp)) {
                     TextField(
-                        value = desc,
-                        onValueChange = { desc = it },
+                        value = task.value.desc,
+                        onValueChange = { viewModel.onEvent(AddEditTodoEvent.EnteredDescription(it)) },
                         colors = myAppTextFieldColors(),
                         shape = Shapes.large,
                         label = { Text(stringResource(R.string.description)) },
@@ -166,18 +163,7 @@ fun AddTodoScreen(navController: NavController) {
                     Text(text = "Cancel")
                 }
                 Button(onClick = {
-//                    coroutineScope.launch {
-//                        try {
-//                            useCases.editTask(
-//                                TaskData(
-//                                    taskName = taskName
-//                                )
-//                            )
-//
-//                        } catch (e: Exception) {
-//                            Log.e("ADDTODO", e.toString())
-//                        }
-//                    }
+                    viewModel.onEvent(AddEditTodoEvent.SaveNote)
                 }) {
                     Text(text = "DONE")
                 }
@@ -187,6 +173,7 @@ fun AddTodoScreen(navController: NavController) {
 
     }
 }
+
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview

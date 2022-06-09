@@ -21,6 +21,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -43,24 +44,28 @@ fun HomeScreen(navController: NavController) {
 //        topBar = { TopNav(currentScreen)}
 //    )
     Scaffold(
-        topBar = { TopNav(currentScreen = currentScreen)}
+        topBar = { TopNav(currentScreen = currentScreen) }
     ) { contentPadding ->
         //val padding = 40.dp
         val vector = ImageVector.vectorResource(id = R.drawable.sun)
         val painter = rememberVectorPainter(image = vector)
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()){
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+        ) {
 //            Image(
 //                imageVector = ImageVector.vectorResource(id = R.drawable.sun),
 //                contentDescription = null,
 //                modifier = Modifier.scale(2f)
 //            )
-            Canvas(modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)) {
+            Canvas(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp)
+            ) {
 
-                inset (horizontal = -0.7f * size.width, vertical = -0.32f * size.height) {
+                inset(horizontal = -0.7f * size.width, vertical = -0.32f * size.height) {
                     with(painter) {
                         draw(painter.intrinsicSize)
                     }
@@ -68,31 +73,39 @@ fun HomeScreen(navController: NavController) {
             }
             Column(
                 //modifier = Modifier
-                    //.fillMaxHeight()
-                    //.fillMaxWidth()
+                //.fillMaxHeight()
+                //.fillMaxWidth()
             ) {
                 Text(text = "show")
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
+//                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .padding(50.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth().fillMaxHeight()
                     //.size(width = 360.dp, height = 100.dp)
                     //.fillMaxWidth()
                 ) {
 //                    Text(text = "Text1")
 //                    Text(text="Text2")
 //                    Text("end")
-                        WeatherCard(weather = "Sunny", -1)
-                        Spacer(modifier = Modifier
-                            .padding(5.dp))
-                        WeatherCard(weather = "Rainy", 0)
-                        Spacer(modifier = Modifier
-                            .padding(5.dp))
-                        WeatherCard(weather = "Rainy", 1)
-                        Spacer(modifier = Modifier
-                            .padding(5.dp))
+                    WeatherCard(weather = "Sunny", -1)
+                    Spacer(
+                        modifier = Modifier
+                            .padding(5.dp)
+                    )
+                    WeatherCard(
+                        weather = "Rainy", 0, modifier = Modifier.padding(1000.dp)
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .padding(5.dp)
+                    )
+                    WeatherCard(weather = "Rainy", 1)
+                    Spacer(
+                        modifier = Modifier
+                            .padding(5.dp)
+                    )
                 }
 //                Image(
 //                    painter = painterResource(id = R.drawable.avatar),
@@ -135,18 +148,18 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun WeatherCard(
     //val Weather = 0
-    weather:String,
-    delta:Int,
-//    modifier: Modifier = Modifier
-//        .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 20.dp)
-){
+    weather: String,
+    delta: Int,
+    modifier: Modifier = Modifier
+) {
     //icon, text, time
+    val pad = 20.dp
     Box(
         modifier = Modifier
-            .size(70.dp, 100.dp)
+            .size(70.dp, 100.dp).offset(y = 20.dp)
             .background(colorResource(id = R.color.teal_700))
-            //.padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 5.dp)
-    ){
+        //.padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 5.dp)
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly,
@@ -157,9 +170,10 @@ fun WeatherCard(
                 imageVector = ImageVector.vectorResource(id = R.drawable.ic_forecast),
                 modifier = Modifier
                     .fillMaxWidth(),
-                contentDescription = null)
+                contentDescription = null
+            )
             Text(text = weather)
-            val str:String = getTime(delta)
+            val str: String = getTime(delta)
 
             Text(str)
         }
@@ -167,14 +181,14 @@ fun WeatherCard(
 }
 
 fun getTime(
-    delta:Int
+    delta: Int
 ): String {
 //    val tsLong = System.currentTimeMillis() / 1000
 //    val secLong = tsLong/1000
     //String ts = tsLong.toString();
     if (delta == 0) return "NOW"
     val result = Calendar.getInstance()
-    result.add(Calendar.HOUR_OF_DAY,delta)
+    result.add(Calendar.HOUR_OF_DAY, delta)
     //val result1= Calendar.HOUR + delta
     //val result2 = Calendar.MINUTE
     val dateFormat = SimpleDateFormat("HH:mm")

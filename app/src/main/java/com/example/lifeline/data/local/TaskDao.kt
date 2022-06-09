@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.lifeline.domain.model.Link
+import com.example.lifeline.domain.model.TaskData
 import com.example.lifeline.domain.model.TaskType
 import kotlinx.coroutines.flow.Flow
 
@@ -32,8 +32,8 @@ interface TaskDao {
     @Query("UPDATE TaskData SET linked_id = :ptr WHERE id = :id")
     fun updateLink(ptr: Int, id: Int)
 
-    @Query("SELECT linked_id, type FROM TaskData WHERE id = :id")
-    fun getLink(id: Int): Link
+//    @Query("SELECT linked_id, type FROM TaskData WHERE id = :id")
+//    fun getLink(id: Int): Link
 
     @Query("SELECT * FROM TaskData WHERE linked_id = -1 AND type = :type")
     fun getUnplannedTask(type: TaskType): Flow<List<TaskData>>
