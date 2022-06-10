@@ -36,6 +36,8 @@ import com.example.lifeline.presentation.today.composables.CupCanvas
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.util.Screen
 import kotlinx.coroutines.delay
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -180,29 +182,27 @@ fun CheckBoxDemo() {
 }
 
 @Composable
-fun TimeRemain() {
+fun TimeRemain(){
+    val curTime = LocalTime.now()
 
-
-    var remainingHour by remember {
-        mutableStateOf(24L)
-    }
-    var remainingMin by remember {
-        mutableStateOf(0L)
-    }
-    LaunchedEffect(key1 = remainingHour, key2 = remainingMin) {
-        if (remainingMin >= 0) {
+    var remainingHour = 24 - curTime.hour
+    var remainingMin = 60 - curTime.minute
+    /*
+    LaunchedEffect(key1 = remainingHour, key2 = remainingMin){
+        if(remainingMin >= 0) {
             delay(200L)
             remainingMin -= 1L
             //value = remainingHour/TotalHour.toFloat()
-        } else {
+        }
+        else{
             remainingMin = 59L
             remainingHour -= 1L
         }
-        if (remainingHour <= 0) {
+        if(remainingHour <= 0){
             remainingHour = 24L
         }
-    }
-    Row() {
+    }*/
+    Row(){
         Text(
             text = remainingHour.toString(),
             fontSize = 44.sp,
@@ -229,12 +229,11 @@ fun TimeRemain() {
         )
     }
 
-
 }
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview
+//@Preview
 @Composable
 fun TodayScreenPreview() {
     val navController = rememberNavController()
