@@ -1,19 +1,22 @@
 package com.example.lifeline.presentation.today.composables
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import com.example.lifeline.R
 import com.example.lifeline.util.VectorHelper
 
@@ -40,39 +43,38 @@ fun CupCanvas() {
 
             drawOval(
                 color = Color.LightGray,
-                size = Size(size.width,size.height*0.3f), topLeft = Offset(x = 0f, y = 0.7f*size.height)
+                size = Size(size.width, size.height * 0.3f),
+                topLeft = Offset(x = 0f, y = 0.7f * size.height)
             )
-
             with(cup) {
-                translate(left = size.width/18f ,block = { draw(size) })
+                translate(left = size.width / 18f, block = { draw(size) })
             }
         }
         Canvas(modifier = Modifier.fillMaxSize()) {
             with(drawContext.canvas.nativeCanvas) {
                 val checkPoint = saveLayer(null, null)
                 with(mask) {
-                    scale(0.7f, Offset(size.width/1.96f,size.height/1.8f), block = {draw(size)})
+                    scale(
+                        0.7f,
+                        Offset(size.width / 1.96f, size.height / 1.8f),
+                        block = { draw(size) })
                 }
-                drawRect(color = Color.Yellow, topLeft = Offset(110f,100f), size = Size(size.width*0.5f,size.height*0.5f),blendMode = BlendMode.SrcIn)
+                drawLiquid(Color.Yellow)
+                drawLiquid(Color.LightGray, offset = Offset(500f,100f))
                 restoreToCount(checkPoint)
             }
-
         }
+
 
     }
 }
 
-@Composable
-fun DrawLine() {
-    Canvas(modifier = Modifier.size(300.dp)) {
-        val height = size.height
-        val width = size.width
 
-        drawLine(
-            start = Offset(x = 0f, y = 0f),
-            end = Offset(x = width, y = height),
-            color = Color.Blue,
-            strokeWidth = 16.0f
-        )
-    }
+fun DrawScope.drawLiquid(color: Color, offset: Offset = Offset(0f,0f)) {
+    drawRect(
+        color = color,
+        topLeft = offset,
+        size = Size(size.width * 0.5f, size.height * 0.5f),
+        blendMode = BlendMode.SrcIn
+    )
 }
