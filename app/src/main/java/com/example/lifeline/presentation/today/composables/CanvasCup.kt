@@ -2,7 +2,6 @@ package com.example.lifeline.presentation.today.composables
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -11,7 +10,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.scale
@@ -60,10 +58,10 @@ fun CupCanvas(scale: Float) {
                     block = { draw(size, colorFilter = ColorFilter.tint(color = PrimaryColor)) })
             }
             // espressoHeight and milkHeight are both dummy variables
-            val espressoHeight: Float = ((size.height - 90f) * 0.1f) * 3f
+            val espressoHeight: Float = ((size.height) * 0.1f) * 3f
             // offset value is returned as a way to calculate where the milk will start
             // 90f is the magic value because size.height includes the saucer so need to subtract it to get cupsize
-            val offset = drawLiquid(Color.Yellow, y = size.height - 90f, height = espressoHeight)
+            val offset = drawLiquid(Color.Yellow, y = size.height, height = espressoHeight)
             val milkHeight = (size.height * 0.1f) * 3f
             drawLiquid(Color.Green, y = offset, height = milkHeight)
             restoreToCount(checkPoint)
