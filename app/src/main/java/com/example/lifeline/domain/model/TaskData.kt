@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.lifeline.R
 import java.util.*
 
 @Entity
@@ -37,3 +38,5 @@ data class PriorityRes(
     @DrawableRes val img: Int,
     var priority: Priority
 )
+
+val priorityList = listOf(R.drawable.p_coffee, R.drawable.p_milk, R.drawable.p_ice)
