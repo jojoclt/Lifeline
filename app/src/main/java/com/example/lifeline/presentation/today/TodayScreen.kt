@@ -18,12 +18,14 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,6 +39,8 @@ import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.util.Screen
 import kotlinx.coroutines.delay
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -45,6 +49,8 @@ fun TodayScreen(navController: NavController) {
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
     val currentScreen = Screen.TodayScreen
+    //val formatter = DateTimeFormatter.BASIC_ISO_DATE
+   // val formatted = curTime.format(formatter)
 
     Scaffold(topBar = { TopNav(currentScreen) }) { _ ->
         Column(
@@ -147,16 +153,15 @@ fun CheckBoxDemo() {
     }
 }
 
+
+
 @Composable
 fun TimeRemain(){
+    val curTime = LocalTime.now()
 
+    var remainingHour = 24 - curTime.hour
+    var remainingMin = 60 - curTime.minute
     /*
-    var remainingHour by remember {
-        mutableStateOf(24L)
-    }
-    var remainingMin by remember {
-        mutableStateOf(0L)
-    }
     LaunchedEffect(key1 = remainingHour, key2 = remainingMin){
         if(remainingMin >= 0) {
             delay(200L)
@@ -170,7 +175,7 @@ fun TimeRemain(){
         if(remainingHour <= 0){
             remainingHour = 24L
         }
-    }
+    }*/
     Row(){
         Text(
             text = remainingHour.toString(),
@@ -198,7 +203,6 @@ fun TimeRemain(){
         )
     }
 
-     */
 }
 
 
