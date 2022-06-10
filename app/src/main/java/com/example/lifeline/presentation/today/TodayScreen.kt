@@ -30,8 +30,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
 import com.example.lifeline.data.local.SampleList
 import com.example.lifeline.data.local.SampleTask
+import com.example.lifeline.domain.model.Priority
+import com.example.lifeline.domain.model.TaskData
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
+import com.example.lifeline.presentation.components.items
 import com.example.lifeline.presentation.today.composables.CupCanvas
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.util.Screen
@@ -63,7 +66,7 @@ fun TodayScreen(navController: NavController) {
                     .padding(20.dp)
             ) {
                 Text(text = "To dos")
-                Text(text = "See More >", modifier = Modifier.clickable { })
+                Text(text = "See More >", modifier = Modifier.clickable { navController.navigate(Screen.TodosScreen.route)})
             }
             Surface(
                 shape = MaterialTheme.shapes.large,
@@ -73,42 +76,171 @@ fun TodayScreen(navController: NavController) {
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
             ) {
-                TaskList(SampleList.simpletasklist)
+                SampleTaskList(SampleList.simpletasklist)
+                //TaskList(tasks = )
             }
         }
     }
 }
 
 @Composable
-fun TaskList(tasks: List<SampleTask>) {
-    LazyColumn {
-//        item {
-//            Spacer(modifier = Modifier.size(20.dp))
-//        }
-        items(tasks) { task ->
-            TaskCard(task)
-        }
-    }
+fun TaskList(tasks: List<TaskData>){
+
 }
 
-@Preview
 @Composable
-fun TaskCard(t: SampleTask = SampleList.simpletasklist[0]) {
+fun TaskCard(task: TaskData){
     Surface(
         shape = MaterialTheme.shapes.medium,
         elevation = 0.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp).padding(8.dp)
+            .height(60.dp)
+            .padding(8.dp)
     ) {
         val isChecked = remember { mutableStateOf(false) }
-        ConstraintLayout(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+        ConstraintLayout(modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()) {
             val (label, button, text, time, ico) = createRefs()
             Box(
-                modifier = Modifier.width(10.dp).fillMaxHeight().clip(RectangleShape).background(Color.Red).constrainAs(label) {
-                    start.linkTo(parent.start)
-                    end.linkTo(button.start)
+                modifier = Modifier
+                    .width(10.dp)
+                    .fillMaxHeight()
+                    .clip(RectangleShape)
+                    .background(Color.Red)
+                    .constrainAs(label) {
+                        start.linkTo(parent.start)
+                        end.linkTo(button.start)
+                    }
+            )
+            Checkbox(
+                checked = isChecked.value,
+                onCheckedChange = {
+                    isChecked.value = it
+                    task.isChecked = it
+                },
+                colors = CheckboxDefaults.colors(Color.Blue),
+                modifier = Modifier.constrainAs(button) {
+                    start.linkTo(label.start)
+                    end.linkTo(text.start)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
                 }
+            )
+            Text(text = task.taskName,
+                modifier = Modifier.constrainAs(text) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(button.end)
+                    width = Dimension.fillToConstraints
+                })
+            when (task.priority) {
+                Priority.ESPRESSO -> {
+                    Text(text = "2hr",
+                        modifier = Modifier.constrainAs(time){
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            //start.linkTo(text.end)
+                            end.linkTo(ico.start)
+
+                        })
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.p_coffee),
+                        contentDescription = null,
+                        modifier = Modifier.constrainAs(ico){
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            //start.linkTo(time.end)
+                            end.linkTo(parent.absoluteRight)
+                        },
+                    )
+                }
+                Priority.MILK -> {
+                    Text(text = "1hr",
+                        modifier = Modifier.constrainAs(time){
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            end.linkTo(ico.start)
+                        })
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.p_milk),
+                        contentDescription = null,
+                        modifier = Modifier.constrainAs(ico){
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            end.linkTo(parent.absoluteRight)
+                        }
+                    )
+                }
+                Priority.ICE -> {
+                    Text(text = "30min",
+                        modifier = Modifier.constrainAs(time){
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            end.linkTo(ico.start)
+                        })
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.p_ice),
+                        contentDescription = null,
+                        modifier = Modifier.constrainAs(ico){
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            end.linkTo(parent.absoluteRight)
+                        }
+                    )
+                }
+            }
+
+        }
+    }
+}
+
+@Composable
+fun SampleTaskList(tasks: List<SampleTask>) {
+//    LazyColumn {
+//        item {
+//            Spacer(modifier = Modifier.size(20.dp))
+//        }
+//        items(tasks) { task ->
+//           TaskCard(task)
+//        }
+//    }
+    Column() {
+        SampleTaskCard(tasks[0])
+        SampleTaskCard(tasks[1])
+        SampleTaskCard(tasks[2])
+        SampleTaskCard(tasks[3])
+        SampleTaskCard(tasks[4])
+    }
+}
+
+@Preview
+@Composable
+fun SampleTaskCard(t: SampleTask = SampleList.simpletasklist[0]) {
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        elevation = 0.dp,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+            .padding(8.dp)
+    ) {
+        val isChecked = remember { mutableStateOf(false) }
+        ConstraintLayout(modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()) {
+            val (label, button, text, time, ico) = createRefs()
+            Box(
+                modifier = Modifier
+                    .width(10.dp)
+                    .fillMaxHeight()
+                    .clip(RectangleShape)
+                    .background(Color.Red)
+                    .constrainAs(label) {
+                        start.linkTo(parent.start)
+                        end.linkTo(button.start)
+                    }
             )
             Checkbox(
                 checked = isChecked.value,
@@ -123,35 +255,69 @@ fun TaskCard(t: SampleTask = SampleList.simpletasklist[0]) {
                     bottom.linkTo(parent.bottom)
                 }
             )
-            Text(text = t.name, modifier = Modifier.constrainAs(text) {
+            Text(text = t.name,
+                modifier = Modifier.constrainAs(text) {
                 top.linkTo(parent.top)
                 bottom.linkTo(parent.bottom)
                 start.linkTo(button.end)
                 width = Dimension.fillToConstraints
             })
-//            when (t.type) {
-//                "COFFEE" -> {
-//                    Text(text = "2hr")
-//                    Image(
-//                        imageVector = ImageVector.vectorResource(id = R.drawable.p_coffee),
-//                        contentDescription = null
-//                    )
-//                }
-//                "MILK" -> {
-//                    Text(text = "1hr")
-//                    Image(
-//                        imageVector = ImageVector.vectorResource(id = R.drawable.p_milk),
-//                        contentDescription = null
-//                    )
-//                }
-//                "ICE" -> {
-//                    Text(text = "30min")
-//                    Image(
-//                        imageVector = ImageVector.vectorResource(id = R.drawable.p_ice),
-//                        contentDescription = null
-//                    )
-//                }
-//            }
+            when (t.type) {
+                "COFFEE" -> {
+                    Text(text = "2hr",
+                        modifier = Modifier.constrainAs(time){
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            //start.linkTo(text.end)
+                            end.linkTo(ico.start)
+
+                        })
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.p_coffee),
+                        contentDescription = null,
+                        modifier = Modifier.constrainAs(ico){
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            //start.linkTo(time.end)
+                            end.linkTo(parent.absoluteRight)
+                        },
+                    )
+                }
+                "MILK" -> {
+                    Text(text = "1hr",
+                        modifier = Modifier.constrainAs(time){
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            end.linkTo(ico.start)
+                        })
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.p_milk),
+                        contentDescription = null,
+                        modifier = Modifier.constrainAs(ico){
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            end.linkTo(parent.absoluteRight)
+                        }
+                    )
+                }
+                "ICE" -> {
+                    Text(text = "30min",
+                        modifier = Modifier.constrainAs(time){
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            end.linkTo(ico.start)
+                        })
+                    Image(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.p_ice),
+                        contentDescription = null,
+                        modifier = Modifier.constrainAs(ico){
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                            end.linkTo(parent.absoluteRight)
+                        }
+                    )
+                }
+            }
 
         }
     }
@@ -187,21 +353,25 @@ fun TimeRemain(){
 
     var remainingHour = 24 - curTime.hour
     var remainingMin = 60 - curTime.minute
-    /*
+
     LaunchedEffect(key1 = remainingHour, key2 = remainingMin){
+        remainingHour = 24 - curTime.hour
+        remainingMin = 60 - curTime.minute
+        /*
         if(remainingMin >= 0) {
             delay(200L)
-            remainingMin -= 1L
+            remainingMin -= 1
             //value = remainingHour/TotalHour.toFloat()
         }
+
         else{
-            remainingMin = 59L
-            remainingHour -= 1L
+            remainingMin = 59
+            remainingHour -= 1
         }
         if(remainingHour <= 0){
-            remainingHour = 24L
-        }
-    }*/
+            remainingHour = 24
+        }*/
+    }
     Row(){
         Text(
             text = remainingHour.toString(),

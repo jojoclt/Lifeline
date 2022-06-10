@@ -17,7 +17,7 @@ fun FABElement(navController: NavController, currentScreen: Screen) {
     val fabState = rememberSaveable { (mutableStateOf(true)) }
 
     fabState.value = when (currentScreen) {
-        Screen.AddTodoScreen -> false
+        Screen.AddTodoScreen, Screen.TodosScreen -> false
         else -> true
     }
     if (fabState.value)

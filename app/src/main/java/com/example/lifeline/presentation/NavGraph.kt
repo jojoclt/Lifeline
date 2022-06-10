@@ -11,6 +11,7 @@ import androidx.navigation.compose.navigation
 import com.example.lifeline.presentation.calendar.composables.CalendarScreen
 import com.example.lifeline.presentation.home.composables.HomeScreen
 import com.example.lifeline.presentation.task.composables.AddTodoScreen
+import com.example.lifeline.presentation.today.TodosScreen
 import com.example.lifeline.presentation.today.TodayScreen
 import com.example.lifeline.util.Screen
 
@@ -35,6 +36,9 @@ fun NavGraph(
         }
         composable(Screen.AddTodoScreen.route) {
             AddTodoScreen(navController)
+        }
+        composable(Screen.TodosScreen.route){
+            TodosScreen(navController)
         }
     }
 }

@@ -9,4 +9,5 @@
     <string name="edit_deadline_screen">Edit Deadline</string>
     <string name="task_name">Task Name</string>
     <string name="description">Description</string>
+    <string name="todos_list_screen">TO DOS</string>
 </resources>
