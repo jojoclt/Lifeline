@@ -6,8 +6,6 @@ import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -26,40 +24,34 @@ fun BottomNav(
     modifier: Modifier = Modifier
 ) {
 
-    val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
 
-    bottomBarState.value = when (currentScreen) {
-        Screen.AddTodoScreen, Screen.TodosScreen -> false
-        else -> true
-    }
-    if (bottomBarState.value)
-        BottomNavigation(backgroundColor = Color.White, elevation = 16.dp, modifier = modifier) {
+    BottomNavigation(backgroundColor = Color.White, elevation = 16.dp, modifier = modifier) {
 
-            bottomNavItems.forEach { screen ->
-                BottomNavigationItem(
-                    icon = {
-                        Icon(
-                            painterResource(screen.iconId!!),
-                            contentDescription = null,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    },
-                    label = { Text(stringResource(screen.resourceId)) },
-                    onClick = {
-                        navController.navigate(screen.route) {
+        bottomNavItems.forEach { screen ->
+            BottomNavigationItem(
+                icon = {
+                    Icon(
+                        painterResource(screen.iconId!!),
+                        contentDescription = null,
+                        modifier = Modifier.size(24.dp)
+                    )
+                },
+                label = { Text(stringResource(screen.resourceId)) },
+                onClick = {
+                    navController.navigate(screen.route) {
 
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-
-                            restoreState = true
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
                         }
-                    },
-                    selected = screen == currentScreen,
-                    selectedContentColor = Red700,
-                    unselectedContentColor = Color.LightGray
-                )
-            }
+                        launchSingleTop = true
+
+                        restoreState = true
+                    }
+                },
+                selected = screen == currentScreen,
+                selectedContentColor = Red700,
+                unselectedContentColor = Color.LightGray
+            )
         }
+    }
 }

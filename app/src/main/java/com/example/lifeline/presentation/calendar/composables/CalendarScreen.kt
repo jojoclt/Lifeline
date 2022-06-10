@@ -2,14 +2,20 @@ package com.example.lifeline.presentation.calendar.composables
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.presentation.BottomNav
@@ -18,14 +24,11 @@ import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.presentation.ui.theme.PrimaryColor
 import com.example.lifeline.util.Screen
 import io.github.boguszpawlowski.composecalendar.SelectableCalendar
-import io.github.boguszpawlowski.composecalendar.day.Day
 import io.github.boguszpawlowski.composecalendar.day.DayState
-import io.github.boguszpawlowski.composecalendar.rememberCalendarState
 import io.github.boguszpawlowski.composecalendar.rememberSelectableCalendarState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import java.time.LocalDate
-import java.time.Year
 import java.time.YearMonth
 
 @Composable
@@ -35,7 +38,21 @@ fun CalendarScreen(navController: NavController) {
     calendarState.monthState.currentMonth = YearMonth.of(2020, 5)
     calendarState.selectionState.selection = listOf(LocalDate.parse("2020-05-02"))
     calendarState.selectionState.selectionMode = SelectionMode.Single
-    Scaffold(topBar = { TopNav(currentScreen) }) { _ ->
+    Scaffold(
+        topBar = { TopNav(currentScreen) },
+        bottomBar = {
+            BottomNav(
+                navController = navController,
+                currentScreen = currentScreen,
+                modifier = Modifier.clip(
+                    shape = RoundedCornerShape(
+                        topStart = 20.dp,
+                        topEnd = 20.dp
+                    )
+                )
+            )
+        },
+    ) { _ ->
         Surface {
 //            Column {
 //                WeekDay()
@@ -52,8 +69,9 @@ fun CalendarScreen(navController: NavController) {
 fun MyDay(dayState: DayState<DynamicSelectionState>) {
     Text(dayState.date.dayOfMonth.toString())
     Text("A")
-    
+
 }
+
 @Composable
 fun WeekDay() {
     val weeks = arrayOf(

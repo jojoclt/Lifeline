@@ -5,6 +5,7 @@ import com.example.lifeline.domain.Repository
 import com.example.lifeline.domain.model.TaskData
 import com.example.lifeline.domain.model.TaskType
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 class RepositoryImpl constructor(
     taskDatabase: TaskDatabase
@@ -18,6 +19,9 @@ class RepositoryImpl constructor(
 
     override suspend fun getTasksByType(taskType: TaskType): TaskData? =
         taskDao.getTasksByType(taskType)
+
+    override suspend fun getTasksByDate(date: Date): Flow<List<TaskData>> =
+        taskDao.getTasksByDate(date)
 
 
     override suspend fun getTasksById(id: Int): TaskData? =

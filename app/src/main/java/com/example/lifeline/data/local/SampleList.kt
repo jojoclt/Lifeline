@@ -9,18 +9,16 @@ enum class InJar(){
 
 data class SampleTask(
     val name: String,
-    val type: String, //"MILK", "ICE", "COFFEE"
-    //val timeuse: Long,
+    val priority: Priority
 )
 object SampleList {
 
     val simpletasklist = listOf(
-        SampleTask("Buy Milk", "MILK"),
-        SampleTask("Buy Peanut", "ICE"),
-        SampleTask("Do laundry", "ICE"),
-        SampleTask("Finish Software studio project","COFFEE"),
-        SampleTask("Look at professor profile", "COFFEE"),
-        SampleTask("Wake KK and Audrey up", "MILK"),
-        SampleTask( "LOL", "MILK")
+        SampleTask("Do laundry", Priority.MILK),
+        SampleTask("Buy Milk", Priority.ESPRESSO),
+        SampleTask("Buy Peanut", Priority.ICE),
+        SampleTask("Finish Software studio project",Priority.ESPRESSO),
+        SampleTask("Look at professor profile", Priority.ESPRESSO),
+        SampleTask("Wake KK and Audrey up", Priority.MILK),
     )
 }

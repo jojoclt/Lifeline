@@ -3,6 +3,7 @@ package com.example.lifeline.domain
 import com.example.lifeline.domain.model.TaskData
 import com.example.lifeline.domain.model.TaskType
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 interface Repository {
 
@@ -11,6 +12,8 @@ interface Repository {
     suspend fun getTasksByType(taskType: TaskType): TaskData?
 
     suspend fun getTasksById(id: Int): TaskData?
+
+    suspend fun getTasksByDate(date: Date): Flow<List<TaskData>>
 
     suspend fun editTask(taskData: TaskData)
 

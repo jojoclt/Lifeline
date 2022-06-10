@@ -5,23 +5,20 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.drawscope.inset
-import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -44,7 +41,19 @@ fun HomeScreen(navController: NavController) {
 //        topBar = { TopNav(currentScreen)}
 //    )
     Scaffold(
-        topBar = { TopNav(currentScreen = currentScreen) }
+        topBar = { TopNav(currentScreen = currentScreen) },
+        bottomBar = {
+            BottomNav(
+                navController = navController,
+                currentScreen = currentScreen,
+                modifier = Modifier.clip(
+                    shape = RoundedCornerShape(
+                        topStart = 20.dp,
+                        topEnd = 20.dp
+                    )
+                )
+            )
+        }
     ) { contentPadding ->
         //val padding = 40.dp
         val vector = ImageVector.vectorResource(id = R.drawable.sun)

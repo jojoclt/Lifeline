@@ -6,17 +6,12 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
 import com.example.lifeline.util.AddTaskItems
 import com.example.lifeline.util.EditTaskItems
@@ -34,14 +29,14 @@ fun TopNav(
                 Screen.CalendarScreen -> CalendarScreenAction()
                 in AddTaskItems -> {}
                 in EditTaskItems -> EditTaskAction()
-                Screen.TodosScreen -> TodoListScreenAction()
                 else -> NormalScreenAction()
             }
         },
+
         modifier = modifier,
         elevation = 0.dp,
 
-    )
+        )
 
 }
 
@@ -62,6 +57,7 @@ fun NormalScreenAction() {
         )
     }
 }
+
 @Composable
 fun CalendarScreenAction() {
     IconButton(onClick = { /*TODO*/ }) {
@@ -83,16 +79,4 @@ fun EditTaskAction() {
             modifier = Modifier.size(24.dp)
         )
     }
-}
-
-@Composable
-fun TodoListScreenAction(){
-    IconButton(onClick = {  }) {
-        Icon(
-            Icons.Filled.ArrowBack,
-            contentDescription = null,
-            modifier = Modifier.size(24.dp)
-        )
-    }
-    NormalScreenAction()
 }
