@@ -16,6 +16,7 @@ sealed class Screen(
     object EditTodoScreen : Screen("edit_todo_screen", R.string.edit_todo_screen, null)
     object AddDeadlineScreen : Screen("add_deadline_screen", R.string.add_deadline_screen, null)
     object EditDeadlineScreen : Screen("edit_deadline_screen", R.string.edit_deadline_screen, null)
+    object TodosScreen : Screen("todos_list_screen",R.string.todos_list_screen,null)
 
     companion object {
         fun fromRoute(route: String?): Screen =
@@ -24,6 +25,7 @@ sealed class Screen(
                 "calendar_screen" -> CalendarScreen
                 "today_screen" -> TodayScreen
                 "add_todo_screen" -> AddTodoScreen
+                "todos_list_screen"-> TodosScreen
                 null -> HomeScreen
                 else -> throw IllegalArgumentException("Route $route is not recognized.")
 
@@ -46,5 +48,9 @@ val AddTaskItems = listOf(
 val EditTaskItems = listOf(
     Screen.EditTodoScreen,
     Screen.EditDeadlineScreen
+)
+
+val ListItems = listOf(
+    Screen.TodosScreen
 )
 

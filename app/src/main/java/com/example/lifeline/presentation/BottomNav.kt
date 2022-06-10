@@ -29,7 +29,7 @@ fun BottomNav(
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
 
     bottomBarState.value = when (currentScreen) {
-        Screen.AddTodoScreen -> false
+        Screen.AddTodoScreen, Screen.TodosScreen -> false
         else -> true
     }
     if (bottomBarState.value)
