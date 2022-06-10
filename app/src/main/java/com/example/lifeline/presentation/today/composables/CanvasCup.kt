@@ -11,6 +11,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.scale
@@ -53,9 +54,13 @@ fun CupCanvas() {
                         Offset(size.width * 0.51f, size.height * 0.56f),
                         block = { draw(size, colorFilter = ColorFilter.tint(color = PrimaryColor)) })
                 }
-                drawLiquid(Color.Yellow, height = 0.78f*size.height)
-                drawLiquid(Color.Green, height = 0.5f*size.height)
-
+                // espressoHeight and milkHeight are both dummy variables
+                val espressoHeight: Float = ((size.height - 90f) * 0.1f) * 3f
+                // offset value is returned as a way to calculate where the milk will start
+                // 90f is the magic value because size.height includes the saucer so need to subtract it to get cupsize
+                val offset = drawLiquid(Color.Yellow, y = size.height - 90f, height = espressoHeight)
+                val milkHeight = (size.height * 0.1f) * 3f
+                drawLiquid(Color.Green, y = offset, height = milkHeight)
                 restoreToCount(checkPoint)
             }
             with(cup) {
@@ -68,12 +73,14 @@ fun CupCanvas() {
 }
 
 
-fun DrawScope.drawLiquid(color: Color, y: Float = 0f, height: Float = 0.5f*size.height) {
-    val cupStartOffset = size.height*0.166f + y
+fun DrawScope.drawLiquid(color: Color, y: Float = 0f, height: Float = 0.5f * size.height):Float {
+    //val cupStartOffset = size.height * 0.166f + y
+    val offsetY = y - height
     drawRect(
         color = color,
-        topLeft = Offset(0f, cupStartOffset+size.height-height),
+        topLeft = Offset(0f, offsetY),
         size = Size(size.width, height),
         blendMode = BlendMode.SrcIn
     )
+    return offsetY
 }
