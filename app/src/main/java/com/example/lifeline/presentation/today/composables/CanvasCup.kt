@@ -11,6 +11,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
@@ -18,6 +19,7 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import com.example.lifeline.R
+import com.example.lifeline.presentation.ui.theme.PrimaryColor
 import com.example.lifeline.util.VectorHelper
 
 // https://developer.android.com/reference/android/graphics/BlendMode.html#SRC
@@ -37,31 +39,27 @@ fun CupCanvas() {
             .fillMaxHeight(0.5f)
     ) {
 
-        Canvas(
-            modifier = Modifier.fillMaxSize()
-        ) {
-
+        Canvas(modifier = Modifier.fillMaxSize()) {
             drawOval(
                 color = Color.LightGray,
                 size = Size(size.width, size.height * 0.3f),
                 topLeft = Offset(x = 0f, y = 0.7f * size.height)
             )
-            with(cup) {
-                translate(left = size.width / 18f, block = { draw(size) })
-            }
-        }
-        Canvas(modifier = Modifier.fillMaxSize()) {
             with(drawContext.canvas.nativeCanvas) {
                 val checkPoint = saveLayer(null, null)
                 with(mask) {
                     scale(
                         0.7f,
-                        Offset(size.width / 1.96f, size.height / 1.8f),
-                        block = { draw(size) })
+                        Offset(size.width * 0.51f, size.height * 0.56f),
+                        block = { draw(size, colorFilter = ColorFilter.tint(color = PrimaryColor)) })
                 }
-                drawLiquid(Color.Yellow)
-                drawLiquid(Color.LightGray, offset = Offset(500f,100f))
+                drawLiquid(Color.Yellow, height = 0.78f*size.height)
+                drawLiquid(Color.Green, height = 0.5f*size.height)
+
                 restoreToCount(checkPoint)
+            }
+            with(cup) {
+                translate(left = size.width * 0.05f, block = { draw(size) })
             }
         }
 
@@ -70,11 +68,12 @@ fun CupCanvas() {
 }
 
 
-fun DrawScope.drawLiquid(color: Color, offset: Offset = Offset(0f,0f)) {
+fun DrawScope.drawLiquid(color: Color, y: Float = 0f, height: Float = 0.5f*size.height) {
+    val cupStartOffset = size.height*0.166f + y
     drawRect(
         color = color,
-        topLeft = offset,
-        size = Size(size.width * 0.5f, size.height * 0.5f),
+        topLeft = Offset(0f, cupStartOffset+size.height-height),
+        size = Size(size.width, height),
         blendMode = BlendMode.SrcIn
     )
 }
