@@ -7,6 +7,7 @@ import androidx.room.Query
 import com.example.lifeline.domain.model.TaskData
 import com.example.lifeline.domain.model.TaskType
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 @Dao
 interface TaskDao {
@@ -16,6 +17,9 @@ interface TaskDao {
 
     @Query("SELECT * From TaskData WHERE type = :taskType")
     fun getTasksByType(taskType: TaskType): TaskData?
+
+    @Query("SELECT * From TaskData WHERE date = :date")
+    fun getTasksByDate(date: Date): Flow<List<TaskData>>
 
     @Query("SELECT * FROM TaskData WHERE id = :id")
     fun getTaskById(id: Int): TaskData?

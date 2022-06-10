@@ -34,6 +34,7 @@ object AppModule {
             getAllTasks = GetAllTasks(repository),
             getTasksByType = GetTasksByType(repository),
             getTaskById = GetTaskById(repository),
+            getTasksByDate = GetTasksByDate(repository),
             editTask = EditTask(repository),
             deleteTask = DeleteTask(repository),
             markedTask = MarkedTask(repository),
