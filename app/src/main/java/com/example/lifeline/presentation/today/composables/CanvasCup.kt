@@ -1,68 +1,50 @@
 package com.example.lifeline.presentation.today.composables
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Base64
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import com.example.lifeline.R
-import com.example.lifeline.util.BitmapHelper
+import com.example.lifeline.util.VectorHelper
 
-@Preview
 @Composable
 fun CupCanvas() {
     val context = LocalContext.current
 
-    val mask = BitmapHelper.getVectorBitmap(context, R.drawable.coffeemask, 3)
-    val glass = BitmapHelper.getVectorBitmap(context, R.drawable.coffeeempty,3)
+    val mask = VectorHelper.createPainter(img = R.drawable.coffeemask)
+    val cup = VectorHelper.createPainter(img = R.drawable.coffee_empty)
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp
     Box(
         modifier = Modifier
-            .size(500.dp)
-            .aspectRatio(1f)
+            .fillMaxWidth(0.75f)
+            .fillMaxHeight(0.5f)
     ) {
+
         Canvas(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
+            modifier = Modifier.fillMaxSize()
         ) {
 
-            drawRect(
-                color = Color.Transparent,
-                size = size,
+            drawOval(
+                color = Color.LightGray,
+                size = Size(size.width,size.height*0.3f), topLeft = Offset(x = 0f, y = 0.7f*size.height)
             )
-            drawImage(
-                image = mask,
-                topLeft = Offset(
-                    (size.width - mask.width) * 0.5f,
-                    (size.height - mask.height) * 0.5F
-                )
-            )
-            drawImage(
-                image = glass,
-                topLeft = Offset(
-                    (size.width - glass.width) * 0.5f + (size.width/30),
-                    (size.height - glass.height) * 0.5f
-                )
-            )
-            //        drawCircle(color = Color.White, radius = 50F)
+            with(mask) {
+                scale(0.7f, Offset(size.width/1.96f,size.height/1.8f), block = {draw(size)})
+            }
+            with(cup) {
+                translate(left = size.width/18f ,block = { draw(size) })
+            }
+
 
         }
     }
@@ -80,5 +62,16 @@ fun DrawLine() {
             color = Color.Blue,
             strokeWidth = 16.0f
         )
+    }
+}
+
+@Preview
+@Composable
+fun CupCanvasPreview() {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f)) {
+        CupCanvas()
     }
 }

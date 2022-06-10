@@ -4,15 +4,15 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.annotation.DrawableRes
-import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.VectorPainter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.vectorResource
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
-import com.example.lifeline.R
-
-
 
 object BitmapHelper {
     fun createScaledBitmap(context: Context, @DrawableRes img: Int, dimen: Int): ImageBitmap {
@@ -36,3 +36,10 @@ object BitmapHelper {
     }
 }
 
+object VectorHelper {
+    @Composable
+    fun createPainter(@DrawableRes img: Int): VectorPainter {
+        val vector = ImageVector.vectorResource(img)
+        return rememberVectorPainter(image = vector)
+    }
+}

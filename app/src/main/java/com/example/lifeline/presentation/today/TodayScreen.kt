@@ -1,32 +1,30 @@
-package com.example.lifeline.presentation.today.composables
+package com.example.lifeline.presentation.today
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester.Companion.createRefs
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
@@ -34,6 +32,7 @@ import com.example.lifeline.data.local.SampleList
 import com.example.lifeline.data.local.SampleTask
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
+import com.example.lifeline.presentation.today.composables.CupCanvas
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.util.Screen
 import kotlinx.coroutines.delay
@@ -56,68 +55,101 @@ fun TodayScreen(navController: NavController) {
             )
             TimeRemain()
             CupCanvas()
-            Row {
-                Text(text = "To dos") //later make it be on left
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "See More") //later make it be on right
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+            ) {
+                Text(text = "To dos")
+                Text(text = "See More >", modifier = Modifier.clickable { })
             }
             Surface(
                 shape = MaterialTheme.shapes.large,
                 elevation = 3.dp,
                 color = Color.LightGray,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
             ) {
-            TaskList(SampleList.simpletasklist)
+                TaskList(SampleList.simpletasklist)
             }
         }
     }
 }
 
 @Composable
-fun TaskList(tasks: List<SampleTask>){
-    LazyColumn{
-        items(tasks){task->TaskCard(task)}
+fun TaskList(tasks: List<SampleTask>) {
+    LazyColumn {
+//        item {
+//            Spacer(modifier = Modifier.size(20.dp))
+//        }
+        items(tasks) { task ->
+            TaskCard(task)
+        }
     }
 }
 
+@Preview
 @Composable
-fun TaskCard(t: SampleTask){
+fun TaskCard(t: SampleTask = SampleList.simpletasklist[0]) {
     Surface(
         shape = MaterialTheme.shapes.medium,
-        elevation = 1.dp,
+        elevation = 0.dp,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp).padding(8.dp)
     ) {
-        Row() {
-            val isChecked = remember { mutableStateOf(false) }
+        val isChecked = remember { mutableStateOf(false) }
+        ConstraintLayout(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+            val (label, button, text, time, ico) = createRefs()
+            Box(
+                modifier = Modifier.width(10.dp).fillMaxHeight().clip(RectangleShape).background(Color.Red).constrainAs(label) {
+                    start.linkTo(parent.start)
+                    end.linkTo(button.start)
+                }
+            )
             Checkbox(
                 checked = isChecked.value,
                 onCheckedChange = {
                     isChecked.value = it
                 },
-                colors = CheckboxDefaults.colors(Color.Blue)
+                colors = CheckboxDefaults.colors(Color.Blue),
+                modifier = Modifier.constrainAs(button) {
+                    start.linkTo(label.start)
+                    end.linkTo(text.start)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                }
             )
-            Text(text = t.name)
-            when (t.type) {
-                "COFFEE" -> {
-                    Text(text = "2hr")
-                    Image(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.p_coffee),
-                        contentDescription = null
-                    )
-                }
-                "MILK" -> {
-                    Text(text = "1hr")
-                    Image(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.p_milk),
-                        contentDescription = null
-                    )
-                }
-                "ICE" -> {
-                    Text(text = "30min")
-                    Image(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.p_ice),
-                        contentDescription = null
-                    )
-                }
-            }
+            Text(text = t.name, modifier = Modifier.constrainAs(text) {
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
+                start.linkTo(button.end)
+                width = Dimension.fillToConstraints
+            })
+//            when (t.type) {
+//                "COFFEE" -> {
+//                    Text(text = "2hr")
+//                    Image(
+//                        imageVector = ImageVector.vectorResource(id = R.drawable.p_coffee),
+//                        contentDescription = null
+//                    )
+//                }
+//                "MILK" -> {
+//                    Text(text = "1hr")
+//                    Image(
+//                        imageVector = ImageVector.vectorResource(id = R.drawable.p_milk),
+//                        contentDescription = null
+//                    )
+//                }
+//                "ICE" -> {
+//                    Text(text = "30min")
+//                    Image(
+//                        imageVector = ImageVector.vectorResource(id = R.drawable.p_ice),
+//                        contentDescription = null
+//                    )
+//                }
+//            }
 
         }
     }
@@ -148,30 +180,29 @@ fun CheckBoxDemo() {
 }
 
 @Composable
-fun TimeRemain(){
+fun TimeRemain() {
 
-    /*
+
     var remainingHour by remember {
         mutableStateOf(24L)
     }
     var remainingMin by remember {
         mutableStateOf(0L)
     }
-    LaunchedEffect(key1 = remainingHour, key2 = remainingMin){
-        if(remainingMin >= 0) {
+    LaunchedEffect(key1 = remainingHour, key2 = remainingMin) {
+        if (remainingMin >= 0) {
             delay(200L)
             remainingMin -= 1L
             //value = remainingHour/TotalHour.toFloat()
-        }
-        else{
+        } else {
             remainingMin = 59L
             remainingHour -= 1L
         }
-        if(remainingHour <= 0){
+        if (remainingHour <= 0) {
             remainingHour = 24L
         }
     }
-    Row(){
+    Row() {
         Text(
             text = remainingHour.toString(),
             fontSize = 44.sp,
@@ -198,12 +229,12 @@ fun TimeRemain(){
         )
     }
 
-     */
+
 }
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-//@Preview
+@Preview
 @Composable
 fun TodayScreenPreview() {
     val navController = rememberNavController()
