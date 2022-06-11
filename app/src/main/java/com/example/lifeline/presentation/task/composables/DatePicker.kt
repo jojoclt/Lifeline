@@ -20,7 +20,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,8 +29,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.lifeline.R
-import com.example.lifeline.presentation.task.composables.AddEditTodoEvent
-import com.example.lifeline.presentation.task.composables.AddEditTodoViewModel
+import com.example.lifeline.presentation.task.AddEditTodoEvent
+import com.example.lifeline.presentation.task.AddEditTodoViewModel
 import java.util.Calendar
 import java.util.Date
 

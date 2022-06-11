@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.example.lifeline.presentation.calendar.composables.CalendarScreen
 import com.example.lifeline.presentation.home.composables.HomeScreen
-import com.example.lifeline.presentation.task.composables.AddTodoScreen
+import com.example.lifeline.presentation.task.AddTodoScreen
 import com.example.lifeline.presentation.today.TodosScreen
 import com.example.lifeline.presentation.today.TodayScreen
 import com.example.lifeline.util.Screen

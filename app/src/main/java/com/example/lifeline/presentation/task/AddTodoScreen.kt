@@ -1,7 +1,6 @@
-package com.example.lifeline.presentation.task.composables
+package com.example.lifeline.presentation.task
 
 import android.annotation.SuppressLint
-import android.system.Os.close
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -12,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.*
@@ -20,18 +20,16 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.SemanticsActions.OnClick
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -41,21 +39,25 @@ import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.components.DatePicker
 import com.example.lifeline.presentation.components.PrioritySelector
+import com.example.lifeline.presentation.task.composables.DurationDrawer
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.presentation.ui.theme.Shapes
 import com.example.lifeline.presentation.ui.theme.myAppTextFieldColors
 import com.example.lifeline.util.Screen
 import com.example.lifeline.util.clearFocusOnKeyboardDismiss
 import com.example.lifeline.util.toDuration
-import kotlinx.coroutines.channels.ChannelResult.Companion.closed
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel = hiltViewModel()) {
+
+
     val currentScreen = Screen.AddTodoScreen
 
     val task = viewModel.taskEntry
@@ -69,10 +71,10 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
 
     val selDate = remember { mutableStateOf(Calendar.getInstance().time) }
 
-    var bottomDrawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
+    val bottomDrawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    var durationValue by remember { mutableStateOf(0) }
+    val durationValue = remember { mutableStateOf(0) }
 
     Scaffold(
         topBar = { TopNav(currentScreen, modifier = Modifier.background(Color.White)) },
@@ -81,137 +83,7 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
         BottomDrawer(
             drawerState = bottomDrawerState,
             drawerContent = {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.5f),
-                    shape = RoundedCornerShape(20.dp)
-                )
-                {
-                    Box(modifier = Modifier.padding(20.dp)) {
-                        Column(
-                            modifier = Modifier.fillMaxHeight()
-                        )
-                        {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            )
-                            {
-                                Text(
-                                    text = durationValue.toDuration(),
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .offset(0.dp, 10.dp),
-                                    fontSize = 60.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                            Spacer(modifier = Modifier.size(20.dp))
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
-                                Button(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(horizontal = 10.dp),
-                                    onClick = { durationValue += 15 }
-                                ) {
-                                    Text(text = "+15 min")
-                                }
-
-                                Button(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(horizontal = 10.dp),
-                                    onClick = { durationValue += 30 }
-                                ) {
-                                    Text(text = "+30 min")
-                                }
-
-                                Button(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(horizontal = 10.dp),
-                                    onClick = { durationValue += 60 }
-                                ) {
-                                    Text(text = "+1 hour")
-                                }
-                            }
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceEvenly
-                            ) {
-                                Button(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(horizontal = 10.dp),
-                                    onClick = { durationValue += 120 }
-                                ) {
-                                    Text(text = "+2 hour")
-                                }
-
-                                Button(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(horizontal = 10.dp),
-                                    onClick = { durationValue += 180 }
-                                ) {
-                                    Text(text = "+3 hour")
-                                }
-
-                                Button(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(horizontal = 10.dp),
-                                    onClick = { durationValue += 240 }
-                                ) {
-                                    Text(text = "+4 hour")
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.size(10.dp))
-                            Divider(thickness = 2.dp)
-                            Spacer(modifier = Modifier.size(10.dp))
-                            Row(
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Button(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(horizontal = 10.dp),
-                                    onClick = { durationValue = 0 }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Refresh,
-                                        contentDescription = "ResetDuration"
-                                    )
-                                }
-                                Button(
-                                    modifier = Modifier
-                                        .weight(2f)
-                                        .padding(horizontal = 10.dp),
-                                    onClick = {
-                                        viewModel.onEvent(
-                                            AddEditTodoEvent.EnteredDuration(
-                                                durationValue
-                                            )
-                                        )
-                                        scope.launch {
-                                            bottomDrawerState.close()
-                                        }
-                                    }
-                                ) {
-                                    Text(text = "Save")
-                                }
-                            }
-                        }
-                    }
-                }
-
+                DurationDrawer(durationValue, bottomDrawerState, viewModel, scope)
             },
             content = {
                 Column(
@@ -250,8 +122,13 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
 
                         }
                         Divider(thickness = 2.dp)
-                        Row(modifier = Modifier.padding(vertical = 20.dp)) {
-                            /* TODO add duration */
+                        Row(
+                            modifier = Modifier.padding(vertical = 20.dp).fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceAround
+                        ) {
+                            /**
+                             * Date Picker for AddTodoTask
+                             */
                             if (showPicker)
                                 DatePicker(onDismissRequest = {
                                     showPicker = false
@@ -278,12 +155,28 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
                                 enabled = false
                             )
 
-                            Button(
-                                onClick = { scope.launch { bottomDrawerState.open() } }
-                            ) {
-                                Text("Duration")
-                            }
-
+                            /**
+                             * Duration Picker for AddTodoTask
+                             */
+                            TextField(
+                                value = durationValue.value.toDuration(),
+                                leadingIcon = {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_alarm),
+                                        contentDescription = "DurationIcon",
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                },
+                                onValueChange = {},
+                                colors = myAppTextFieldColors(),
+                                modifier = Modifier
+                                    .requiredWidth(168.dp)
+                                    .padding(horizontal = 20.dp)
+                                    .clickable(onClick = {
+                                        scope.launch { bottomDrawerState.open() }
+                                    }),
+                                enabled = false
+                            )
                         }
                         Log.e("todo", "after show picker")
 

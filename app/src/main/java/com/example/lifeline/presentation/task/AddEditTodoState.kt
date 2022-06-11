@@ -1,4 +1,4 @@
-package com.example.lifeline.presentation.task.composables
+package com.example.lifeline.presentation.task
 
 import com.example.lifeline.domain.model.Priority
 import java.util.*

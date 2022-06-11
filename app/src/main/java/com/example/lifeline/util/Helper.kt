@@ -53,5 +53,5 @@ object VectorHelper {
 fun Int.toDuration(): String {
     val hour = this / 60
     val min = this % 60
-    return String.format("+ %02d : %02d", hour, min)
+    return String.format("%02d : %02d", hour, min)
 }

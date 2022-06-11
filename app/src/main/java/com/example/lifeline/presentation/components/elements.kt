@@ -1,37 +1,26 @@
 package com.example.lifeline.presentation.components
 
-import android.media.Image
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.lifeline.R
 import com.example.lifeline.domain.model.Priority
 import com.example.lifeline.domain.model.PriorityRes
-import com.example.lifeline.presentation.task.composables.AddEditTodoEvent
-import com.example.lifeline.presentation.task.composables.AddEditTodoViewModel
+import com.example.lifeline.presentation.task.AddEditTodoEvent
+import com.example.lifeline.presentation.task.AddEditTodoViewModel
 import com.example.lifeline.presentation.ui.theme.PrimaryColor
 import com.example.lifeline.presentation.ui.theme.SelectorColour
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 var items = listOf(
     PriorityRes(R.drawable.p_coffee, Priority.ESPRESSO),
@@ -61,7 +50,8 @@ fun PrioritySelector(viewModel: AddEditTodoViewModel) {
             ) {
                 Image(
                     painter = painterResource(id = item.img),
-                    contentDescription = "")
+                    contentDescription = ""
+                )
             }
         }
     }
