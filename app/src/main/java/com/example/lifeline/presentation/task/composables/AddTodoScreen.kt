@@ -82,71 +82,113 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
                     shape = RoundedCornerShape(20.dp)
                 )
                 {
-                    Column(
-                        modifier = Modifier.fillMaxHeight()
-                    )
-                    {
-                        Box(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.5f))
+                    Box(modifier = Modifier.padding(20.dp)) {
+                        Column(
+                            modifier = Modifier.fillMaxHeight()
+                        )
                         {
-                            Text(
-                                text = "00:00",
-                                modifier = Modifier.fillMaxWidth().offset(0.dp,40.dp), /* todo : hardcoded 40.dp */
-                                letterSpacing = 15.sp,
-                                fontSize = 60.sp,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
+                            Box(modifier = Modifier
+                                .fillMaxWidth()
                             )
-                        }
-                        Spacer(modifier = Modifier.size(4.dp))
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                        ) {
-                            Button(
-                                modifier = Modifier.weight(1f).padding(horizontal = 10.dp),
-                                onClick = {}
+                            {
+                                Text(
+                                    text = "00:00",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .offset(0.dp, 10.dp),
+                                    letterSpacing = 15.sp,
+                                    fontSize = 60.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                            Spacer(modifier = Modifier.size(20.dp))
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
                             ) {
-                                Text(text = "+30 min")
+                                Button(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(horizontal = 10.dp),
+                                    onClick = {}
+                                ) {
+                                    Text(text = "+30 min")
+                                }
+
+                                Button(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(horizontal = 10.dp),
+                                    onClick = {}
+                                ) {
+                                    Text(text = "+1 hr")
+                                }
+
+                                Button(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(horizontal = 10.dp),
+                                    onClick = {}
+                                ) {
+                                    Text(text = "+2 hr")
+                                }
+                            }
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceEvenly
+                            ) {
+                                Button(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(horizontal = 10.dp),
+                                    onClick = {}
+                                ) {
+                                    Text(text = "+30 min")
+                                }
+
+                                Button(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(horizontal = 10.dp),
+                                    onClick = {}
+                                ) {
+                                    Text(text = "+1 hr")
+                                }
+
+                                Button(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(horizontal = 10.dp),
+                                    onClick = {}
+                                ) {
+                                    Text(text = "+2 hr")
+                                }
                             }
 
-                            Button(
-                                modifier = Modifier.weight(1f).padding(horizontal = 10.dp),
-                                onClick = {}
+                            Spacer(modifier = Modifier.size(10.dp))
+                            Divider(thickness = 2.dp)
+                            Spacer (modifier = Modifier.size(10.dp))
+                            Row(modifier = Modifier.
+                                fillMaxWidth()
                             ) {
-                                Text(text = "+1 hr")
-                            }
-
-                            Button(
-                                modifier = Modifier.weight(1f).padding(horizontal = 10.dp),
-                                onClick = {}
-                            ) {
-                                Text(text = "+2 hr")
-                            }
-                        }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            Button(
-                                modifier = Modifier.weight(1f).padding(horizontal = 10.dp),
-                                onClick = {}
-                            ) {
-                                Text(text = "+30 min")
-                            }
-
-                            Button(
-                                modifier = Modifier.weight(1f).padding(horizontal = 10.dp),
-                                onClick = {}
-                            ) {
-                                Text(text = "+1 hr")
-                            }
-
-                            Button(
-                                modifier = Modifier.weight(1f).padding(horizontal = 10.dp),
-                                onClick = {}
-                            ) {
-                                Text(text = "+2 hr")
+                                Button(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(horizontal = 10.dp),
+                                    onClick = {}
+                                ) {
+                                    Text(text ="R") /* Todo change into icon */
+                                }
+                                Button(
+                                    modifier = Modifier
+                                        .weight(2f)
+                                        .padding(horizontal = 10.dp),
+                                    onClick = {}
+                                ) {
+                                    Text(text = "Save")
+                                }
                             }
                         }
                     }
