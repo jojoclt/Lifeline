@@ -12,10 +12,12 @@ import com.example.lifeline.domain.model.TaskType
 import com.example.lifeline.domain.use_case.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 const val TAG = "AddEditTodoViewModel"
+
 @HiltViewModel
 class AddEditTodoViewModel @Inject constructor(
     private val useCases: UseCases,
@@ -25,16 +27,41 @@ class AddEditTodoViewModel @Inject constructor(
     private val _taskEntry = mutableStateOf(AddEditTodoState())
     val taskEntry: State<AddEditTodoState> = _taskEntry
 
-    private var currentTaskId: Int? = null
+    private val _bool = mutableStateOf(false)
+    val bool: State<Boolean> = _bool
+
+    private var getTaskJob: Job? = null
 
     init {
+        // have to switch thread to Main for some reason to work
 
-//        savedStateHandle.get<Int>("taskId")?.let { noteId ->
-//            if (noteId != -1) {
-//                var
-//            }
-//        }
+        savedStateHandle.get<Int>("taskId")?.let { taskId ->
+            Log.d(TAG, "VALUE IS $taskId")
+            if (taskId != -1) {
+                _bool.value = true
+                viewModelScope.launch(Dispatchers.IO) {
+                    val childList = mutableListOf<AddEditTodoState>()
+
+                    useCases.getTaskById(taskId).also { task ->
+                        childList.add(
+                            AddEditTodoState(
+                                taskName = task.taskName,
+                                date = task.date,
+                                desc = task.description,
+                                priority = task.priority,
+                                duration = task.duration,
+                                id = task.id
+                            )
+                        )
+                    }
+                    viewModelScope.launch(Dispatchers.Main){
+                        _taskEntry.value = childList[0]
+                    }
+                }
+            }
+        }
     }
+
 
     fun onEvent(event: AddEditTodoEvent) {
         when (event) {
@@ -43,7 +70,7 @@ class AddEditTodoViewModel @Inject constructor(
                     try {
                         useCases.editTask(
                             TaskData(
-                                id = currentTaskId,
+                                id = taskEntry.value.id,
                                 taskName = taskEntry.value.taskName,
                                 date = taskEntry.value.date,
                                 duration = taskEntry.value.duration,
@@ -54,8 +81,7 @@ class AddEditTodoViewModel @Inject constructor(
 
                         )
                         Log.v(TAG, "finish adding to database")
-                    }
-                    catch (e: Exception) {
+                    } catch (e: Exception) {
                         Log.e("ERROR", "ERROR IN CODE: $e")
                         // this is the line that prints out the location in
                         // the code where the error occurred.

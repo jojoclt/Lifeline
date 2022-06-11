@@ -22,6 +22,7 @@ fun FABElement(navController: NavController) {
     val currentRoute = navBackStackEntry?.destination?.route
     fabState.value = when (currentRoute) {
         Screen.AddTodoScreen.route, Screen.TodosScreen.route -> false
+        null -> false
         else -> true
     }
     if (fabState.value)

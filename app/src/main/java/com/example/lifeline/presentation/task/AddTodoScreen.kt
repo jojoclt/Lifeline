@@ -70,7 +70,7 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
     val durationValue = remember { mutableStateOf(0) }
 
     Scaffold(
-        topBar = { TopNav(currentScreen, modifier = Modifier.background(Color.White)) },
+        topBar = { TopNav(currentScreen, modifier = Modifier.background(Color.White),viewModel.bool.value) },
         backgroundColor = Color.White
     ) { innerPadding ->
         BottomDrawer(

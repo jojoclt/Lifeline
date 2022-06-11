@@ -19,12 +19,16 @@ import com.example.lifeline.util.Screen
 
 @Composable
 fun TopNav(
-    currentScreen: Screen, modifier: Modifier = Modifier, action: () -> Unit = {}
+    currentScreen: Screen, modifier: Modifier = Modifier, isEdit: Boolean = false
 ) {
 
     TopAppBar(
         title = { Text(text = stringResource(id = currentScreen.resourceId)) },
         actions = {
+            if (isEdit) {
+                EditTaskAction()
+            }
+            else
             when (currentScreen) {
 //                Screen.CalendarScreen -> CalendarScreenAction(action)
                 in AddTaskItems -> {}
