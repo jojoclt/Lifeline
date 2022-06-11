@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,13 +19,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.lifeline.data.local.SampleList
-import com.example.lifeline.data.local.SampleTask
+import com.example.lifeline.data.local.dummy
+import com.example.lifeline.domain.model.TaskData
 import com.example.lifeline.domain.model.priorityList
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
@@ -46,18 +44,18 @@ fun TodayScreen(navController: NavController) {
 
     Scaffold(
         topBar = { TopNav(currentScreen) },
-        bottomBar = {
-            BottomNav(
-                navController = navController,
-                currentScreen = currentScreen,
-                modifier = Modifier.clip(
-                    shape = RoundedCornerShape(
-                        topStart = 20.dp,
-                        topEnd = 20.dp
-                    )
-                )
-            )
-        },
+//        bottomBar = {
+//            BottomNav(
+//                navController = navController,
+//                currentScreen = currentScreen,
+//                modifier = Modifier.clip(
+//                    shape = RoundedCornerShape(
+//                        topStart = 20.dp,
+//                        topEnd = 20.dp
+//                    )
+//                )
+//            )
+//        },
     ) { _ ->
         Column(
             modifier = Modifier
@@ -85,9 +83,10 @@ fun TodayScreen(navController: NavController) {
                 color = textBoxBg,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp).height(190.dp)
+                    .padding(horizontal = 20.dp)
+                    .height(190.dp)
             ) {
-                SampleTaskList(SampleList.simpletasklist)
+                SampleTaskList(dummy, navController)
             }
         }
     }
@@ -95,8 +94,8 @@ fun TodayScreen(navController: NavController) {
 
 
 @Composable
-@Preview
-fun SampleTaskList(tasks: List<SampleTask> = SampleList.simpletasklist) {
+
+fun SampleTaskList(tasks: List<TaskData> = dummy, navController: NavController) {
 //    LazyColumn {
 //        item {
 //            Spacer(modifier = Modifier.size(20.dp))
@@ -106,17 +105,17 @@ fun SampleTaskList(tasks: List<SampleTask> = SampleList.simpletasklist) {
 //        }
 //    }
     Column(modifier = Modifier.fillMaxHeight()) {
-        SampleTaskCard(tasks[0])
-        SampleTaskCard(tasks[1])
-        SampleTaskCard(tasks[2])
+        for (i in 0..2)
+            SampleTaskCard(tasks[i], navController)
+
+
 //        SampleTaskCard(tasks[3])
 //        SampleTaskCard(tasks[4])
     }
 }
 
-@Preview
 @Composable
-fun SampleTaskCard(t: SampleTask = SampleList.simpletasklist[2]) {
+fun SampleTaskCard(t: TaskData, navController: NavController) {
     Surface(
         shape = MaterialTheme.shapes.medium,
         elevation = 0.dp,
@@ -124,11 +123,13 @@ fun SampleTaskCard(t: SampleTask = SampleList.simpletasklist[2]) {
             .fillMaxWidth()
             .height(60.dp)
             .padding(8.dp)
+            .clickable { navController.navigate(Screen.AddTodoScreen.route + "?noteId=${t.id}&noteName=${t.taskName}") }
     ) {
         val isChecked = remember { mutableStateOf(false) }
 
         Row(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -147,7 +148,7 @@ fun SampleTaskCard(t: SampleTask = SampleList.simpletasklist[2]) {
                     },
                     colors = CheckboxDefaults.colors(Color.Blue),
                 )
-                Text(text = t.name)
+                Text(text = t.taskName)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "2hr", modifier = Modifier.offset(x = (-2).dp, y = 0.dp))
@@ -237,9 +238,7 @@ fun TodayScreenPreview() {
             content = { TodayScreen(navController) },
             bottomBar = {
                 BottomNav(
-                    navController = navController,
-                    currentScreen = currentScreen
-                )
+                    navController = navController)
             }
         )
     }

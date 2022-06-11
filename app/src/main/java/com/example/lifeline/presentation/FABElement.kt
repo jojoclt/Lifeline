@@ -1,30 +1,31 @@
 package com.example.lifeline.presentation
 
-import androidx.compose.foundation.layout.offset
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.lifeline.util.Screen
 
 @Composable
-fun FABElement(navController: NavController, currentScreen: Screen) {
+fun FABElement(navController: NavController) {
     val fabState = rememberSaveable { (mutableStateOf(true)) }
-
-    fabState.value = when (currentScreen) {
-        Screen.AddTodoScreen, Screen.TodosScreen -> false
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    fabState.value = when (currentRoute) {
+        Screen.AddTodoScreen.route, Screen.TodosScreen.route -> false
         else -> true
     }
     if (fabState.value)
-        FloatingActionButton(modifier = Modifier.offset(0.dp,(-60).dp),onClick = {
+        FloatingActionButton(modifier = Modifier,onClick = {
             navController.navigate(Screen.AddTodoScreen.route) {
                 // Pop up to the start destination of the graph to
                 // avoid building up a large stack of destinations

@@ -29,6 +29,12 @@ class AddEditTodoViewModel @Inject constructor(
 
     init {
 
+        savedStateHandle.get<Int>("noteId")?.let { noteId ->
+            if (noteId != -1) {
+                val str = savedStateHandle.get<String>("noteName")
+                onEvent(AddEditTodoEvent.EnteredTitle(str!!))
+            }
+        }
     }
 
     fun onEvent(event: AddEditTodoEvent) {
