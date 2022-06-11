@@ -36,10 +36,22 @@ object BitmapHelper {
     }
 }
 
+/**
+ * helper function to draw a vector in a canvas
+ */
 object VectorHelper {
     @Composable
     fun createPainter(@DrawableRes img: Int): VectorPainter {
         val vector = ImageVector.vectorResource(img)
         return rememberVectorPainter(image = vector)
     }
+}
+
+/**
+ * helper function to convert duration to String
+ */
+fun Int.toDuration(): String {
+    val hour = this / 60
+    val min = this % 60
+    return String.format("+ %02d : %02d", hour, min)
 }

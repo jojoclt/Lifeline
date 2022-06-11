@@ -14,8 +14,8 @@ data class TaskData(
     @ColumnInfo(name = "name") var taskName: String,
     @ColumnInfo(name = "type") var taskType: TaskType,
     @ColumnInfo(name = "date") var date: Date,
-    @ColumnInfo(name = "duration") var duration: String = "",
-    @ColumnInfo(name = "time") var time: String = "",
+    @ColumnInfo(name = "duration") var duration: Int = 0, // task to do
+    @ColumnInfo(name = "time") var time: String = "", // deadline
     @ColumnInfo(name = "priority") var priority: Priority,
     @ColumnInfo(name = "description") var description: String = "",
     @ColumnInfo(name = "linked_id") var ptr: Int? = null

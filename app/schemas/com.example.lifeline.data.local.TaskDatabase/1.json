@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3c81f57faefcbf961762540d18745725",
+    "identityHash": "6de8fe2c7f67871f29b60347112c88d9",
     "entities": [
       {
         "tableName": "TaskData",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `is_checked` INTEGER NOT NULL, `name` TEXT NOT NULL, `type` TEXT NOT NULL, `date` TEXT NOT NULL, `duration` TEXT NOT NULL, `time` TEXT NOT NULL, `priority` TEXT NOT NULL, `description` TEXT NOT NULL, `linked_id` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `is_checked` INTEGER NOT NULL, `name` TEXT NOT NULL, `type` TEXT NOT NULL, `date` TEXT NOT NULL, `duration` INTEGER NOT NULL, `time` TEXT NOT NULL, `priority` TEXT NOT NULL, `description` TEXT NOT NULL, `linked_id` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -41,7 +41,7 @@
           {
             "fieldPath": "duration",
             "columnName": "duration",
-            "affinity": "TEXT",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -82,7 +82,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3c81f57faefcbf961762540d18745725')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6de8fe2c7f67871f29b60347112c88d9')"
     ]
   }
 }

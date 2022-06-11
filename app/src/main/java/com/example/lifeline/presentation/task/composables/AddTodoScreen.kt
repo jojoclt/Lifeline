@@ -1,6 +1,7 @@
 package com.example.lifeline.presentation.task.composables
 
 import android.annotation.SuppressLint
+import android.system.Os.close
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -12,6 +13,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -44,6 +46,8 @@ import com.example.lifeline.presentation.ui.theme.Shapes
 import com.example.lifeline.presentation.ui.theme.myAppTextFieldColors
 import com.example.lifeline.util.Screen
 import com.example.lifeline.util.clearFocusOnKeyboardDismiss
+import com.example.lifeline.util.toDuration
+import kotlinx.coroutines.channels.ChannelResult.Companion.closed
 import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -65,8 +69,10 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
 
     val selDate = remember { mutableStateOf(Calendar.getInstance().time) }
 
-    val bottomDrawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
+    var bottomDrawerState = rememberBottomDrawerState(BottomDrawerValue.Closed)
     val scope = rememberCoroutineScope()
+
+    var durationValue by remember { mutableStateOf(0) }
 
     Scaffold(
         topBar = { TopNav(currentScreen, modifier = Modifier.background(Color.White)) },
@@ -87,16 +93,16 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
                             modifier = Modifier.fillMaxHeight()
                         )
                         {
-                            Box(modifier = Modifier
-                                .fillMaxWidth()
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
                             )
                             {
                                 Text(
-                                    text = "00:00",
+                                    text = durationValue.toDuration(),
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .offset(0.dp, 10.dp),
-                                    letterSpacing = 15.sp,
                                     fontSize = 60.sp,
                                     fontWeight = FontWeight.Bold,
                                     textAlign = TextAlign.Center
@@ -111,7 +117,16 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
                                     modifier = Modifier
                                         .weight(1f)
                                         .padding(horizontal = 10.dp),
-                                    onClick = {}
+                                    onClick = { durationValue += 15 }
+                                ) {
+                                    Text(text = "+15 min")
+                                }
+
+                                Button(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(horizontal = 10.dp),
+                                    onClick = { durationValue += 30 }
                                 ) {
                                     Text(text = "+30 min")
                                 }
@@ -120,18 +135,9 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
                                     modifier = Modifier
                                         .weight(1f)
                                         .padding(horizontal = 10.dp),
-                                    onClick = {}
+                                    onClick = { durationValue += 60 }
                                 ) {
-                                    Text(text = "+1 hr")
-                                }
-
-                                Button(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(horizontal = 10.dp),
-                                    onClick = {}
-                                ) {
-                                    Text(text = "+2 hr")
+                                    Text(text = "+1 hour")
                                 }
                             }
                             Row(
@@ -143,49 +149,61 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
                                     modifier = Modifier
                                         .weight(1f)
                                         .padding(horizontal = 10.dp),
-                                    onClick = {}
+                                    onClick = { durationValue += 120 }
                                 ) {
-                                    Text(text = "+30 min")
+                                    Text(text = "+2 hour")
                                 }
 
                                 Button(
                                     modifier = Modifier
                                         .weight(1f)
                                         .padding(horizontal = 10.dp),
-                                    onClick = {}
+                                    onClick = { durationValue += 180 }
                                 ) {
-                                    Text(text = "+1 hr")
+                                    Text(text = "+3 hour")
                                 }
 
                                 Button(
                                     modifier = Modifier
                                         .weight(1f)
                                         .padding(horizontal = 10.dp),
-                                    onClick = {}
+                                    onClick = { durationValue += 240 }
                                 ) {
-                                    Text(text = "+2 hr")
+                                    Text(text = "+4 hour")
                                 }
                             }
 
                             Spacer(modifier = Modifier.size(10.dp))
                             Divider(thickness = 2.dp)
-                            Spacer (modifier = Modifier.size(10.dp))
-                            Row(modifier = Modifier.
-                                fillMaxWidth()
+                            Spacer(modifier = Modifier.size(10.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth()
                             ) {
                                 Button(
                                     modifier = Modifier
                                         .weight(1f)
                                         .padding(horizontal = 10.dp),
-                                    onClick = {}
+                                    onClick = { durationValue = 0 }
                                 ) {
-                                    Text(text ="R") /* Todo change into icon */
+                                    Icon(
+                                        imageVector = Icons.Default.Refresh,
+                                        contentDescription = "ResetDuration"
+                                    )
                                 }
                                 Button(
                                     modifier = Modifier
                                         .weight(2f)
                                         .padding(horizontal = 10.dp),
-                                    onClick = {}
+                                    onClick = {
+                                        viewModel.onEvent(
+                                            AddEditTodoEvent.EnteredDuration(
+                                                durationValue
+                                            )
+                                        )
+                                        scope.launch {
+                                            bottomDrawerState.close()
+                                        }
+                                    }
                                 ) {
                                     Text(text = "Save")
                                 }
@@ -277,7 +295,13 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
                         Box(modifier = Modifier.padding(20.dp)) {
                             TextField(
                                 value = task.value.desc,
-                                onValueChange = { viewModel.onEvent(AddEditTodoEvent.EnteredDescription(it)) },
+                                onValueChange = {
+                                    viewModel.onEvent(
+                                        AddEditTodoEvent.EnteredDescription(
+                                            it
+                                        )
+                                    )
+                                },
                                 colors = myAppTextFieldColors(),
                                 shape = Shapes.large,
                                 label = { Text(stringResource(R.string.description)) },

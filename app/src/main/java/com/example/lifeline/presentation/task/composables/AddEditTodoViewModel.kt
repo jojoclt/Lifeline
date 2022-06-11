@@ -41,6 +41,7 @@ class AddEditTodoViewModel @Inject constructor(
                                 id = currentTaskId,
                                 taskName = taskEntry.value.taskName,
                                 date = taskEntry.value.date,
+                                duration = taskEntry.value.duration,
                                 priority = taskEntry.value.priority,
                                 description = taskEntry.value.desc,
                                 taskType = TaskType.TODO
@@ -76,11 +77,18 @@ class AddEditTodoViewModel @Inject constructor(
                 )
             }
 
+            is AddEditTodoEvent.EnteredDuration -> {
+                _taskEntry.value = taskEntry.value.copy(
+                    duration = event.value
+                )
+            }
+
             is AddEditTodoEvent.EnteredPriority -> {
                 _taskEntry.value = taskEntry.value.copy(
                     priority = event.value
                 )
             }
+
         }
 
     }
