@@ -44,11 +44,11 @@ class Converters {
 //    @TypeConverter fun intToTaskType(value: Int) = value.toEnum<TaskType>()
 
     @TypeConverter fun fromDateToString(value: Date) : String {
-        val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.US)
+        val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US)
         return dateFormat.format(value)
     }
 
     @TypeConverter fun fromStringToDate(value: String) : Date {
-        return SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.US).parse(value)!!
+        return SimpleDateFormat("yyyy/MM/dd", Locale.US).parse(value)!!
     }
 }

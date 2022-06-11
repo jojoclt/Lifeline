@@ -30,15 +30,11 @@ fun NavGraph(
             TodayScreen(navController)
         }
         composable(
-            route = Screen.AddTodoScreen.route + "?noteId={noteId}&noteName={noteName}",
+            route = Screen.AddTodoScreen.route + "?taskId={taskId}",
             arguments = listOf(
-                navArgument(name = "noteId") {
+                navArgument(name = "taskId") {
                     type = NavType.IntType
                     defaultValue = -1
-                },
-                navArgument(name = "noteName") {
-                    type = NavType.StringType
-                    defaultValue = ""
                 }
             )
         ) {

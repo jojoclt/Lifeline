@@ -21,6 +21,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.data.local.dummy
@@ -32,31 +33,23 @@ import com.example.lifeline.presentation.today.composables.CupCanvas
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.presentation.ui.theme.textBoxBg
 import com.example.lifeline.util.Screen
+import java.lang.Integer.min
 import java.time.LocalTime
 
 
 @Composable
-fun TodayScreen(navController: NavController) {
+fun TodayScreen(navController: NavController, viewModel: TodayViewModel = hiltViewModel()) {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
     val currentScreen = Screen.TodayScreen
 
+    val taskList = viewModel.state.value
+
     Scaffold(
         topBar = { TopNav(currentScreen) },
-//        bottomBar = {
-//            BottomNav(
-//                navController = navController,
-//                currentScreen = currentScreen,
-//                modifier = Modifier.clip(
-//                    shape = RoundedCornerShape(
-//                        topStart = 20.dp,
-//                        topEnd = 20.dp
-//                    )
-//                )
-//            )
-//        },
-    ) { _ ->
+
+        ) { _ ->
         Column(
             modifier = Modifier
                 .fillMaxSize(),
@@ -86,7 +79,7 @@ fun TodayScreen(navController: NavController) {
                     .padding(horizontal = 20.dp)
                     .height(190.dp)
             ) {
-                SampleTaskList(dummy, navController)
+                TaskList(taskList.tasks, navController)
             }
         }
     }
@@ -95,7 +88,7 @@ fun TodayScreen(navController: NavController) {
 
 @Composable
 
-fun SampleTaskList(tasks: List<TaskData> = dummy, navController: NavController) {
+fun TaskList(tasks: List<TaskData> = dummy, navController: NavController) {
 //    LazyColumn {
 //        item {
 //            Spacer(modifier = Modifier.size(20.dp))
@@ -105,8 +98,9 @@ fun SampleTaskList(tasks: List<TaskData> = dummy, navController: NavController) 
 //        }
 //    }
     Column(modifier = Modifier.fillMaxHeight()) {
-        for (i in 0..2)
-            SampleTaskCard(tasks[i], navController)
+        if (tasks.isNotEmpty())
+            for (i in 0..min(2, tasks.size - 1))
+                SampleTaskCard(tasks[i], navController)
 
 
 //        SampleTaskCard(tasks[3])
@@ -238,7 +232,8 @@ fun TodayScreenPreview() {
             content = { TodayScreen(navController) },
             bottomBar = {
                 BottomNav(
-                    navController = navController)
+                    navController = navController
+                )
             }
         )
     }
