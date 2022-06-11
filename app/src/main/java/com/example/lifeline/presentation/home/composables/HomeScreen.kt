@@ -1,31 +1,44 @@
 package com.example.lifeline.presentation.home.composables
 
 import android.annotation.SuppressLint
+import android.graphics.Color.alpha
+import android.util.Size
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Scaffold
+import androidx.compose.material.SnackbarDefaults.backgroundColor
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.drawscope.inset
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
-import com.example.lifeline.presentation.ui.theme.LifelineTheme
+import com.example.lifeline.presentation.ui.theme.*
 import com.example.lifeline.util.Screen
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,9 +50,6 @@ fun HomeScreen(navController: NavController) {
     val currentScreen = Screen.HomeScreen
 
 
-//    Scaffold(
-//        topBar = { TopNav(currentScreen)}
-//    )
     Scaffold(
         topBar = { TopNav(currentScreen = currentScreen) },
         bottomBar = {
@@ -54,9 +64,23 @@ fun HomeScreen(navController: NavController) {
                 )
             )
         }
-    ) { contentPadding ->
+    ) { _ ->
         //val padding = 40.dp
-        val vector = ImageVector.vectorResource(id = R.drawable.sun)
+
+        /**
+         * weather[0] denotes the previous, now and next
+         */
+        val weather = listOf("Rainy", "Sunny", "Sunny")
+
+        /* TODO : Change the drawable depending on the weather */
+        val vector = when(weather[1]) {
+            "Sunny" -> ImageVector.vectorResource(id = R.drawable.sunny)
+            "Windy" -> ImageVector.vectorResource(id = R.drawable.sunny)
+            "Rainy" -> ImageVector.vectorResource(id = R.drawable.sunny)
+            "Thunder" -> ImageVector.vectorResource(id = R.drawable.sunny)
+            else -> ImageVector.vectorResource(id = R.drawable.sunny)
+        }
+
         val painter = rememberVectorPainter(image = vector)
         Box(
             modifier = Modifier
@@ -80,94 +104,84 @@ fun HomeScreen(navController: NavController) {
                     }
                 }
             }
-            Column(
-                //modifier = Modifier
-                //.fillMaxHeight()
-                //.fillMaxWidth()
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
             ) {
-                Text(text = "show")
-                Row(
-//                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
+                WeatherCard(
+                    weather = weather[0],
+                    delta = -1,
+                    offset = 100.dp,
+                    width = 90.dp,
+                    height = 160.dp,
+                    roundedDp = 70.dp,
+                    cardColor = CardColor,
+                    textColor = textColor
+                )
+                Spacer(
                     modifier = Modifier
-                        .padding(50.dp)
-                        .fillMaxWidth().fillMaxHeight()
-                    //.size(width = 360.dp, height = 100.dp)
-                    //.fillMaxWidth()
-                ) {
-//                    Text(text = "Text1")
-//                    Text(text="Text2")
-//                    Text("end")
-                    WeatherCard(weather = "Sunny", -1)
-                    Spacer(
-                        modifier = Modifier
-                            .padding(5.dp)
-                    )
-                    WeatherCard(
-                        weather = "Rainy", 0, modifier = Modifier.padding(1000.dp)
-                    )
-                    Spacer(
-                        modifier = Modifier
-                            .padding(5.dp)
-                    )
-                    WeatherCard(weather = "Rainy", 1)
-                    Spacer(
-                        modifier = Modifier
-                            .padding(5.dp)
-                    )
-                }
-//                Image(
-//                    painter = painterResource(id = R.drawable.avatar),
-//                    contentDescription = null,
-//                    modifier = Modifier
-//                        //.align(Alignment.Center)
-//                        .padding(top = 180.dp, start = 70.dp)
-//                        .scale(2f)
-//                )
-                Text(text = "hi")
-                Text(text = "lol")
-
+                        .size(10.dp)
+                )
+                WeatherCard(
+                    weather = weather[1],
+                    delta = 0,
+                    offset = 60.dp,
+                    width = 100.dp,
+                    height = 180.dp,
+                    roundedDp = 110.dp,
+                    cardColor = CardColorSelected,
+                    textColor = textBoxBg
+                )
+                Spacer(
+                    modifier = Modifier
+                        .size(10.dp)
+                )
+                WeatherCard(
+                    weather = weather[2],
+                    delta = 1,
+                    offset = 100.dp,
+                    width = 90.dp,
+                    height = 160.dp,
+                    roundedDp = 70.dp,
+                    cardColor = CardColor,
+                    textColor = textColor
+                )
             }
-
         }
-
-//        Box(modifier = Modifier.padding(contentPadding)){
-//            Image(
-//                imageVector = ImageVector.vectorResource(id = R.drawable.camp),
-//                contentDescription = null)
-//            Image(
-//                painter = painterResource(id = R.drawable.avatar),
-//                contentDescription = null)
-//        }
-
     }
-    //old
-//    Scaffold(topBar = { TopNav(currentScreen) }) { _ ->
-//
-//        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-//            Image(
-//                imageVector = ImageVector.vectorResource(id = R.drawable.open_3),
-//                contentDescription = null,
-//                modifier = Modifier.fillMaxWidth()
-//            )
-//        }
-//    }
 }
 
 @Composable
 fun WeatherCard(
-    //val Weather = 0
     weather: String,
     delta: Int,
-    modifier: Modifier = Modifier
+    offset: Dp,
+    width: Dp,
+    height: Dp,
+    roundedDp: Dp,
+    cardColor: Color,
+    textColor: Color
 ) {
-    //icon, text, time
-    val pad = 20.dp
-    Box(
+    /**
+     * fetch icon from weather name
+     */
+    val icon = when(weather) {
+        "Sunny" -> ImageVector.vectorResource(id = R.drawable.sun)
+        "Rainy" -> ImageVector.vectorResource(id = R.drawable.rain)
+        "Windy" -> ImageVector.vectorResource(id = R.drawable.wind)
+        "Thunder" -> ImageVector.vectorResource(id = R.drawable.thunder)
+        else -> ImageVector.vectorResource(id = R.drawable.ic_alarm)
+    }
+    Card(
+        elevation = 8.dp,
+        shape = RoundedCornerShape(roundedDp),
         modifier = Modifier
-            .size(70.dp, 100.dp).offset(y = 20.dp)
-            .background(colorResource(id = R.color.teal_700))
-        //.padding(start = 20.dp, end = 20.dp, top = 5.dp, bottom = 5.dp)
+            .size(width, height)
+            .offset(y = offset)
+            .alpha(0.9f),
+
+        backgroundColor = cardColor
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -176,35 +190,41 @@ fun WeatherCard(
                 .fillMaxWidth()
         ) {
             Image(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_forecast),
+                imageVector = icon,
                 modifier = Modifier
                     .fillMaxWidth(),
-                contentDescription = null
+                contentDescription = "weatherIcon"
+                //colorFilter = ColorFilter.tint(textColor)
             )
-            Text(text = weather)
-            val str: String = getTime(delta)
+            Text(
+                color = textColor,
+                text = weather,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
 
-            Text(str)
+            Text(
+                color = textColor,
+                text = getWeatherTime(delta),
+                fontSize = 20.sp,
+            )
         }
     }
 }
 
-fun getTime(
+/**
+ * function to get the time in the weather card
+ */
+fun getWeatherTime(
     delta: Int
 ): String {
-//    val tsLong = System.currentTimeMillis() / 1000
-//    val secLong = tsLong/1000
-    //String ts = tsLong.toString();
-    if (delta == 0) return "NOW"
-    val result = Calendar.getInstance()
-    result.add(Calendar.HOUR_OF_DAY, delta)
-    //val result1= Calendar.HOUR + delta
-    //val result2 = Calendar.MINUTE
-    val dateFormat = SimpleDateFormat("HH:mm")
-//    val str:String = "${result1}:${result2}"
-    val ts = dateFormat.format(result.time)
 
-    return ts
+    val currentTime = Calendar.getInstance()
+    currentTime.add(Calendar.HOUR_OF_DAY, delta)
+
+    val dateFormat = SimpleDateFormat("HH:mm", Locale.US)
+    return if (delta == 0) "Now"
+    else dateFormat.format(currentTime.time)
 }
 
 
