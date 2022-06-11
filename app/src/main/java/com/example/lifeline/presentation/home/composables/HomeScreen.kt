@@ -5,13 +5,11 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.drawscope.inset
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -42,18 +40,18 @@ fun HomeScreen(navController: NavController) {
 //    )
     Scaffold(
         topBar = { TopNav(currentScreen = currentScreen) },
-        bottomBar = {
-            BottomNav(
-                navController = navController,
-                currentScreen = currentScreen,
-                modifier = Modifier.clip(
-                    shape = RoundedCornerShape(
-                        topStart = 20.dp,
-                        topEnd = 20.dp
-                    )
-                )
-            )
-        }
+//        bottomBar = {
+//            BottomNav(
+//                navController = navController,
+//                currentScreen = currentScreen,
+//                modifier = Modifier.clip(
+//                    shape = RoundedCornerShape(
+//                        topStart = 20.dp,
+//                        topEnd = 20.dp
+//                    )
+//                )
+//            )
+//        }
     ) { contentPadding ->
         //val padding = 40.dp
         val vector = ImageVector.vectorResource(id = R.drawable.sun)
@@ -219,9 +217,7 @@ fun HomeScreenPreview() {
             content = { HomeScreen(navController) },
             bottomBar = {
                 BottomNav(
-                    navController = navController,
-                    currentScreen = currentScreen
-                )
+                    navController = navController)
             }
         )
     }

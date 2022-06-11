@@ -19,14 +19,14 @@ import com.example.lifeline.util.Screen
 
 @Composable
 fun TopNav(
-    currentScreen: Screen, modifier: Modifier = Modifier
+    currentScreen: Screen, modifier: Modifier = Modifier, action: () -> Unit = {}
 ) {
 
     TopAppBar(
         title = { Text(text = stringResource(id = currentScreen.resourceId)) },
         actions = {
             when (currentScreen) {
-                Screen.CalendarScreen -> CalendarScreenAction()
+//                Screen.CalendarScreen -> CalendarScreenAction(action)
                 in AddTaskItems -> {}
                 in EditTaskItems -> EditTaskAction()
                 else -> NormalScreenAction()
@@ -59,8 +59,8 @@ fun NormalScreenAction() {
 }
 
 @Composable
-fun CalendarScreenAction() {
-    IconButton(onClick = { /*TODO*/ }) {
+fun CalendarScreenAction(action: () -> Unit) {
+    IconButton(onClick = action) {
         Icon(
             painterResource(id = R.drawable.ic_today),
             contentDescription = null,
