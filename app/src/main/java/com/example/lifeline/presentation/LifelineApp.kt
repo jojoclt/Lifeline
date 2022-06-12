@@ -62,7 +62,7 @@ fun LifelineApp() {
         val screen = currentRoute?.substringBefore("?")
         val fabState = rememberSaveable { (mutableStateOf(true)) }
         fabState.value = when (screen) {
-            Screen.AddTodoScreen.route -> false
+            Screen.AddTodoScreen.route, Screen.AddDeadlineScreen.route -> false
             else -> true
         }
         Scaffold(
