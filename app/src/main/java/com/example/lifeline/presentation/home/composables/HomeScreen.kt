@@ -1,19 +1,16 @@
 package com.example.lifeline.presentation.home.composables
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -28,50 +25,48 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
+import com.example.lifeline.presentation.today.TodayViewModel
 import com.example.lifeline.presentation.ui.theme.*
 import com.example.lifeline.util.Screen
-import com.leinardi.android.speeddial.compose.FabWithLabel
-import com.leinardi.android.speeddial.compose.SpeedDial
-import com.leinardi.android.speeddial.compose.SpeedDialOverlay
-import com.leinardi.android.speeddial.compose.SpeedDialState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltViewModel()) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val currentScreen = Screen.HomeScreen
 
-
-
-    /* TODO it's not supposed to be here supposed to be at lifeline.kt */
     Scaffold(
         topBar = { TopNav(currentScreen = currentScreen) },
 
     ) { _ ->
 
-
-        //val padding = 40.dp
-
         /**
          * weather[0] denotes the previous, now and next
          */
-        val weather = listOf("Rainy", "Sunny", "Sunny")
+        val weather = listOf("Rainy", "Thunder", "Sunny")
 
         /* TODO : Change the drawable depending on the weather */
-        val vector = when(weather[1]) {
-            "Sunny" -> ImageVector.vectorResource(id = R.drawable.sunny)
-            "Windy" -> ImageVector.vectorResource(id = R.drawable.sunny)
-            "Rainy" -> ImageVector.vectorResource(id = R.drawable.rainy)
-            "Thunder" -> ImageVector.vectorResource(id = R.drawable.sunny)
-            else -> ImageVector.vectorResource(id = R.drawable.sunny)
+        var vector = when(weather[1]) {
+            "Sunny" -> ImageVector.vectorResource(id = R.drawable.weather_sunny)
+            "Windy" -> ImageVector.vectorResource(id = R.drawable.weather_windy)
+            "Rainy" -> ImageVector.vectorResource(id = R.drawable.weather_rainy)
+            "Thunder" -> ImageVector.vectorResource(id = R.drawable.weather_thunder)
+            else -> ImageVector.vectorResource(id = R.drawable.weather_sunny)
+        }
+
+        /* set the background to camp when there is no task */
+        if (viewModel.getTasks().isEmpty()) {
+            vector = ImageVector.vectorResource(id = R.drawable.camp)
         }
 
         val painter = rememberVectorPainter(image = vector)
@@ -80,11 +75,6 @@ fun HomeScreen(navController: NavController) {
                 .fillMaxWidth()
                 .fillMaxHeight()
         ) {
-//            Image(
-//                imageVector = ImageVector.vectorResource(id = R.drawable.sun),
-//                contentDescription = null,
-//                modifier = Modifier.scale(2f)
-//            )
             Canvas(
                 modifier = Modifier
                     .fillMaxSize()
@@ -102,44 +92,51 @@ fun HomeScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                WeatherCard(
-                    weather = weather[0],
-                    delta = -1,
-                    offset = 100.dp,
-                    width = 90.dp,
-                    height = 160.dp,
-                    roundedDp = 70.dp,
-                    cardColor = CardColor,
-                    textColor = textColor
-                )
-                Spacer(
-                    modifier = Modifier
-                        .size(10.dp)
-                )
-                WeatherCard(
-                    weather = weather[1],
-                    delta = 0,
-                    offset = 60.dp,
-                    width = 100.dp,
-                    height = 180.dp,
-                    roundedDp = 110.dp,
-                    cardColor = CardColorSelected,
-                    textColor = textBoxBg
-                )
-                Spacer(
-                    modifier = Modifier
-                        .size(10.dp)
-                )
-                WeatherCard(
-                    weather = weather[2],
-                    delta = 1,
-                    offset = 100.dp,
-                    width = 90.dp,
-                    height = 160.dp,
-                    roundedDp = 70.dp,
-                    cardColor = CardColor,
-                    textColor = textColor
-                )
+                if (vector == ImageVector.vectorResource(id = R.drawable.camp)) {
+                    Log.e("HomeScreen", "print weather card")
+                    WeatherCard(
+                        weather = weather[0],
+                        delta = -1,
+                        offset = 100.dp,
+                        width = 90.dp,
+                        height = 160.dp,
+                        roundedDp = 70.dp,
+                        cardColor = CardColor,
+                        textColor = textColor
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .size(10.dp)
+                    )
+                    WeatherCard(
+                        weather = weather[1],
+                        delta = 0,
+                        offset = 60.dp,
+                        width = 100.dp,
+                        height = 180.dp,
+                        roundedDp = 110.dp,
+                        cardColor = CardColorSelected,
+                        textColor = textBoxBg
+                    )
+                    Spacer(
+                        modifier = Modifier
+                            .size(10.dp)
+                    )
+                    WeatherCard(
+                        weather = weather[2],
+                        delta = 1,
+                        offset = 100.dp,
+                        width = 90.dp,
+                        height = 160.dp,
+                        roundedDp = 70.dp,
+                        cardColor = CardColor,
+                        textColor = textColor
+                    )
+                } else {
+                    /* TODO : Show dialog box you haven't planned for today */
+                    Log.e("HomeScreen", "doesn't print weather card")
+
+                }
             }
         }
     }
@@ -160,10 +157,10 @@ fun WeatherCard(
      * fetch icon from weather name
      */
     val icon = when(weather) {
-        "Sunny" -> ImageVector.vectorResource(id = R.drawable.sun)
-        "Rainy" -> ImageVector.vectorResource(id = R.drawable.rain)
-        "Windy" -> ImageVector.vectorResource(id = R.drawable.wind)
-        "Thunder" -> ImageVector.vectorResource(id = R.drawable.thunder)
+        "Sunny" -> ImageVector.vectorResource(id = R.drawable.ic_sun)
+        "Rainy" -> ImageVector.vectorResource(id = R.drawable.ic_rain)
+        "Windy" -> ImageVector.vectorResource(id = R.drawable.ic_wind)
+        "Thunder" -> ImageVector.vectorResource(id = R.drawable.ic_thunder)
         else -> ImageVector.vectorResource(id = R.drawable.ic_alarm)
     }
     Card(
