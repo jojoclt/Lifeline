@@ -88,6 +88,7 @@ fun LifelineApp() {
                             FabWithLabel(
                                 onClick = {
                                     speedDialState = speedDialState.toggle()
+                                    overlayVisible = false
                                     navController.navigate(Screen.AddTodoScreen.route)
                                 },
                                 labelContent = { Text(text = "Add Todos") },
@@ -97,7 +98,10 @@ fun LifelineApp() {
                         }
                         item {
                             FabWithLabel(
-                                onClick = { speedDialState = speedDialState.toggle() },
+                                onClick = {
+                                    speedDialState = speedDialState.toggle()
+                                    overlayVisible = false
+                                },
                                 labelContent = { Text(text = "Item 2") },
                             ) {
                                 Icon(painterResource(id = R.drawable.ic_deadline), null)
