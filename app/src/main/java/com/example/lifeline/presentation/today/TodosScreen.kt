@@ -8,15 +8,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.lifeline.data.local.dummy
 import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.task.composables.TasksList
 import com.example.lifeline.presentation.today.composables.CupCanvas
 import com.example.lifeline.util.Screen
 
 @Composable
-fun TodosScreen(navController: NavController) {
+fun TodosScreen(navController: NavController, viewModel: TodayViewModel = hiltViewModel()) {
     val currentScreen = Screen.TodosScreen
 
     Scaffold(topBar = { TopNav(currentScreen) }) { _ ->
@@ -42,7 +42,7 @@ fun TodosScreen(navController: NavController) {
                 }
             }
             Spacer(modifier = Modifier.size(4.dp))
-            TasksList(dummy)
+            TasksList(viewModel.state.value.tasks, navController)
 
         }
     }

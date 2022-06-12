@@ -1,6 +1,7 @@
 package com.example.lifeline.presentation.today
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,7 +36,6 @@ import com.example.lifeline.presentation.ui.theme.textBoxBg
 import com.example.lifeline.util.Screen
 import java.lang.Integer.min
 import java.time.LocalTime
-
 
 @Composable
 fun TodayScreen(navController: NavController, viewModel: TodayViewModel = hiltViewModel()) {
@@ -117,7 +117,9 @@ fun SampleTaskCard(t: TaskData, navController: NavController) {
             .fillMaxWidth()
             .height(60.dp)
             .padding(8.dp)
-            .clickable { navController.navigate(Screen.AddTodoScreen.route + "?noteId=${t.id}&noteName=${t.taskName}") }
+            .clickable {
+            Log.d("TodayScreen","taskID: ${t.id}")
+                navController.navigate(Screen.AddTodoScreen.route + "?taskId=${t.id}") }
     ) {
         val isChecked = remember { mutableStateOf(false) }
 
@@ -145,7 +147,7 @@ fun SampleTaskCard(t: TaskData, navController: NavController) {
                 Text(text = t.taskName)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "2hr", modifier = Modifier.offset(x = (-2).dp, y = 0.dp))
+                Text(text = t.duration.toString(), modifier = Modifier.offset(x = (-2).dp, y = 0.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxHeight()

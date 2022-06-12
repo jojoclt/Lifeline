@@ -1,8 +1,7 @@
 package com.example.lifeline.presentation.calendar
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
@@ -10,17 +9,16 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.lifeline.data.local.dummy
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.task.composables.TasksList
+import com.example.lifeline.presentation.today.TodayViewModel
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
-import com.example.lifeline.presentation.ui.theme.PrimaryColor
 import com.example.lifeline.util.Screen
 import com.himanshoe.kalendar.common.KalendarStyle
 import com.himanshoe.kalendar.ui.Kalendar
@@ -29,38 +27,30 @@ import io.github.boguszpawlowski.composecalendar.day.DayState
 import io.github.boguszpawlowski.composecalendar.header.MonthState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.TextStyle
 import java.util.*
 
 @Composable
-fun CalendarScreen(navController: NavController) {
+fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hiltViewModel()) {
     val currentScreen = Screen.CalendarScreen
 //    val calendarState = rememberSelectableCalendarState()
     val currentDate = rememberSaveable { mutableStateOf(LocalDate.now()) }
+    var task = viewModel.state.value.tasks
+
     Scaffold(
         topBar = {
             TopNav(currentScreen)
         },
-//        bottomBar = {
-//            BottomNav(
-//                navController = navController,
-//                currentScreen = currentScreen,
-//                modifier = Modifier.clip(
-//                    shape = RoundedCornerShape(
-//                        topStart = 20.dp,
-//                        topEnd = 20.dp
-//                    )
-//                )
-//            )
-//        },
     ) {
         Column() {
             Surface {
                 Kalendar(
+
                     kalendarType = KalendarType.Firey(),
                     onCurrentDayClick = { day, event ->
                         //handle the date click listener
-
+                        task = viewModel.getTasks(Date.from(day.atStartOfDay(ZoneId.systemDefault()).toInstant()))
                         currentDate.value = day
                     },
                     errorMessage = {
@@ -80,7 +70,7 @@ fun CalendarScreen(navController: NavController) {
 //                    }
 //                )
             }
-            TasksList(dummy)
+            TasksList(task,navController)
         }
 
     }
@@ -93,32 +83,6 @@ fun MyDay(dayState: DayState<DynamicSelectionState>) {
 
 }
 
-@Composable
-fun WeekDay() {
-    val weeks = arrayOf(
-        "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"
-    )
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                PrimaryColor
-            )
-    ) {
-        weeks.forEach { week ->
-            Spacer(
-                Modifier
-                    .weight(1f)
-            )
-            Text(week, color = Color.Black)
-            Spacer(
-                Modifier
-                    .weight(1f)
-            )
-        }
-    }
-}
 
 @Composable
 fun TitleCalendar(monthState: MonthState) {

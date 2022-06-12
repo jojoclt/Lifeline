@@ -1,5 +1,7 @@
 package com.example.lifeline.presentation
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -9,28 +11,38 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
+import com.example.lifeline.presentation.task.AddEditTodoEvent
+import com.example.lifeline.presentation.task.AddEditTodoViewModel
 import com.example.lifeline.util.AddTaskItems
-import com.example.lifeline.util.EditTaskItems
 import com.example.lifeline.util.Screen
 
 @Composable
 fun TopNav(
-    currentScreen: Screen, modifier: Modifier = Modifier, action: () -> Unit = {}
+    currentScreen: Screen,
+    modifier: Modifier = Modifier,
+    viewModel: AddEditTodoViewModel = hiltViewModel(),
+    navController: NavController = rememberNavController()
 ) {
-
+    val context = LocalContext.current
     TopAppBar(
         title = { Text(text = stringResource(id = currentScreen.resourceId)) },
         actions = {
-            when (currentScreen) {
+            if (viewModel.bool.value) {
+                EditTaskAction(viewModel, navController, context)
+            } else
+                when (currentScreen) {
 //                Screen.CalendarScreen -> CalendarScreenAction(action)
-                in AddTaskItems -> {}
-                in EditTaskItems -> EditTaskAction()
-                else -> NormalScreenAction()
-            }
+                    in AddTaskItems -> {}
+                    else -> NormalScreenAction()
+                }
         },
 
         modifier = modifier,
@@ -71,8 +83,16 @@ fun CalendarScreenAction(action: () -> Unit) {
 }
 
 @Composable
-fun EditTaskAction() {
-    IconButton(onClick = { /*TODO*/ }) {
+fun EditTaskAction(viewModel: AddEditTodoViewModel, navController: NavController, context: Context) {
+    IconButton(onClick = {
+        viewModel.onEvent(AddEditTodoEvent.DeleteNote)
+        Toast.makeText(
+            context,
+            "Task Deleted",
+            Toast.LENGTH_SHORT
+        ).show()
+        navController.navigate(Screen.HomeScreen.route)
+    }) {
         Icon(
             painterResource(id = R.drawable.ic_delete),
             contentDescription = null,

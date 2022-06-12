@@ -8,5 +8,6 @@ data class AddEditTodoState(
     var date: Date = Calendar.getInstance().time,
     var desc: String = "",
     var priority: Priority = Priority.ESPRESSO,
-    var duration: Int = 0
+    var duration: Int = 0,
+    var id: Int? = null
 )

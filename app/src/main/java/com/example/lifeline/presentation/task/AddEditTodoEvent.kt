@@ -10,4 +10,5 @@ sealed class AddEditTodoEvent {
     data class EnteredPriority(val value: Priority ): AddEditTodoEvent()
     data class EnteredDate(val value: Date): AddEditTodoEvent()
     data class EnteredDuration(val value: Int): AddEditTodoEvent()
+    object DeleteNote: AddEditTodoEvent()
 }

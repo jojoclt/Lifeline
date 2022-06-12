@@ -5,10 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,20 +28,17 @@ var items = listOf(
 
 @Composable
 fun PrioritySelector(viewModel: AddEditTodoViewModel) {
-    val selectedValue = remember {
-        mutableStateOf(Priority.ESPRESSO)
-    }
+
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
         items.forEach { item ->
             Box(
                 modifier = Modifier
                     .size(100.dp)
                     .clip(shape = RoundedCornerShape(10.dp))
+                    .background(if (viewModel.taskEntry.value.priority == item.priority) SelectorColour else PrimaryColor)
                     .clickable(onClick = {
                         viewModel.onEvent(AddEditTodoEvent.EnteredPriority(item.priority))
-                        selectedValue.value = item.priority
                     })
-                    .background(if (selectedValue.value == item.priority) SelectorColour else PrimaryColor)
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.Center)
             ) {

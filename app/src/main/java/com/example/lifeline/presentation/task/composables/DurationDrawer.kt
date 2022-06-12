@@ -61,7 +61,7 @@ fun DurationDrawer(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    durationMinutes.forEach() {
+                    durationMinutes.forEach {
                         Button(
                             modifier = Modifier
                                 .weight(1f)

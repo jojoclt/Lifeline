@@ -3,8 +3,6 @@ package com.example.lifeline.util
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
@@ -15,7 +13,6 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.vectorResource
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
-
 
 object BitmapHelper {
     fun createScaledBitmap(context: Context, @DrawableRes img: Int, dimen: Int): ImageBitmap {
@@ -59,29 +56,8 @@ fun Int.toDuration(): String {
     return String.format("%02d : %02d", hour, min)
 }
 
-fun drawableToBitmap(drawable: Drawable): Bitmap? {
-    var bitmap: Bitmap? = null
-    if (drawable is BitmapDrawable) {
-        val bitmapDrawable = drawable
-        if (bitmapDrawable.bitmap != null) {
-            return bitmapDrawable.bitmap
-        }
+val Any.TAG: String
+    get() {
+        val tag = javaClass.simpleName
+        return if (tag.length <= 23) tag else tag.substring(0, 23)
     }
-    bitmap = if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) {
-        Bitmap.createBitmap(
-            1,
-            1,
-            Bitmap.Config.ARGB_8888
-        ) // Single color bitmap will be created of 1x1 pixel
-    } else {
-        Bitmap.createBitmap(
-            drawable.intrinsicWidth,
-            drawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-    }
-    val canvas = Canvas(bitmap)
-    drawable.setBounds(0, 0, canvas.width, canvas.height)
-    drawable.draw(canvas)
-    return bitmap
-}

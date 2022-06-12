@@ -1,5 +1,9 @@
 package com.example.lifeline.presentation
 
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -21,22 +25,34 @@ import com.example.lifeline.presentation.ui.theme.Red700
 import com.example.lifeline.util.Screen
 import com.example.lifeline.util.bottomNavItems
 
+
 @Composable
 fun BottomNav(
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
-
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-
-    bottomBarState.value = when (currentRoute) {
+    val screen = currentRoute?.substringBefore("?")
+    if (currentRoute != null) {
+        Log.d(
+            "BottomNav",
+            "SubstringBefore $currentRoute = $screen"
+        )
+    }
+    bottomBarState.value = when (screen) {
         Screen.AddTodoScreen.route -> false
         Screen.TodosScreen.route -> false
         else -> true
     }
-    if (bottomBarState.value)
+    AnimatedVisibility(
+        visible = bottomBarState.value,
+        enter = slideInVertically(initialOffsetY = { it }),
+        exit = slideOutVertically(targetOffsetY = { it }),
+    ) {
+
+
         BottomNavigation(backgroundColor = Color.White, elevation = 16.dp, modifier = modifier) {
 
             bottomNavItems.forEach { item ->
@@ -66,4 +82,5 @@ fun BottomNav(
                 )
             }
         }
+    }
 }
