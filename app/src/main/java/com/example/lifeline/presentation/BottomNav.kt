@@ -25,7 +25,6 @@ import com.example.lifeline.presentation.ui.theme.Red700
 import com.example.lifeline.util.Screen
 import com.example.lifeline.util.bottomNavItems
 
-private const val TAG = "BottomNav"
 
 @Composable
 fun BottomNav(
@@ -38,7 +37,7 @@ fun BottomNav(
     val screen = currentRoute?.substringBefore("?")
     if (currentRoute != null) {
         Log.d(
-            TAG,
+            "BottomNav",
             "SubstringBefore $currentRoute = $screen"
         )
     }

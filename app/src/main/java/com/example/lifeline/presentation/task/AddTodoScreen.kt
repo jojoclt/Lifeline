@@ -45,7 +45,6 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel = hiltViewModel()) {
@@ -68,7 +67,9 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
     val scope = rememberCoroutineScope()
 
     val durationValue = remember { mutableStateOf(0) }
-
+    durationValue.value = task.value.duration
+//    Log.e("ViewModel", "durationValue" + durationValue.value)
+//    Log.e("ViewModel", task.value.toString())
     Scaffold(
         topBar = { TopNav(currentScreen, modifier = Modifier.background(Color.White),viewModel.bool.value) },
         backgroundColor = Color.White

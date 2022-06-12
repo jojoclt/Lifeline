@@ -43,6 +43,7 @@ class AddEditTodoViewModel @Inject constructor(
                     val childList = mutableListOf<AddEditTodoState>()
 
                     useCases.getTaskById(taskId).also { task ->
+
                         childList.add(
                             AddEditTodoState(
                                 taskName = task.taskName,
@@ -54,7 +55,16 @@ class AddEditTodoViewModel @Inject constructor(
                             )
                         )
                     }
-                    viewModelScope.launch(Dispatchers.Main){
+
+                    viewModelScope.launch(Dispatchers.Main) {
+//                        with(childList[0]) {
+//                            _taskEntry.value.taskName = taskName
+//                            _taskEntry.value.date = date
+//                            _taskEntry.value.desc = desc
+//                            _taskEntry.value.priority = priority
+//                            _taskEntry.value.duration = duration
+//                            _taskEntry.value.id = id
+//                        }
                         _taskEntry.value = childList[0]
                     }
                 }

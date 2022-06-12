@@ -2,6 +2,7 @@ package com.example.lifeline.presentation.task.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,30 +18,33 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.lifeline.domain.model.TaskData
 import com.example.lifeline.domain.model.priorityList
+import com.example.lifeline.util.Screen
 
 @Composable
-fun TasksList(tasks: List<TaskData>) {
+fun TasksList(tasks: List<TaskData>, navController: NavController) {
     LazyColumn {
 //        item {
 //            Spacer(modifier = Modifier.size(20.dp))
 //        }
         items(tasks) { task ->
-            TaskCard(task)
+            TaskCard(task, navController)
         }
     }
 }
 
 @Composable
-fun TaskCard(t: TaskData) {
+fun TaskCard(t: TaskData, navController: NavController) {
     Surface(
         shape = MaterialTheme.shapes.medium,
         elevation = 0.dp,
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .padding(8.dp)
+            .padding(8.dp).clickable {
+                navController.navigate(Screen.AddTodoScreen.route + "?taskId=${t.id}") }
     ) {
         val isChecked = remember { mutableStateOf(false) }
 
@@ -67,7 +71,7 @@ fun TaskCard(t: TaskData) {
                 Text(text = t.taskName)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "2hr", modifier = Modifier.offset(x = (-2).dp, y = 0.dp))
+                Text(text = t.duration.toString(), modifier = Modifier.offset(x = (-2).dp, y = 0.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxHeight()

@@ -80,7 +80,7 @@ fun CalendarScreen(navController: NavController) {
 //                    }
 //                )
             }
-            TasksList(dummy)
+            TasksList(dummy,navController)
         }
 
     }
