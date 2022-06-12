@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
-const val TAG = "TodayViewModel"
+private const val TAG = "TodayViewModel"
 @HiltViewModel
 class TodayViewModel @Inject constructor(
     private val useCases: UseCases,

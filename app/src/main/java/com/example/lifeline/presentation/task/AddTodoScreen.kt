@@ -77,162 +77,161 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
             drawerState = bottomDrawerState,
             drawerContent = {
                 DurationDrawer(durationValue, bottomDrawerState, viewModel, scope)
-            },
-            content = {
-                Column(
-                    verticalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier
-                        .fillMaxSize()
+            }
+        ) {
+            Column(
+                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxSize()
 
-                )
-                {
-                    Column {
-                        Spacer(modifier = Modifier.height(20.dp))
-                        Box(
-                            modifier = Modifier
-                                .padding(horizontal = 20.dp)
-                                .height(100.dp)
-                        ) {
-                            TextField(
-                                value = task.value.taskName,
-                                onValueChange = { viewModel.onEvent(AddEditTodoEvent.EnteredTitle(it)) },
-                                colors = myAppTextFieldColors(),
-                                shape = Shapes.large,
-                                label = { Text(stringResource(R.string.task_name)) },
-                                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-
-                                keyboardActions = KeyboardActions(
-                                    onDone = {
-                                        focusManager.clearFocus()
-                                    }
-                                ),
-                                singleLine = true,
-                                modifier = Modifier
-                                    .clearFocusOnKeyboardDismiss()
-                                    .fillMaxWidth()
-                            )
-
-
-                        }
-                        Divider(thickness = 2.dp)
-                        Row(
-                            modifier = Modifier.padding(vertical = 20.dp).fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceAround
-                        ) {
-                            /**
-                             * Date Picker for AddTodoTask
-                             */
-                            if (showPicker)
-                                DatePicker(onDismissRequest = {
-                                    showPicker = false
-                                }, viewModel = viewModel)
-
-                            /* for calendar format  */
-                            val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US)
-                            val strDate = dateFormat.format(viewModel.taskEntry.value.date)
-                            TextField(
-                                value = strDate,
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Default.DateRange,
-                                        contentDescription = "DateRange"
-                                    )
-                                },
-                                onValueChange = {},
-                                colors = myAppTextFieldColors(),
-                                modifier = Modifier
-                                    .requiredWidth(212.dp)
-                                    .padding(horizontal = 20.dp)
-                                    .clickable(onClick = { showPicker = true }),
-
-                                enabled = false
-                            )
-
-                            /**
-                             * Duration Picker for AddTodoTask
-                             */
-                            TextField(
-                                value = durationValue.value.toDuration(),
-                                leadingIcon = {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.ic_alarm),
-                                        contentDescription = "DurationIcon",
-                                        modifier = Modifier.size(24.dp)
-                                    )
-                                },
-                                onValueChange = {},
-                                colors = myAppTextFieldColors(),
-                                modifier = Modifier
-                                    .requiredWidth(168.dp)
-                                    .padding(horizontal = 20.dp)
-                                    .clickable(onClick = {
-                                        scope.launch { bottomDrawerState.open() }
-                                    }),
-                                enabled = false
-                            )
-                        }
-                        Log.e("todo", "after show picker")
-
-                        Divider(thickness = 2.dp)
-                        Box(modifier = Modifier.padding(20.dp)) {
-                            PrioritySelector(viewModel)
-                        }
-                        Divider(thickness = 2.dp)
-                        Box(modifier = Modifier.padding(20.dp)) {
-                            TextField(
-                                value = task.value.desc,
-                                onValueChange = {
-                                    viewModel.onEvent(
-                                        AddEditTodoEvent.EnteredDescription(
-                                            it
-                                        )
-                                    )
-                                },
-                                colors = myAppTextFieldColors(),
-                                shape = Shapes.large,
-                                label = { Text(stringResource(R.string.description)) },
-                                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-
-                                keyboardActions = KeyboardActions(
-                                    onDone = {
-                                        focusManager.clearFocus()
-                                    }
-                                ),
-                                modifier = Modifier
-                                    .clearFocusOnKeyboardDismiss()
-                                    .fillMaxWidth()
-                                    .height(120.dp)
-                            )
-                        }
-                    }
-
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f, false)
-                            .padding(innerPadding)
+            )
+            {
+                Column {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Box(
+                        modifier = Modifier
+                            .padding(horizontal = 20.dp)
+                            .height(100.dp)
                     ) {
-                        Button(onClick = { navController.navigate(Screen.HomeScreen.route) }) {
-                            Text(text = "Cancel")
-                        }
-                        Button(onClick = {
-                            viewModel.onEvent(AddEditTodoEvent.SaveNote)
-                            Toast.makeText(
-                                context,
-                                "Task Added",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            navController.navigate(Screen.HomeScreen.route)
-                        }) {
-                            Text(text = "DONE")
-                        }
-                    }
+                        TextField(
+                            value = task.value.taskName,
+                            onValueChange = { viewModel.onEvent(AddEditTodoEvent.EnteredTitle(it)) },
+                            colors = myAppTextFieldColors(),
+                            shape = Shapes.large,
+                            label = { Text(stringResource(R.string.task_name)) },
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
 
+                            keyboardActions = KeyboardActions(
+                                onDone = {
+                                    focusManager.clearFocus()
+                                }
+                            ),
+                            singleLine = true,
+                            modifier = Modifier
+                                .clearFocusOnKeyboardDismiss()
+                                .fillMaxWidth()
+                        )
+
+
+                    }
+                    Divider(thickness = 2.dp)
+                    Row(
+                        modifier = Modifier.padding(vertical = 20.dp).fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround
+                    ) {
+                        /**
+                         * Date Picker for AddTodoTask
+                         */
+                        if (showPicker)
+                            DatePicker(onDismissRequest = {
+                                showPicker = false
+                            }, viewModel = viewModel)
+
+                        /* for calendar format  */
+                        val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.US)
+                        val strDate = dateFormat.format(viewModel.taskEntry.value.date)
+                        TextField(
+                            value = strDate,
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.DateRange,
+                                    contentDescription = "DateRange"
+                                )
+                            },
+                            onValueChange = {},
+                            colors = myAppTextFieldColors(),
+                            modifier = Modifier
+                                .requiredWidth(212.dp)
+                                .padding(horizontal = 20.dp)
+                                .clickable(onClick = { showPicker = true }),
+
+                            enabled = false
+                        )
+
+                        /**
+                         * Duration Picker for AddTodoTask
+                         */
+                        TextField(
+                            value = durationValue.value.toDuration(),
+                            leadingIcon = {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_alarm),
+                                    contentDescription = "DurationIcon",
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            },
+                            onValueChange = {},
+                            colors = myAppTextFieldColors(),
+                            modifier = Modifier
+                                .requiredWidth(168.dp)
+                                .padding(horizontal = 20.dp)
+                                .clickable(onClick = {
+                                    scope.launch { bottomDrawerState.open() }
+                                }),
+                            enabled = false
+                        )
+                    }
+                    Log.e("todo", "after show picker")
+
+                    Divider(thickness = 2.dp)
+                    Box(modifier = Modifier.padding(20.dp)) {
+                        PrioritySelector(viewModel)
+                    }
+                    Divider(thickness = 2.dp)
+                    Box(modifier = Modifier.padding(20.dp)) {
+                        TextField(
+                            value = task.value.desc,
+                            onValueChange = {
+                                viewModel.onEvent(
+                                    AddEditTodoEvent.EnteredDescription(
+                                        it
+                                    )
+                                )
+                            },
+                            colors = myAppTextFieldColors(),
+                            shape = Shapes.large,
+                            label = { Text(stringResource(R.string.description)) },
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+
+                            keyboardActions = KeyboardActions(
+                                onDone = {
+                                    focusManager.clearFocus()
+                                }
+                            ),
+                            modifier = Modifier
+                                .clearFocusOnKeyboardDismiss()
+                                .fillMaxWidth()
+                                .height(120.dp)
+                        )
+                    }
                 }
 
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f, false)
+                        .padding(innerPadding).fillMaxHeight()
+                ) {
+                    Button(onClick = { navController.navigate(Screen.HomeScreen.route) }) {
+                        Text(text = "Cancel")
+                    }
+                    Button(onClick = {
+                        viewModel.onEvent(AddEditTodoEvent.SaveNote)
+                        Toast.makeText(
+                            context,
+                            "Task Added",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        navController.navigate(Screen.HomeScreen.route)
+                    }) {
+                        Text(text = "DONE")
+                    }
+                }
 
             }
-        )
+
+
+        }
 
     }
 }

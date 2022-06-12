@@ -20,7 +20,8 @@ fun FABElement(navController: NavController) {
     val fabState = rememberSaveable { (mutableStateOf(true)) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    fabState.value = when (currentRoute) {
+    val screen = currentRoute?.substringBefore("?")
+    fabState.value = when (screen) {
         Screen.AddTodoScreen.route, Screen.TodosScreen.route -> false
         null -> false
         else -> true
