@@ -182,7 +182,7 @@ fun SampleTaskCard(t: TaskData, navController: NavController) {
 fun TimeRemain() {
     val curTime = LocalTime.now()
 
-    var remainingHour = 24 - curTime.hour
+    var remainingHour = 24 - curTime.hour-1
     var remainingMin = 60 - curTime.minute
 
     LaunchedEffect(key1 = remainingHour, key2 = remainingMin) {
@@ -205,25 +205,7 @@ fun TimeRemain() {
     }
     Row() {
         Text(
-            text = remainingHour.toString(),
-            fontSize = 44.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Red
-        )
-        Text(
-            text = "hr",
-            fontSize = 44.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Red
-        )
-        Text(
-            text = remainingMin.toString(),
-            fontSize = 44.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Red
-        )
-        Text(
-            text = "min",
+            text = "${remainingHour}hr${remainingMin}min",
             fontSize = 44.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Red
