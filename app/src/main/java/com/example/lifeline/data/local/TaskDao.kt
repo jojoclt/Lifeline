@@ -21,6 +21,9 @@ interface TaskDao {
     @Query("SELECT * From TaskData WHERE date = :date")
     fun getTasksByDate(date: Date): Flow<List<TaskData>>
 
+    @Query("SELECT * From TaskData WHERE date = :date AND type = :type")
+    fun getTaskTypeWithDate(date: Date, type: TaskType): Flow<List<TaskData>>
+
     @Query("SELECT * FROM TaskData WHERE id = :id")
     fun getTaskById(id: Int): TaskData?
 

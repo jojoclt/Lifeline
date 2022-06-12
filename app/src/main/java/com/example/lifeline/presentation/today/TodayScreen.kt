@@ -31,6 +31,7 @@ import com.example.lifeline.domain.model.TaskType
 import com.example.lifeline.domain.model.priorityList
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
+import com.example.lifeline.presentation.task.composables.TasksList
 import com.example.lifeline.presentation.today.composables.CupCanvas
 import com.example.lifeline.presentation.ui.theme.DeadlineColor
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
@@ -48,7 +49,7 @@ fun TodayScreen(navController: NavController, viewModel: TodayViewModel = hiltVi
     val screenWidth = configuration.screenWidthDp.dp
     val currentScreen = Screen.TodayScreen
 
-    val taskList = viewModel.state.value
+    val taskList = viewModel.getTodoTask()
 
     Scaffold(
         topBar = { TopNav(currentScreen) },
@@ -83,7 +84,7 @@ fun TodayScreen(navController: NavController, viewModel: TodayViewModel = hiltVi
                     .padding(horizontal = 20.dp)
                     .height(190.dp)
             ) {
-                TaskList(taskList.tasks, navController)
+                TasksList(taskList, navController, 3)
             }
         }
     }
@@ -92,7 +93,7 @@ fun TodayScreen(navController: NavController, viewModel: TodayViewModel = hiltVi
 
 @Composable
 
-fun TaskList(tasks: List<TaskData> = dummy, navController: NavController) {
+fun _TaskList(tasks: List<TaskData> = dummy, navController: NavController) {
 //    LazyColumn {
 //        item {
 //            Spacer(modifier = Modifier.size(20.dp))

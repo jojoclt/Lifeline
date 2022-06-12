@@ -15,6 +15,8 @@ interface Repository {
 
     suspend fun getTasksByDate(date: Date): Flow<List<TaskData>>
 
+    suspend fun getTaskTypeWithDate(date: Date, type: TaskType): Flow<List<TaskData>>
+
     suspend fun editTask(taskData: TaskData)
 
     suspend fun deleteTask(id: Int)
@@ -22,6 +24,7 @@ interface Repository {
     suspend fun markedTask(isComplete: Boolean, id: Int)
 
     suspend fun updateLink(ptr: Int, id: Int)
+
 
 //    suspend fun getLink(id: Int): Link
 

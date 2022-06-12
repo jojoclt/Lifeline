@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lifeline.domain.model.TaskData
+import com.example.lifeline.domain.model.TaskType
 import com.example.lifeline.domain.use_case.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -29,13 +30,26 @@ class TodayViewModel @Inject constructor(
 
 
     init {
-        getTasks()
     }
 
-    fun getTasks(date: Date = Calendar.getInstance().time): List<TaskData> {
+    // getAllTask
+    fun getTaskAll(date: Date = Calendar.getInstance().time): List<TaskData> {
         viewModelScope.launch(Dispatchers.IO) {
             getTasksJob?.cancel()
             getTasksJob = useCases.getTasksByDate(date).onEach { task ->
+                _state.value = state.value.copy(
+                    tasks = task
+                )
+            }
+                .launchIn(viewModelScope)
+        }
+        return state.value.tasks
+    }
+    // getTodoTodayTask
+    fun getTodoTask(date: Date = Calendar.getInstance().time, type: TaskType = TaskType.TODO): List<TaskData> {
+        viewModelScope.launch(Dispatchers.IO) {
+            getTasksJob?.cancel()
+            getTasksJob = useCases.getTaskTypeWithDate(date, type).onEach { task ->
                 _state.value = state.value.copy(
                     tasks = task
                 )
