@@ -27,13 +27,17 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.data.local.dummy
 import com.example.lifeline.domain.model.TaskData
+import com.example.lifeline.domain.model.TaskType
 import com.example.lifeline.domain.model.priorityList
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.today.composables.CupCanvas
+import com.example.lifeline.presentation.ui.theme.DeadlineColor
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
+import com.example.lifeline.presentation.ui.theme.TodoColor
 import com.example.lifeline.presentation.ui.theme.textBoxBg
 import com.example.lifeline.util.Screen
+import com.example.lifeline.util.toDurationInList
 import java.lang.Integer.min
 import java.time.LocalTime
 
@@ -134,7 +138,7 @@ fun SampleTaskCard(t: TaskData, navController: NavController) {
                         .width(10.dp)
                         .fillMaxHeight()
                         .clip(RectangleShape)
-                        .background(Color.Red)
+                        .background(if (t.taskType == TaskType.TODO) TodoColor else DeadlineColor)
 
                 )
                 Checkbox(
@@ -147,7 +151,7 @@ fun SampleTaskCard(t: TaskData, navController: NavController) {
                 Text(text = t.taskName)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = t.duration.toString(), modifier = Modifier.offset(x = (-2).dp, y = 0.dp))
+                Text(text = t.duration.toDurationInList(), modifier = Modifier.offset(x = (-2).dp, y = 0.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxHeight()

@@ -20,8 +20,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.lifeline.domain.model.TaskData
+import com.example.lifeline.domain.model.TaskType
 import com.example.lifeline.domain.model.priorityList
+import com.example.lifeline.presentation.ui.theme.DeadlineColor
+import com.example.lifeline.presentation.ui.theme.TodoColor
 import com.example.lifeline.util.Screen
+import com.example.lifeline.util.toDurationInList
 
 @Composable
 fun TasksList(tasks: List<TaskData>, navController: NavController) {
@@ -58,7 +62,7 @@ fun TaskCard(t: TaskData, navController: NavController) {
                         .width(10.dp)
                         .fillMaxHeight()
                         .clip(RectangleShape)
-                        .background(Color.Red)
+                        .background(if (t.taskType == TaskType.TODO) TodoColor else DeadlineColor)
 
                 )
                 Checkbox(
@@ -71,7 +75,7 @@ fun TaskCard(t: TaskData, navController: NavController) {
                 Text(text = t.taskName)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = t.duration.toString(), modifier = Modifier.offset(x = (-2).dp, y = 0.dp))
+                Text(text = t.duration.toDurationInList(), modifier = Modifier.offset(x = (-2).dp, y = 0.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxHeight()
