@@ -7,17 +7,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.lifeline.R
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
+import com.example.lifeline.util.Screen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.leinardi.android.speeddial.compose.FabWithLabel
 import com.leinardi.android.speeddial.compose.SpeedDial
@@ -53,7 +55,14 @@ fun LifelineApp() {
         val navController = rememberNavController()
 //        val backstackEntry = navController.currentBackStackEntryAsState()
 //        val currentScreen = Screen.fromRoute(backstackEntry.value?.destination?.route)
-
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+        val screen = currentRoute?.substringBefore("?")
+        val fabState = rememberSaveable { (mutableStateOf(true)) }
+        fabState.value = when (screen) {
+            Screen.AddTodoScreen.route -> false
+            else -> true
+        }
         Scaffold(
             bottomBar = {
                 BottomNav(
@@ -67,30 +76,34 @@ fun LifelineApp() {
                 )
             },
             floatingActionButton = {
-                SpeedDial(
-                    state = speedDialState,
-                    onFabClick = { expanded ->
-                        overlayVisible = !expanded
-                        speedDialState = speedDialState.toggle()
-                    },
-                ) {
-                    item {
-                        FabWithLabel(
-                            onClick = { /*showToast(context, "Item 1 clicked!")*/ },
-                            labelContent = { Text(text = "Item 1") },
-                        ) {
-                            Icon(Icons.Default.Share, null)
+                if (fabState.value)
+                    SpeedDial(
+                        state = speedDialState,
+                        onFabClick = { expanded ->
+                            overlayVisible = !expanded
+                            speedDialState = speedDialState.toggle()
+                        },
+                    ) {
+                        item {
+                            FabWithLabel(
+                                onClick = {
+                                    speedDialState = speedDialState.toggle()
+                                    navController.navigate(Screen.AddTodoScreen.route)
+                                },
+                                labelContent = { Text(text = "Add Todos") },
+                            ) {
+                                Icon(painterResource(id = R.drawable.ic_todo), null)
+                            }
+                        }
+                        item {
+                            FabWithLabel(
+                                onClick = { speedDialState = speedDialState.toggle() },
+                                labelContent = { Text(text = "Item 2") },
+                            ) {
+                                Icon(painterResource(id = R.drawable.ic_deadline), null)
+                            }
                         }
                     }
-                    item {
-                        FabWithLabel(
-                            onClick = { /*showToast(context, "Item 2 clicked!")*/ },
-                            labelContent = { Text(text = "Item 2") },
-                        ) {
-                            Icon(Icons.Default.Share, null)
-                        }
-                    }
-                }
 
                 //FABElement(navController = navController)
             }) { innerPadding ->
