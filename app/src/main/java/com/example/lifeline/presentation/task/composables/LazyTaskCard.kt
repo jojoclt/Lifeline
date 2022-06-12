@@ -28,14 +28,19 @@ import com.example.lifeline.util.Screen
 import com.example.lifeline.util.toDurationInList
 
 @Composable
-fun TasksList(tasks: List<TaskData>, navController: NavController) {
+fun TasksList(tasks: List<TaskData>, navController: NavController, amount: Int = 0) {
     LazyColumn {
 //        item {
 //            Spacer(modifier = Modifier.size(20.dp))
 //        }
-        items(tasks) { task ->
-            TaskCard(task, navController)
-        }
+        if (amount == 0)
+            items(tasks) { task ->
+                TaskCard(task, navController)
+            }
+        else
+            items(tasks.take(amount)) { task ->
+                TaskCard(task, navController)
+            }
     }
 }
 
@@ -90,13 +95,13 @@ fun TaskCard(t: TaskData, navController: NavController) {
                         .padding(horizontal = 6.dp)
                 ) {
                     if (t.taskType == TaskType.TODO)
-                    Image(
-                        imageVector = ImageVector.vectorResource(priorityList[t.priority.ordinal]),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .aspectRatio(1f)
-                    )
+                        Image(
+                            imageVector = ImageVector.vectorResource(priorityList[t.priority.ordinal]),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .aspectRatio(1f)
+                        )
                 }
             }
         }

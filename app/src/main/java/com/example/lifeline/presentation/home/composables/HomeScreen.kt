@@ -63,7 +63,7 @@ fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltVie
             "Thunder" -> ImageVector.vectorResource(id = R.drawable.weather_thunder)
             else -> ImageVector.vectorResource(id = R.drawable.weather_sunny)
         }
-        if (viewModel.getTasks().isEmpty()) {
+        if (viewModel.getTodoTask().isEmpty()) {
             vector = ImageVector.vectorResource(id = R.drawable.camp)
         }
 

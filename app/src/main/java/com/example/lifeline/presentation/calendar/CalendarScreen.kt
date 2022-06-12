@@ -36,7 +36,7 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
     val currentScreen = Screen.CalendarScreen
 //    val calendarState = rememberSelectableCalendarState()
     val currentDate = rememberSaveable { mutableStateOf(LocalDate.now()) }
-    var task = viewModel.state.value.tasks
+    var task = viewModel.getTaskAll()
 
     Scaffold(
         topBar = {
@@ -50,7 +50,7 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
                     selectedDay = currentDate.value,
                     onCurrentDayClick = { day, event ->
                         //handle the date click listener
-                        task = viewModel.getTasks(Date.from(day.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                        task = viewModel.getTaskAll(Date.from(day.atStartOfDay(ZoneId.systemDefault()).toInstant()))
                         currentDate.value = day
                     },
                     errorMessage = {

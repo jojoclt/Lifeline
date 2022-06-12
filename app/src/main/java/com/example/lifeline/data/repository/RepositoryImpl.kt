@@ -23,6 +23,8 @@ class RepositoryImpl constructor(
     override suspend fun getTasksByDate(date: Date): Flow<List<TaskData>> =
         taskDao.getTasksByDate(date)
 
+    override suspend fun getTaskTypeWithDate(date: Date, type: TaskType)=
+        taskDao.getTaskTypeWithDate(date, type)
 
     override suspend fun getTasksById(id: Int): TaskData? =
         taskDao.getTaskById(id)
