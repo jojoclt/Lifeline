@@ -5,20 +5,23 @@ import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.inset
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.VectorPainter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,38 +41,57 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
+const val TAG = "HomeScreen"
 @OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltViewModel()) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val currentScreen = Screen.HomeScreen
+    /**
+     * weather[0] denotes the previous, now and next
+     */
+    val magicBoolean = viewModel.getTasks().isEmpty()
 
     Scaffold(
         topBar = { TopNav(currentScreen = currentScreen) },
 
     ) { _ ->
-
-        /**
-         * weather[0] denotes the previous, now and next
-         */
+        Log.e(TAG, "start home screen")
+        var weatherState by rememberSaveable { Log.e(TAG, "weather is updated"); mutableStateOf(if (magicBoolean) R.drawable.camp else R.drawable.weather_thunder) }
         val weather = listOf("Rainy", "Thunder", "Sunny")
 
-        /* TODO : Change the drawable depending on the weather */
-        var vector = when(weather[1]) {
-            "Sunny" -> ImageVector.vectorResource(id = R.drawable.weather_sunny)
-            "Windy" -> ImageVector.vectorResource(id = R.drawable.weather_windy)
-            "Rainy" -> ImageVector.vectorResource(id = R.drawable.weather_rainy)
-            "Thunder" -> ImageVector.vectorResource(id = R.drawable.weather_thunder)
-            else -> ImageVector.vectorResource(id = R.drawable.weather_sunny)
+        if (magicBoolean) {
+            Log.e(TAG, "it is empty")
+            weatherState = R.drawable.camp
+        } else {
+            weatherState = R.drawable.weather_thunder
         }
+
+//        if (viewModel.getTasks().isEmpty()) {
+//            Log.e("HomeScreen", "")
+//            isTaskEmpty = true
+//        }
+        /* TODO : Change the drawable depending on the weather */
+//        lateinit var vector: ImageVector
+//        if(!isTaskEmpty) {
+//            vector = when (weather[1]) {
+//                "Sunny" -> ImageVector.vectorResource(id = R.drawable.weather_sunny)
+//                "Windy" -> ImageVector.vectorResource(id = R.drawable.weather_windy)
+//                "Rainy" -> ImageVector.vectorResource(id = R.drawable.weather_rainy)
+//                else -> ImageVector.vectorResource(id = R.drawable.weather_thunder)
+//            }
+//        } else {
+//            vector = ImageVector.vectorResource(id = R.drawable.camp)
+//        }
+//        Image(
+//            painterResource(id = weatherState),
+//            contentDescription = "backgroundState",
+//            modifier = Modifier.background(Color.Black).fillMaxSize()
+//        )
+        val painter = rememberVectorPainter(image = ImageVector.vectorResource(id = weatherState))
 
         /* set the background to camp when there is no task */
-        if (viewModel.getTasks().isEmpty()) {
-            vector = ImageVector.vectorResource(id = R.drawable.camp)
-        }
-
-        val painter = rememberVectorPainter(image = vector)
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -81,19 +103,34 @@ fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltVie
                     .padding(10.dp)
             ) {
 //                horizontal = -0.7f * size.width, vertical = -0.32f * size.height
-                inset(horizontal = -0.7f * size.width, vertical = -0.42f * size.height) {
-                    with(painter) {
-                        draw(painter.intrinsicSize)
+                /**
+                 * They have 2 different modifiers to be able to have it fit to screen
+                 */
+                if (weatherState == R.drawable.camp) {
+                    inset(horizontal = -0.64f * size.width, vertical = -0.47f * size.height) {
+                        with(painter) {
+                            draw(painter.intrinsicSize)
+                        }
+                    }
+                } else {
+                    inset(horizontal = -0.8f * size.width, vertical = -0.47f * size.height) {
+                        with(painter) {
+                            draw(painter.intrinsicSize)
+                        }
                     }
                 }
             }
+
             Row(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                if (vector == ImageVector.vectorResource(id = R.drawable.camp)) {
-                    Log.e("HomeScreen", "print weather card")
+//                Button(onClick = {painter = rememberVectorPainter(image = ImageVector.vectorResource(id = R.drawable.camp))} ) {
+//                    Text("E")
+//                }
+                if (!magicBoolean) {
+                    Log.e(TAG, "print weather card")
                     WeatherCard(
                         weather = weather[0],
                         delta = -1,
@@ -134,7 +171,7 @@ fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltVie
                     )
                 } else {
                     /* TODO : Show dialog box you haven't planned for today */
-                    Log.e("HomeScreen", "doesn't print weather card")
+                    Log.e(TAG, "doesn't print weather card")
 
                 }
             }
