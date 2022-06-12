@@ -129,6 +129,22 @@ class AddEditTodoViewModel @Inject constructor(
                     priority = event.value
                 )
             }
+            is AddEditTodoEvent.DeleteNote -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    try {
+                        useCases.deleteTask(
+                            taskEntry.value.id!!
+                        )
+
+                        Log.v(TAG, "Task Deleted")
+                    } catch (e: Exception) {
+                        Log.e("ERROR", "ERROR IN CODE: $e")
+                        // this is the line that prints out the location in
+                        // the code where the error occurred.
+                        e.printStackTrace()
+                    }
+                }
+            }
 
         }
 
