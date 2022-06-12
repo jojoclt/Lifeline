@@ -46,6 +46,7 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
         Column() {
             Surface {
                 Kalendar(
+
                     kalendarType = KalendarType.Firey(),
                     onCurrentDayClick = { day, event ->
                         //handle the date click listener

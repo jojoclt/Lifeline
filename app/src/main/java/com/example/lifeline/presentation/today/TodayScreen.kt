@@ -147,7 +147,7 @@ fun SampleTaskCard(t: TaskData, navController: NavController) {
                 Text(text = t.taskName)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "2hr", modifier = Modifier.offset(x = (-2).dp, y = 0.dp))
+                Text(text = t.duration.toString(), modifier = Modifier.offset(x = (-2).dp, y = 0.dp))
                 Box(
                     modifier = Modifier
                         .fillMaxHeight()
