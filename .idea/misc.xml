@@ -39,6 +39,9 @@
         <entry key="../../../../../layout/compose-model-1654962736868.xml" value="0.33" />
         <entry key="../../../../../layout/compose-model-1654965950642.xml" value="0.2037037037037037" />
         <entry key="../../../../../layout/compose-model-1654967810542.xml" value="0.33" />
+        <entry key="../../../../../layout/compose-model-1654980947113.xml" value="0.1" />
+        <entry key="../../../../../layout/compose-model-1654981390256.xml" value="0.2037037037037037" />
+        <entry key="../../../../../layout/compose-model-1655021555995.xml" value="0.1089527027027027" />
         <entry key="..\:/Users/Chala/git-demo/lifeline/app/src/main/res/drawable/ic_back.xml" value="0.1" />
         <entry key="..\:/Users/Chala/git-demo/lifeline/app/src/main/res/drawable/ic_calendar.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_deadline.xml" value="0.198" />
@@ -49,6 +52,7 @@
         <entry key="app/src/main/res/drawable/p_coffee.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/p_ice.xml" value="0.198" />
         <entry key="app/src/main/res/drawable/p_milk.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/rainy.xml" value="0.1" />
       </map>
     </option>
   </component>

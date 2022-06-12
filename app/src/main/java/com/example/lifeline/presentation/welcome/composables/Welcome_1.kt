@@ -17,7 +17,7 @@ import com.example.lifeline.presentation.ui.theme.LifelineTheme
 @Composable
 @Preview
 fun Welcome_1(modifier: Modifier = Modifier) {
-    Scaffold() {
+    Scaffold() { _ ->
         Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
             Box() {
                 Image(

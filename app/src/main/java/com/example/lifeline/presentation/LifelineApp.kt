@@ -1,12 +1,16 @@
+@file:OptIn(ExperimentalMaterialApi::class)
+
 package com.example.lifeline.presentation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -17,15 +21,26 @@ import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.util.Screen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.leinardi.android.speeddial.compose.FabWithLabel
+import com.leinardi.android.speeddial.compose.SpeedDial
+import com.leinardi.android.speeddial.compose.SpeedDialOverlay
+import com.leinardi.android.speeddial.compose.SpeedDialState
 
 private const val TAG = "MyActivity"
 
+@OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
 @Preview
 @Composable
 fun LifelineApp() {
     LifelineTheme {
         val systemUiController = rememberSystemUiController()
         val useDarkIcons = MaterialTheme.colors.isLight
+
+        /**
+         * State for the dial FAB
+         */
+        var speedDialState by rememberSaveable { mutableStateOf(SpeedDialState.Collapsed) }
+        var overlayVisible: Boolean by rememberSaveable { mutableStateOf(speedDialState.isExpanded()) }
 
         SideEffect {
             systemUiController.setNavigationBarColor(
@@ -54,11 +69,44 @@ fun LifelineApp() {
                 )
             },
             floatingActionButton = {
-                FABElement(navController = navController)
+                SpeedDial(
+                    state = speedDialState,
+                    onFabClick = { expanded ->
+                        overlayVisible = !expanded
+                        speedDialState = speedDialState.toggle()
+                    },
+                ) {
+                    item {
+                        FabWithLabel(
+                            onClick = { /*showToast(context, "Item 1 clicked!")*/ },
+                            labelContent = { Text(text = "Item 1") },
+                        ) {
+                            Icon(Icons.Default.Share, null)
+                        }
+                    }
+                    item {
+                        FabWithLabel(
+                            onClick = { /*showToast(context, "Item 2 clicked!")*/ },
+                            labelContent = { Text(text = "Item 2") },
+                        ) {
+                            Icon(Icons.Default.Share, null)
+                        }
+                    }
+                }
+
+                //FABElement(navController = navController)
             }) { innerPadding ->
+            SpeedDialOverlay(
+                visible = overlayVisible,
+                onClick = {
+                    overlayVisible = false
+                    speedDialState = speedDialState.toggle()
+                },
+            )
             Box(modifier = Modifier.padding(innerPadding)) {
                 NavGraph(navController)
             }
         }
     }
 }
+

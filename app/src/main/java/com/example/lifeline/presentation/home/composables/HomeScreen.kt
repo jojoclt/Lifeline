@@ -1,14 +1,19 @@
 package com.example.lifeline.presentation.home.composables
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -30,9 +35,14 @@ import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.ui.theme.*
 import com.example.lifeline.util.Screen
+import com.leinardi.android.speeddial.compose.FabWithLabel
+import com.leinardi.android.speeddial.compose.SpeedDial
+import com.leinardi.android.speeddial.compose.SpeedDialOverlay
+import com.leinardi.android.speeddial.compose.SpeedDialState
 import java.text.SimpleDateFormat
 import java.util.*
 
+@OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun HomeScreen(navController: NavController) {
     val configuration = LocalConfiguration.current
@@ -40,10 +50,14 @@ fun HomeScreen(navController: NavController) {
     val currentScreen = Screen.HomeScreen
 
 
+
+    /* TODO it's not supposed to be here supposed to be at lifeline.kt */
     Scaffold(
         topBar = { TopNav(currentScreen = currentScreen) },
 
     ) { _ ->
+
+
         //val padding = 40.dp
 
         /**
@@ -55,7 +69,7 @@ fun HomeScreen(navController: NavController) {
         val vector = when(weather[1]) {
             "Sunny" -> ImageVector.vectorResource(id = R.drawable.sunny)
             "Windy" -> ImageVector.vectorResource(id = R.drawable.sunny)
-            "Rainy" -> ImageVector.vectorResource(id = R.drawable.sunny)
+            "Rainy" -> ImageVector.vectorResource(id = R.drawable.rainy)
             "Thunder" -> ImageVector.vectorResource(id = R.drawable.sunny)
             else -> ImageVector.vectorResource(id = R.drawable.sunny)
         }
@@ -76,8 +90,8 @@ fun HomeScreen(navController: NavController) {
                     .fillMaxSize()
                     .padding(10.dp)
             ) {
-
-                inset(horizontal = -0.7f * size.width, vertical = -0.32f * size.height) {
+//                horizontal = -0.7f * size.width, vertical = -0.32f * size.height
+                inset(horizontal = -0.7f * size.width, vertical = -0.42f * size.height) {
                     with(painter) {
                         draw(painter.intrinsicSize)
                     }
