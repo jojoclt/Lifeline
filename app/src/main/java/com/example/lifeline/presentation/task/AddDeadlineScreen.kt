@@ -71,7 +71,7 @@ fun AddDeadlineScreen(navController: NavController, viewModel: AddEditTodoViewMo
 //    Log.e("ViewModel", "durationValue" + durationValue.value)
 //    Log.e("ViewModel", task.value.toString())
     Scaffold(
-        topBar = { TopNav(currentScreen, modifier = Modifier.background(Color.White), viewModel, navController) },
+        topBar = { TopNav(currentScreen, modifier = Modifier.background(Color.White), viewModel, navController, str) },
         backgroundColor = Color.White
     ) { innerPadding ->
         BottomDrawer(

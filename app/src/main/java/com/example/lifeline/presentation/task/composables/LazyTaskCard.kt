@@ -47,8 +47,11 @@ fun TaskCard(t: TaskData, navController: NavController) {
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .padding(8.dp).clickable {
-                navController.navigate(Screen.AddTodoScreen.route + "?taskId=${t.id}") }
+            .padding(8.dp)
+            .clickable {
+                if (t.taskType == TaskType.TODO) navController.navigate(Screen.AddTodoScreen.route + "?taskId=${t.id}")
+                else navController.navigate(Screen.AddDeadlineScreen.route + "?taskId=${t.id}")
+            }
     ) {
         val isChecked = remember { mutableStateOf(false) }
 
@@ -75,13 +78,18 @@ fun TaskCard(t: TaskData, navController: NavController) {
                 Text(text = t.taskName)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = t.duration.toDurationInList(), modifier = Modifier.offset(x = (-2).dp, y = 0.dp))
+                Text(
+                    text = t.duration.toDurationInList(),
+                    modifier = Modifier.offset(x = (-2).dp, y = 0.dp)
+                )
+
                 Box(
                     modifier = Modifier
                         .fillMaxHeight()
                         .aspectRatio(1f)
                         .padding(horizontal = 6.dp)
                 ) {
+                    if (t.taskType == TaskType.TODO)
                     Image(
                         imageVector = ImageVector.vectorResource(priorityList[t.priority.ordinal]),
                         contentDescription = null,
