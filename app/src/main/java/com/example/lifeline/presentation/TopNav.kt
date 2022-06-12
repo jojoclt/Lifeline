@@ -100,7 +100,7 @@ fun EditTaskAction(
             "Task Deleted",
             Toast.LENGTH_SHORT
         ).show()
-        navController.navigate(Screen.HomeScreen.route)
+        navController.navigateUp()
     }) {
         Icon(
             painterResource(id = R.drawable.ic_delete),

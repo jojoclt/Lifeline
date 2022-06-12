@@ -223,7 +223,7 @@ fun AddDeadlineScreen(navController: NavController, viewModel: AddEditTodoViewMo
                             "Task Added",
                             Toast.LENGTH_SHORT
                         ).show()
-                        navController.navigate(Screen.HomeScreen.route)
+                        navController.navigateUp()
                     }) {
                         Text(text = "DONE")
                     }

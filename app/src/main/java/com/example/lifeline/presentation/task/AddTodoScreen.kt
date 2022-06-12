@@ -228,7 +228,7 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
                             "Task Added",
                             Toast.LENGTH_SHORT
                         ).show()
-                        navController.navigate(Screen.HomeScreen.route)
+                        navController.navigateUp()
                     }) {
                         Text(text = "DONE")
                     }
