@@ -38,6 +38,7 @@ class AddEditTodoViewModel @Inject constructor(
         savedStateHandle.get<Int>("taskId")?.let { taskId ->
             Log.d(TAG, "VALUE IS $taskId")
             if (taskId != -1) {
+
                 _bool.value = true
                 viewModelScope.launch(Dispatchers.IO) {
                     val childList = mutableListOf<AddEditTodoState>()

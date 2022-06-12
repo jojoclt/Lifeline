@@ -68,6 +68,7 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
 
     val durationValue = remember { mutableStateOf(0) }
     durationValue.value = task.value.duration
+
 //    Log.e("ViewModel", "durationValue" + durationValue.value)
 //    Log.e("ViewModel", task.value.toString())
     Scaffold(

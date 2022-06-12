@@ -7,10 +7,11 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -34,7 +35,6 @@ import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.today.TodayViewModel
 import com.example.lifeline.presentation.ui.theme.*
 import com.example.lifeline.util.Screen
-import dagger.hilt.android.lifecycle.HiltViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -63,11 +63,11 @@ fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltVie
             "Thunder" -> ImageVector.vectorResource(id = R.drawable.weather_thunder)
             else -> ImageVector.vectorResource(id = R.drawable.weather_sunny)
         }
-
-        /* set the background to camp when there is no task */
         if (viewModel.getTasks().isEmpty()) {
             vector = ImageVector.vectorResource(id = R.drawable.camp)
         }
+
+        /* set the background to camp when there is no task */
 
         val painter = rememberVectorPainter(image = vector)
         Box(
