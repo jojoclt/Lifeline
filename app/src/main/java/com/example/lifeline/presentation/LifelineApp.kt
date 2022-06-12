@@ -18,7 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
+import com.example.lifeline.presentation.ui.theme.DeadlineColor
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
+import com.example.lifeline.presentation.ui.theme.TodoColor
 import com.example.lifeline.util.Screen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.leinardi.android.speeddial.compose.FabWithLabel
@@ -91,7 +93,8 @@ fun LifelineApp() {
                                     overlayVisible = false
                                     navController.navigate(Screen.AddTodoScreen.route)
                                 },
-                                labelContent = { Text(text = "Add Todos") },
+                                labelContent = { Text(text = "Add Todo") },
+                                fabBackgroundColor = TodoColor
                             ) {
                                 Icon(painterResource(id = R.drawable.ic_todo), null)
                             }
@@ -101,8 +104,11 @@ fun LifelineApp() {
                                 onClick = {
                                     speedDialState = speedDialState.toggle()
                                     overlayVisible = false
+                                    navController.navigate(Screen.AddDeadlineScreen.route)
+
                                 },
-                                labelContent = { Text(text = "Item 2") },
+                                labelContent = { Text(text = "Add Deadline") },
+                                fabBackgroundColor = DeadlineColor
                             ) {
                                 Icon(painterResource(id = R.drawable.ic_deadline), null)
                             }

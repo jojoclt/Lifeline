@@ -1,6 +1,5 @@
 package com.example.lifeline.presentation.task
 
-import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -23,19 +22,14 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
 import com.example.lifeline.domain.model.TaskType
-import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.components.DatePicker
-import com.example.lifeline.presentation.components.PrioritySelector
 import com.example.lifeline.presentation.task.composables.DurationDrawer
-import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.presentation.ui.theme.Shapes
 import com.example.lifeline.presentation.ui.theme.myAppTextFieldColors
 import com.example.lifeline.util.Screen
@@ -48,14 +42,15 @@ import java.util.*
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel = hiltViewModel()) {
+fun AddDeadlineScreen(navController: NavController, viewModel: AddEditTodoViewModel = hiltViewModel()) {
+
 
 
     val task = viewModel.taskEntry
-    val currentScreen = Screen.AddTodoScreen
+    val currentScreen = Screen.AddDeadlineScreen
 
-    // some magic that if this text is present, it will override the title name in TopNav
-    val str = if (task.value.id != null) "Edit Todo" else "Add Todo"
+    val str = if (task.value.id != null) "Edit Deadline" else "Add Deadline"
+
 
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -76,7 +71,7 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
 //    Log.e("ViewModel", "durationValue" + durationValue.value)
 //    Log.e("ViewModel", task.value.toString())
     Scaffold(
-        topBar = { TopNav(currentScreen, modifier = Modifier.background(Color.White), viewModel, navController, str) },
+        topBar = { TopNav(currentScreen, modifier = Modifier.background(Color.White), viewModel, navController) },
         backgroundColor = Color.White
     ) { innerPadding ->
         BottomDrawer(
@@ -181,7 +176,7 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
 
                     Divider(thickness = 2.dp)
                     Box(modifier = Modifier.padding(20.dp)) {
-                        PrioritySelector(viewModel)
+
                     }
                     Divider(thickness = 2.dp)
                     Box(modifier = Modifier.padding(20.dp)) {
@@ -222,7 +217,7 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
                         Text(text = "Cancel")
                     }
                     Button(onClick = {
-                        viewModel.onEvent(AddEditTodoEvent.SaveNote(TaskType.TODO))
+                        viewModel.onEvent(AddEditTodoEvent.SaveNote(TaskType.DEADLINE))
                         Toast.makeText(
                             context,
                             "Task Added",
@@ -243,19 +238,19 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
 }
 
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview
-@Composable
-fun AddTodoScreenPreview() {
-    val navController = rememberNavController()
-    val currentScreen = Screen.AddTodoScreen
-    LifelineTheme {
-        Scaffold(
-            content = { AddTodoScreen(navController) },
-            bottomBar = {
-                BottomNav(
-                    navController = navController)
-            }
-        )
-    }
-}
+//@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+//@Preview
+//@Composable
+//fun AddDeadlineScreenPreview() {
+//    val navController = rememberNavController()
+//    val currentScreen = Screen.AddDeadlineScreen
+//    LifelineTheme {
+//        Scaffold(
+//            content = { AddDeadlineScreen(navController) },
+//            bottomBar = {
+//                BottomNav(
+//                    navController = navController)
+//            }
+//        )
+//    }
+//}

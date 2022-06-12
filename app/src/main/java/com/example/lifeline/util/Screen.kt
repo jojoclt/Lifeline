@@ -18,20 +18,20 @@ sealed class Screen(
     object EditDeadlineScreen : Screen("edit_deadline_screen", R.string.edit_deadline_screen, null)
     object TodosScreen : Screen("todos_list_screen",R.string.todos_list_screen,null)
 
-    companion object {
-        fun fromRoute(route: String?): Screen =
-            when (route?.substringBefore("/")) {
-                "home_screen" -> HomeScreen
-                "calendar_screen" -> CalendarScreen
-                "today_screen" -> TodayScreen
-                "add_todo_screen" -> AddTodoScreen
-                "todos_list_screen"-> TodosScreen
-                null -> HomeScreen
-                else -> throw IllegalArgumentException("Route $route is not recognized.")
-
-
-            }
-    }
+//    companion object {
+//        fun fromRoute(route: String?): Screen =
+//            when (route?.substringBefore("/")) {
+//                "home_screen" -> HomeScreen
+//                "calendar_screen" -> CalendarScreen
+//                "today_screen" -> TodayScreen
+//                "add_todo_screen" -> AddTodoScreen
+//                "todos_list_screen"-> TodosScreen
+//                null -> HomeScreen
+//                else -> throw IllegalArgumentException("Route $route is not recognized.")
+//
+//
+//            }
+//    }
 }
 
 val bottomNavItems = listOf(
