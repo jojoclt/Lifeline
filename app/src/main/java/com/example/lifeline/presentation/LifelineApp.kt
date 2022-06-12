@@ -107,6 +107,10 @@ fun LifelineApp() {
 
                 //FABElement(navController = navController)
             }) { innerPadding ->
+            Box(modifier = Modifier.padding(innerPadding)) {
+
+                NavGraph(navController)
+            }
             SpeedDialOverlay(
                 visible = overlayVisible,
                 onClick = {
@@ -114,9 +118,6 @@ fun LifelineApp() {
                     speedDialState = speedDialState.toggle()
                 },
             )
-            Box(modifier = Modifier.padding(innerPadding)) {
-                NavGraph(navController)
-            }
         }
     }
 }
