@@ -62,11 +62,11 @@ fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltVie
         var weatherState by rememberSaveable { Log.e(TAG, "weather is updated"); mutableStateOf(if (magicBoolean) R.drawable.camp else R.drawable.weather_thunder) }
         val weather = listOf("Rainy", "Thunder", "Sunny")
 
-        if (magicBoolean) {
+        weatherState = if (magicBoolean) {
             Log.e(TAG, "it is empty")
-            weatherState = R.drawable.camp
+            R.drawable.camp
         } else {
-            weatherState = R.drawable.weather_thunder
+            R.drawable.weather_thunder
         }
 
 //        if (viewModel.getTasks().isEmpty()) {
