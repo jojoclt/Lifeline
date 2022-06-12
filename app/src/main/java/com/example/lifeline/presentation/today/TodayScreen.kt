@@ -27,13 +27,17 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.data.local.dummy
 import com.example.lifeline.domain.model.TaskData
+import com.example.lifeline.domain.model.TaskType
 import com.example.lifeline.domain.model.priorityList
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.today.composables.CupCanvas
+import com.example.lifeline.presentation.ui.theme.DeadlineColor
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
+import com.example.lifeline.presentation.ui.theme.TodoColor
 import com.example.lifeline.presentation.ui.theme.textBoxBg
 import com.example.lifeline.util.Screen
+import com.example.lifeline.util.toDurationInList
 import java.lang.Integer.min
 import java.time.LocalTime
 
@@ -118,8 +122,10 @@ fun SampleTaskCard(t: TaskData, navController: NavController) {
             .height(60.dp)
             .padding(8.dp)
             .clickable {
-            Log.d("TodayScreen","taskID: ${t.id}")
-                navController.navigate(Screen.AddTodoScreen.route + "?taskId=${t.id}") }
+                Log.d("TodayScreen", "taskID: ${t.id}")
+                if (t.taskType == TaskType.TODO) navController.navigate(Screen.AddTodoScreen.route + "?taskId=${t.id}")
+                else navController.navigate(Screen.AddDeadlineScreen.route + "?taskId=${t.id}")
+            }
     ) {
         val isChecked = remember { mutableStateOf(false) }
 
@@ -134,7 +140,7 @@ fun SampleTaskCard(t: TaskData, navController: NavController) {
                         .width(10.dp)
                         .fillMaxHeight()
                         .clip(RectangleShape)
-                        .background(Color.Red)
+                        .background(if (t.taskType == TaskType.TODO) TodoColor else DeadlineColor)
 
                 )
                 Checkbox(
@@ -147,20 +153,24 @@ fun SampleTaskCard(t: TaskData, navController: NavController) {
                 Text(text = t.taskName)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = t.duration.toString(), modifier = Modifier.offset(x = (-2).dp, y = 0.dp))
+                Text(
+                    text = t.duration.toDurationInList(),
+                    modifier = Modifier.offset(x = (-2).dp, y = 0.dp)
+                )
                 Box(
                     modifier = Modifier
                         .fillMaxHeight()
                         .aspectRatio(1f)
                         .padding(horizontal = 6.dp)
                 ) {
-                    Image(
-                        imageVector = ImageVector.vectorResource(priorityList[t.priority.ordinal]),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .aspectRatio(1f)
-                    )
+                    if (t.taskType == TaskType.TODO)
+                        Image(
+                            imageVector = ImageVector.vectorResource(priorityList[t.priority.ordinal]),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .aspectRatio(1f)
+                        )
                 }
             }
         }
@@ -172,7 +182,7 @@ fun SampleTaskCard(t: TaskData, navController: NavController) {
 fun TimeRemain() {
     val curTime = LocalTime.now()
 
-    var remainingHour = 24 - curTime.hour
+    var remainingHour = 24 - curTime.hour-1
     var remainingMin = 60 - curTime.minute
 
     LaunchedEffect(key1 = remainingHour, key2 = remainingMin) {
@@ -195,25 +205,7 @@ fun TimeRemain() {
     }
     Row() {
         Text(
-            text = remainingHour.toString(),
-            fontSize = 44.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Red
-        )
-        Text(
-            text = "hr",
-            fontSize = 44.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Red
-        )
-        Text(
-            text = remainingMin.toString(),
-            fontSize = 44.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Red
-        )
-        Text(
-            text = "min",
+            text = "${remainingHour}hr${remainingMin}min",
             fontSize = 44.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Red

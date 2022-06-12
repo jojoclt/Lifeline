@@ -8,7 +8,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lifeline.domain.model.TaskData
-import com.example.lifeline.domain.model.TaskType
 import com.example.lifeline.domain.use_case.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +37,7 @@ class AddEditTodoViewModel @Inject constructor(
         savedStateHandle.get<Int>("taskId")?.let { taskId ->
             Log.d(TAG, "VALUE IS $taskId")
             if (taskId != -1) {
+
                 _bool.value = true
                 viewModelScope.launch(Dispatchers.IO) {
                     val childList = mutableListOf<AddEditTodoState>()
@@ -86,7 +86,7 @@ class AddEditTodoViewModel @Inject constructor(
                                 duration = taskEntry.value.duration,
                                 priority = taskEntry.value.priority,
                                 description = taskEntry.value.desc,
-                                taskType = TaskType.TODO
+                                taskType = event.value
                             )
 
                         )

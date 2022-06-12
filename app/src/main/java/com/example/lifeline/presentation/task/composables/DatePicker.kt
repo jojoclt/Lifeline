@@ -5,23 +5,13 @@ import android.util.Log
 import android.view.ContextThemeWrapper
 import android.widget.CalendarView
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -31,9 +21,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.lifeline.R
 import com.example.lifeline.presentation.task.AddEditTodoEvent
 import com.example.lifeline.presentation.task.AddEditTodoViewModel
-import java.util.Calendar
-import java.util.Date
-
+import java.util.*
 /**
  * A Jetpack Compose compatible Date Picker.
  * @author Arnau Mora, Joao Gavazzi
@@ -44,6 +32,7 @@ import java.util.Date
  */
 
 private const val TAG = "DatePicker"
+
 @Composable
 fun DatePicker(
     minDate: Long? = null,
@@ -99,7 +88,7 @@ fun DatePicker(
                 maxDate,
                 onDateSelected = {
                     selDate.value = it
-                }
+                }, viewModel
             )
             Log.e(TAG, "out of custom calendar view function")
             Spacer(modifier = Modifier.size(8.dp))
@@ -160,10 +149,14 @@ fun DatePicker(
 private fun CustomCalendarView(
     minDate: Long? = null,
     maxDate: Long? = null,
-    onDateSelected: (Date) -> Unit
+    onDateSelected: (Date) -> Unit,
+    viewModel: AddEditTodoViewModel
 ) {
     // Adds view to Compose
+
     Log.e(TAG, "Inside custom calendar view")
+    var magicBool by remember { mutableStateOf(true)}
+
     AndroidView(
         modifier = Modifier.wrapContentSize(),
         factory = { context ->
@@ -174,6 +167,10 @@ private fun CustomCalendarView(
                 view.minDate = minDate
             if (maxDate != null)
                 view.maxDate = maxDate
+            if (viewModel.taskEntry.value.id != null && magicBool) {
+                view.date = viewModel.taskEntry.value.date.time
+                magicBool = false
+            }
 
             view.setOnDateChangeListener { _, year, month, dayOfMonth ->
                 onDateSelected(

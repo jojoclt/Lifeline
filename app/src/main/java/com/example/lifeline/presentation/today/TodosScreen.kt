@@ -20,7 +20,7 @@ fun TodosScreen(navController: NavController, viewModel: TodayViewModel = hiltVi
     val currentScreen = Screen.TodosScreen
 
     Scaffold(topBar = { TopNav(currentScreen) }) { _ ->
-        Column() {
+        Column(modifier = Modifier.fillMaxSize()) {
             Card(modifier = Modifier.padding(20.dp)) {
                 Row(
                     modifier = Modifier

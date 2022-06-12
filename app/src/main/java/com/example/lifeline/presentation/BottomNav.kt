@@ -42,7 +42,7 @@ fun BottomNav(
         )
     }
     bottomBarState.value = when (screen) {
-        Screen.AddTodoScreen.route -> false
+        Screen.AddTodoScreen.route, Screen.AddDeadlineScreen.route -> false
         Screen.TodosScreen.route -> false
         else -> true
     }

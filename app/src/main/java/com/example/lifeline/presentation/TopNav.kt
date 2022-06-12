@@ -29,11 +29,16 @@ fun TopNav(
     currentScreen: Screen,
     modifier: Modifier = Modifier,
     viewModel: AddEditTodoViewModel = hiltViewModel(),
-    navController: NavController = rememberNavController()
+    navController: NavController = rememberNavController(),
+    text: String? = null
 ) {
     val context = LocalContext.current
     TopAppBar(
-        title = { Text(text = stringResource(id = currentScreen.resourceId)) },
+        title = {
+            Text(
+                text = text ?: stringResource(id = currentScreen.resourceId)
+            )
+        },
         actions = {
             if (viewModel.bool.value) {
                 EditTaskAction(viewModel, navController, context)
@@ -83,7 +88,11 @@ fun CalendarScreenAction(action: () -> Unit) {
 }
 
 @Composable
-fun EditTaskAction(viewModel: AddEditTodoViewModel, navController: NavController, context: Context) {
+fun EditTaskAction(
+    viewModel: AddEditTodoViewModel,
+    navController: NavController,
+    context: Context
+) {
     IconButton(onClick = {
         viewModel.onEvent(AddEditTodoEvent.DeleteNote)
         Toast.makeText(

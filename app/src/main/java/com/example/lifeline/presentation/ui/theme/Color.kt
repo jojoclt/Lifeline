@@ -16,3 +16,6 @@ val textColor = Color(0xFF232528)
 val SelectorColour = Color(0xFF, 0xE9, 0xEB)
 val CardColor = Color(0x43FFFFFF)
 val CardColorSelected = Color(0xBB0000EE)
+
+val TodoColor = Color(0xFF67A3D9)
+val DeadlineColor = Color(0xFFFF97BA)

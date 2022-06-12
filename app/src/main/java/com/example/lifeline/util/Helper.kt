@@ -56,6 +56,14 @@ fun Int.toDuration(): String {
     return String.format("%02d : %02d", hour, min)
 }
 
+fun Int.toDurationInList(): String {
+    val hour = this / 60
+    val min = this % 60
+    if (hour == 0) return String.format("%dm",min)
+    if (min == 0) return String.format("%dhr",hour)
+    return String.format("%dhr%dm",hour,min)
+}
+
 val Any.TAG: String
     get() {
         val tag = javaClass.simpleName

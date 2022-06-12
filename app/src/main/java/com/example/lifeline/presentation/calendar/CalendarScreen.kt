@@ -9,7 +9,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -19,6 +18,7 @@ import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.task.composables.TasksList
 import com.example.lifeline.presentation.today.TodayViewModel
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
+import com.example.lifeline.presentation.ui.theme.PrimaryColor
 import com.example.lifeline.util.Screen
 import com.himanshoe.kalendar.common.KalendarStyle
 import com.himanshoe.kalendar.ui.Kalendar
@@ -46,8 +46,8 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
         Column() {
             Surface {
                 Kalendar(
-
                     kalendarType = KalendarType.Firey(),
+                    selectedDay = currentDate.value,
                     onCurrentDayClick = { day, event ->
                         //handle the date click listener
                         task = viewModel.getTasks(Date.from(day.atStartOfDay(ZoneId.systemDefault()).toInstant()))
@@ -58,7 +58,8 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
                     },
                     kalendarStyle = KalendarStyle(
                         hasRadius = false,
-                        kalendarBackgroundColor = Color.White
+                        kalendarBackgroundColor = PrimaryColor,
+
                     ),
                 )
 //                SelectableCalendar(
