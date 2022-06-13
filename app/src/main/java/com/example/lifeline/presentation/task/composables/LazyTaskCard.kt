@@ -83,8 +83,9 @@ fun TaskCard(t: TaskData, navController: NavController) {
                 Text(text = t.taskName)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
+                val str = if (t.taskType == TaskType.TODO) t.duration.toDurationInList() else t.time
                 Text(
-                    text = t.duration.toDurationInList(),
+                    text = str,
                     modifier = Modifier.offset(x = (-2).dp, y = 0.dp)
                 )
 

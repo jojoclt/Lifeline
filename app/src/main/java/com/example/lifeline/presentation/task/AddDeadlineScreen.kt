@@ -1,5 +1,6 @@
 package com.example.lifeline.presentation.task
 
+import android.app.TimePickerDialog
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -34,8 +35,6 @@ import com.example.lifeline.presentation.ui.theme.Shapes
 import com.example.lifeline.presentation.ui.theme.myAppTextFieldColors
 import com.example.lifeline.util.Screen
 import com.example.lifeline.util.clearFocusOnKeyboardDismiss
-import com.example.lifeline.util.toDuration
-import kotlinx.coroutines.launch
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -150,10 +149,26 @@ fun AddDeadlineScreen(navController: NavController, viewModel: AddEditTodoViewMo
                         )
 
                         /**
-                         * Duration Picker for AddTodoTask
+                         * Time Picker for AddTodoTask
                          */
+                        val mCalendar = Calendar.getInstance()
+                        val mHour = mCalendar[Calendar.HOUR_OF_DAY]
+                        val mMinute = mCalendar[Calendar.MINUTE]
+
+                        // Value for storing time as a string
+                        val mTime = remember { mutableStateOf("$mHour:$mMinute") }
+
+                        // Creating a TimePicker dialod
+                        val mTimePickerDialog = TimePickerDialog(
+                            context,
+                            {_, mHour : Int, mMinute: Int ->
+                                mTime.value = "$mHour:$mMinute"
+                                viewModel.onEvent(AddEditTodoEvent.EnteredTime(mTime.value))
+                            }, mHour, mMinute, false
+                        )
+
                         TextField(
-                            value = durationValue.value.toDuration(),
+                            value = mTime.value,
                             leadingIcon = {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_alarm),
@@ -167,7 +182,7 @@ fun AddDeadlineScreen(navController: NavController, viewModel: AddEditTodoViewMo
                                 .requiredWidth(168.dp)
                                 .padding(horizontal = 20.dp)
                                 .clickable(onClick = {
-                                    scope.launch { bottomDrawerState.open() }
+                                    mTimePickerDialog.show()
                                 }),
                             enabled = false
                         )
@@ -217,6 +232,7 @@ fun AddDeadlineScreen(navController: NavController, viewModel: AddEditTodoViewMo
                         Text(text = "Cancel")
                     }
                     Button(onClick = {
+                        Log.e("DEADLINEVIEW",viewModel.taskEntry.toString())
                         viewModel.onEvent(AddEditTodoEvent.SaveNote(TaskType.DEADLINE))
                         Toast.makeText(
                             context,

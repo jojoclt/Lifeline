@@ -9,5 +9,6 @@ data class AddEditTodoState(
     var desc: String = "",
     var priority: Priority = Priority.ESPRESSO,
     var duration: Int = 0,
-    var id: Int? = null
+    var id: Int? = null,
+    var time: String = ""
 )
