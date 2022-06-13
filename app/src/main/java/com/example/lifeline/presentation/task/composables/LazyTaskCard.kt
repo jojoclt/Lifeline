@@ -35,6 +35,7 @@ fun TasksList(viewModel: TodayViewModel, navController: NavController, amount: I
 //        item {
 //            Spacer(modifier = Modifier.size(20.dp))
 //        }
+
         if (amount == 0)
             items(viewModel.state.value.tasks) { task ->
                 TaskCard(task, navController, viewModel)
@@ -48,6 +49,8 @@ fun TasksList(viewModel: TodayViewModel, navController: NavController, amount: I
 
 @Composable
 fun TaskCard(t: TaskData, navController: NavController, viewModel: TodayViewModel) {
+    val checkedStatus = remember { mutableStateOf(t.isChecked) }
+
     Surface(
         shape = MaterialTheme.shapes.medium,
         elevation = 0.dp,
@@ -60,7 +63,6 @@ fun TaskCard(t: TaskData, navController: NavController, viewModel: TodayViewMode
                 else navController.navigate(Screen.AddDeadlineScreen.route + "?taskId=${t.id}")
             }
     ) {
-        val checkedStatus = remember { mutableStateOf(t.isChecked) }
         Row(
             modifier = Modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceBetween,

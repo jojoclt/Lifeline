@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.lifeline.domain.model.Priority
 import com.example.lifeline.domain.model.TaskData
 import com.example.lifeline.domain.use_case.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -84,7 +85,7 @@ class AddEditTodoViewModel @Inject constructor(
                                 taskName = taskEntry.value.taskName,
                                 date = taskEntry.value.date,
                                 time = taskEntry.value.time,
-                                duration = taskEntry.value.duration,
+                                duration = if (taskEntry.value.priority == Priority.ICE) 0 else taskEntry.value.duration,
                                 priority = taskEntry.value.priority,
                                 description = taskEntry.value.desc,
                                 taskType = event.value

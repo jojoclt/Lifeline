@@ -8,6 +8,8 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -25,6 +27,7 @@ import com.himanshoe.kalendar.ui.KalendarType
 import io.github.boguszpawlowski.composecalendar.day.DayState
 import io.github.boguszpawlowski.composecalendar.header.MonthState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.TextStyle
 import java.util.*
@@ -35,7 +38,7 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
 //    val calendarState = rememberSelectableCalendarState()
 //    var task = viewModel.state.value.tasks
     Log.e("Calendar", "getTask")
-
+    val date = remember { mutableStateOf(LocalDate.now()) }
     Scaffold(
         topBar = {
             TopNav(currentScreen)
@@ -44,10 +47,12 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
         Column() {
             Surface {
                 Kalendar(
+                    selectedDay = date.value,
                     kalendarType = KalendarType.Firey(),
                     onCurrentDayClick = { day, event ->
                         //handle the date click listener
                         viewModel.getTaskAll(Date.from(day.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                        date.value = day
                     },
                     errorMessage = {
                         //Handle the error if any

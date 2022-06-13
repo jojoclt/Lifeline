@@ -41,8 +41,10 @@ fun CupCanvas(scale: Float, todayList: List<TaskData>) {
     var milkDuration = 0f
 
     todayList.forEach { task ->
-        if (task.priority == Priority.ESPRESSO) espressoDuration += task.duration
-        else if (task.priority == Priority.MILK) milkDuration += task.duration
+        if (!task.isChecked) {
+            if (task.priority == Priority.ESPRESSO) espressoDuration += task.duration
+            else if (task.priority == Priority.MILK) milkDuration += task.duration
+        }
     }
 
     Canvas(

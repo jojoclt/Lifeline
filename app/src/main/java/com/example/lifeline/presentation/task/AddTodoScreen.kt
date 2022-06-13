@@ -225,7 +225,7 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
                         Text(text = "Cancel")
                     }
                     Button(onClick = {
-                        if (viewModel.taskEntry.value.duration == 0) {
+                        if (viewModel.taskEntry.value.duration == 0 && viewModel.taskEntry.value.priority != Priority.ICE) {
                             Toast.makeText(
                                 context,
                                 "Duration Must be greater than 0",

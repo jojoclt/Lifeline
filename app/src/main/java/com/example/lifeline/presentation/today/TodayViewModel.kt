@@ -72,7 +72,8 @@ class TodayViewModel @Inject constructor(
     fun getDuration(): Int {
         _duration.value = 0
         state.value.tasks.forEach { task ->
-            _duration.value += task.duration
+            if (!task.isChecked)
+                _duration.value += task.duration
         }
         return _duration.value
     }
