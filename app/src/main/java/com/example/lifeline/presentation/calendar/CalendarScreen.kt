@@ -18,9 +18,12 @@ import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.task.composables.TasksList
 import com.example.lifeline.presentation.today.TodayViewModel
+import com.example.lifeline.presentation.ui.theme.DeadlineColor
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.presentation.ui.theme.PrimaryColor
+import com.example.lifeline.presentation.ui.theme.Red700
 import com.example.lifeline.util.Screen
+import com.himanshoe.kalendar.common.KalendarSelector
 import com.himanshoe.kalendar.common.KalendarStyle
 import com.himanshoe.kalendar.ui.Kalendar
 import com.himanshoe.kalendar.ui.KalendarType
@@ -51,7 +54,11 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
                     kalendarType = KalendarType.Firey(),
                     onCurrentDayClick = { day, event ->
                         //handle the date click listener
-                        viewModel.getTaskAll(Date.from(day.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                        viewModel.getTaskAll(
+                            Date.from(
+                                day.atStartOfDay(ZoneId.systemDefault()).toInstant()
+                            )
+                        )
                         date.value = day
                     },
                     errorMessage = {
@@ -60,8 +67,13 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
                     kalendarStyle = KalendarStyle(
                         hasRadius = false,
                         kalendarBackgroundColor = PrimaryColor,
-
+                        kalendarSelector = KalendarSelector.Circle(
+                            selectedColor = Red700,
+                            todayColor = Red700,
+                            eventTextColor = DeadlineColor
+                        ),
                     ),
+                    kalendarEvents = viewModel.getAllTasksForCalendar()
                 )
 //                SelectableCalendar(
 ////                dayContent = {dayState -> MyDay(dayState) },
@@ -72,7 +84,7 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
 //                    }
 //                )
             }
-            TasksList(viewModel,navController)
+            TasksList(viewModel, navController)
         }
 
     }
@@ -88,10 +100,11 @@ fun MyDay(dayState: DayState<DynamicSelectionState>) {
 
 @Composable
 fun TitleCalendar(monthState: MonthState) {
-    Text(monthState.currentMonth.month
-        .getDisplayName(TextStyle.FULL, Locale.getDefault())
-        .lowercase()
-        .replaceFirstChar { it.titlecase() }, style = MaterialTheme.typography.h6
+    Text(
+        monthState.currentMonth.month
+            .getDisplayName(TextStyle.FULL, Locale.getDefault())
+            .lowercase()
+            .replaceFirstChar { it.titlecase() }, style = MaterialTheme.typography.h6
     )
     Text(" ")
     Text(text = monthState.currentMonth.year.toString(), style = MaterialTheme.typography.h6)
@@ -108,7 +121,8 @@ fun CalendarScreenPreview() {
             content = { CalendarScreen(navController) },
             bottomBar = {
                 BottomNav(
-                    navController = navController)
+                    navController = navController
+                )
             }
         )
     }

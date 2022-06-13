@@ -33,8 +33,8 @@ class AddEditTodoViewModel @Inject constructor(
     private var getTaskJob: Job? = null
 
     init {
-        // have to switch thread to Main for some reason to work
-
+        // have to switch thread to Main for some reason to work (copy into some list and copy it back)
+        // https://stackoverflow.com/questions/71014476/viewmodel-error-on-loading-long-list-in-io-dispatcher
         savedStateHandle.get<Int>("taskId")?.let { taskId ->
             Log.d(TAG, "VALUE IS $taskId")
             if (taskId != -1) {

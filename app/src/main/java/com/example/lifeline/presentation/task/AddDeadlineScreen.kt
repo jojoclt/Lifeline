@@ -159,6 +159,7 @@ fun AddDeadlineScreen(navController: NavController, viewModel: AddEditTodoViewMo
 
                         // Value for storing time as a string
                         val mTime = remember { mutableStateOf("%02d:%02d".format(mHour,mMinute)) }
+                        viewModel.onEvent(AddEditTodoEvent.EnteredTime(mTime.value))
 
 
                         val mTimePickerDialog = TimePickerDialog(

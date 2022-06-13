@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.lifeline.R
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Entity
@@ -15,7 +16,7 @@ data class TaskData(
     @ColumnInfo(name = "type") var taskType: TaskType,
     @ColumnInfo(name = "date") var date: Date,
     @ColumnInfo(name = "duration") var duration: Int = 0, // task to do
-    @ColumnInfo(name = "time") var time: String = "", // deadline
+    @ColumnInfo(name = "time") var time: String = SimpleDateFormat("HH:mm").format(Calendar.getInstance().time), // deadline
     @ColumnInfo(name = "priority") var priority: Priority,
     @ColumnInfo(name = "description") var description: String = "",
     @ColumnInfo(name = "linked_id") var ptr: Int? = null

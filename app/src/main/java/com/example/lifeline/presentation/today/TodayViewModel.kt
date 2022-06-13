@@ -8,12 +8,15 @@ import androidx.lifecycle.viewModelScope
 import com.example.lifeline.domain.model.TaskData
 import com.example.lifeline.domain.model.TaskType
 import com.example.lifeline.domain.use_case.UseCases
+import com.himanshoe.kalendar.common.data.KalendarEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
 import javax.inject.Inject
 
@@ -27,6 +30,9 @@ class TodayViewModel @Inject constructor(
     private val _state = mutableStateOf(TodayState())
     val state: State<TodayState> = _state
 
+    private val _calendarState = mutableStateOf<MutableList<KalendarEvent>>(mutableListOf())
+    val calendarState: State<List<KalendarEvent>> = _calendarState
+
     private val _duration = mutableStateOf(0)
     val duration: State<Int> = _duration
 
@@ -35,8 +41,22 @@ class TodayViewModel @Inject constructor(
 
     init {
         getTaskAll()
+        getAllTasksForCalendar()
     }
 
+    fun getAllTasksForCalendar(): List<KalendarEvent> {
+        viewModelScope.launch(Dispatchers.IO) {
+            getTasksJob?.cancel()
+            getTasksJob = useCases.getAllTasks().onEach { task ->
+                for (t in task) {
+                    if (t.taskType == TaskType.DEADLINE)
+                        _calendarState.value.add(KalendarEvent(LocalDate.parse(SimpleDateFormat("yyyy-MM-dd").format(t.date)), "Sample"))
+                }
+
+            }.launchIn(viewModelScope)
+        }
+        return calendarState.value
+    }
     // getAllTask
     fun getTaskAll(date: Date = Calendar.getInstance().time): List<TaskData> {
         viewModelScope.launch(Dispatchers.IO) {
