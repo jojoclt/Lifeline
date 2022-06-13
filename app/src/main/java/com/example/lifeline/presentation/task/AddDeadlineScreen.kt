@@ -173,7 +173,7 @@ fun AddDeadlineScreen(navController: NavController, viewModel: AddEditTodoViewMo
                             value = mTime.value,
                             leadingIcon = {
                                 Icon(
-                                    painter = painterResource(id = ),
+                                    painter = painterResource(id = R.drawable.ic_alarm),
                                     contentDescription = "DurationIcon",
                                     modifier = Modifier.size(24.dp)
                                 )
