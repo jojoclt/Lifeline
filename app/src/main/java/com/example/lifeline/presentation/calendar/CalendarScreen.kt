@@ -18,7 +18,6 @@ import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.task.composables.TasksList
 import com.example.lifeline.presentation.today.TodayViewModel
-import com.example.lifeline.presentation.ui.theme.DeadlineColor
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
 import com.example.lifeline.presentation.ui.theme.PrimaryColor
 import com.example.lifeline.presentation.ui.theme.Red700
@@ -65,15 +64,15 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
                         //Handle the error if any
                     },
                     kalendarStyle = KalendarStyle(
-                        hasRadius = false,
+                        hasRadius = true,
                         kalendarBackgroundColor = PrimaryColor,
                         kalendarSelector = KalendarSelector.Circle(
-                            selectedColor = Red700,
-                            todayColor = Red700,
-                            eventTextColor = DeadlineColor
+//                            selectedColor = Red500,
+//                            todayColor = Red700,
+                            eventTextColor = Red700
                         ),
                     ),
-                    kalendarEvents = viewModel.getAllTasksForCalendar()
+                    kalendarEvents = viewModel.calendarState.value
                 )
 //                SelectableCalendar(
 ////                dayContent = {dayState -> MyDay(dayState) },

@@ -3,6 +3,10 @@
 
     <style name="Theme.Lifeline" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">@color/Amber_700</item>
+
+        <item name="colorPrimary">@color/Amber_700</item>
+
+        <item name="colorSecondary">@color/Amber_700</item>
     </style>
 
 

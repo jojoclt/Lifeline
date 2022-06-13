@@ -41,7 +41,6 @@ class TodayViewModel @Inject constructor(
 
     init {
         getTaskAll()
-        getAllTasksForCalendar()
     }
 
     fun getAllTasksForCalendar(): List<KalendarEvent> {
@@ -67,6 +66,13 @@ class TodayViewModel @Inject constructor(
                 )
             }
                 .launchIn(viewModelScope)
+            getTasksJob = useCases.getAllTasks().onEach { task ->
+                for (t in task) {
+                    if (t.taskType == TaskType.DEADLINE)
+                        _calendarState.value.add(KalendarEvent(LocalDate.parse(SimpleDateFormat("yyyy-MM-dd").format(t.date)), "Sample"))
+                }
+
+            }.launchIn(viewModelScope)
         }
         return state.value.tasks
     }
