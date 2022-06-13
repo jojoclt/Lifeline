@@ -19,3 +19,6 @@ val CardColorSelected = Color(0xBB0000EE)
 
 val TodoColor = Color(0xFF67A3D9)
 val DeadlineColor = Color(0xFFFF97BA)
+
+val Milk = Color(0xEA, 0xD4, 0x9B)
+val Espresso = Color(0xFFA96C54)

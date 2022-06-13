@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import com.example.lifeline.R
 import com.example.lifeline.domain.model.Priority
 import com.example.lifeline.domain.model.TaskData
+import com.example.lifeline.presentation.ui.theme.Espresso
+import com.example.lifeline.presentation.ui.theme.Milk
 import com.example.lifeline.presentation.ui.theme.PrimaryColor
 import com.example.lifeline.util.VectorHelper
 
@@ -72,9 +74,9 @@ fun CupCanvas(scale: Float, todayList: List<TaskData>) {
             val espressoHeight: Float = espressoDuration * 0.067f * ((size.height) * 0.021f)
             // offset value is returned as a way to calculate where the milk will start
             // 90f is the magic value because size.height includes the saucer so need to subtract it to get cupsize
-            val offset = drawLiquid(Color.Yellow, y = size.height, height = espressoHeight)
+            val offset = drawLiquid(Espresso, y = size.height - (size.height * 0.3f * 0.45f), height = espressoHeight)
             val milkHeight: Float  = milkDuration * 0.067f * ((size.height) * 0.021f)
-            drawLiquid(Color.Green, y = offset, height = milkHeight)
+            drawLiquid(Milk, y = offset, height = milkHeight)
             restoreToCount(checkPoint)
         }
         with(cup) {
