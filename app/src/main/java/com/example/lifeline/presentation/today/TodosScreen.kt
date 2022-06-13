@@ -49,7 +49,7 @@ fun TodosScreen(navController: NavController, viewModel: TodayViewModel = hiltVi
                 }
             }
             Spacer(modifier = Modifier.size(4.dp))
-            TasksList(taskList, navController)
+            TasksList(viewModel, navController)
 
         }
     }

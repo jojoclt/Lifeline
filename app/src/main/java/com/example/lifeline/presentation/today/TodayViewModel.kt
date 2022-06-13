@@ -1,5 +1,6 @@
 package com.example.lifeline.presentation.today
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -49,8 +50,12 @@ class TodayViewModel @Inject constructor(
         }
         return state.value.tasks
     }
+
     // getTodoTodayTask
-    fun getTodoTask(date: Date = Calendar.getInstance().time, type: TaskType = TaskType.TODO): List<TaskData> {
+    fun getTodoTask(
+        date: Date = Calendar.getInstance().time,
+        type: TaskType = TaskType.TODO
+    ): List<TaskData> {
         viewModelScope.launch(Dispatchers.IO) {
             getTasksJob?.cancel()
             getTasksJob = useCases.getTaskTypeWithDate(date, type).onEach { task ->
@@ -70,5 +75,36 @@ class TodayViewModel @Inject constructor(
             _duration.value += task.duration
         }
         return _duration.value
+    }
+
+    fun onEvent(event: TodayEvent) {
+        when (event) {
+            is TodayEvent.ToggleButton -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    try {
+                        useCases.editTask(
+                            TaskData(
+                                id = event.value.id,
+                                taskName = event.value.taskName,
+                                date = event.value.date,
+                                time = event.value.time,
+                                duration = event.value.duration,
+                                priority = event.value.priority,
+                                isChecked = event.isChecked,
+                                taskType = event.value.taskType
+                            )
+                        )
+                        Log.e("TodayViewModel", "Task Checked")
+
+                    } catch (e: Exception) {
+                        Log.e("ERROR", "ERROR IN CODE: $e")
+                        // this is the line that prints out the location in
+                        // the code where the error occurred.
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+        }
     }
 }

@@ -33,7 +33,7 @@ import java.util.*
 fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hiltViewModel()) {
     val currentScreen = Screen.CalendarScreen
 //    val calendarState = rememberSelectableCalendarState()
-    var task = viewModel.state.value.tasks
+//    var task = viewModel.state.value.tasks
     Log.e("Calendar", "getTask")
 
     Scaffold(
@@ -47,7 +47,7 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
                     kalendarType = KalendarType.Firey(),
                     onCurrentDayClick = { day, event ->
                         //handle the date click listener
-                        task = viewModel.getTaskAll(Date.from(day.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                        viewModel.getTaskAll(Date.from(day.atStartOfDay(ZoneId.systemDefault()).toInstant()))
                     },
                     errorMessage = {
                         //Handle the error if any
@@ -67,7 +67,7 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
 //                    }
 //                )
             }
-            TasksList(task,navController)
+            TasksList(viewModel,navController)
         }
 
     }

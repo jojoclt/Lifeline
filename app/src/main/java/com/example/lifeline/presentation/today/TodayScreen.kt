@@ -91,7 +91,7 @@ fun TodayScreen(navController: NavController, viewModel: TodayViewModel = hiltVi
                     .padding(horizontal = 20.dp)
                     .height(190.dp)
             ) {
-                TasksList(taskList, navController, 3)
+                TasksList(viewModel, navController, 3)
             }
         }
     }

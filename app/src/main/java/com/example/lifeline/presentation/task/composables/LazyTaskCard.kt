@@ -22,30 +22,32 @@ import androidx.navigation.NavController
 import com.example.lifeline.domain.model.TaskData
 import com.example.lifeline.domain.model.TaskType
 import com.example.lifeline.domain.model.priorityList
+import com.example.lifeline.presentation.today.TodayEvent
+import com.example.lifeline.presentation.today.TodayViewModel
 import com.example.lifeline.presentation.ui.theme.DeadlineColor
 import com.example.lifeline.presentation.ui.theme.TodoColor
 import com.example.lifeline.util.Screen
 import com.example.lifeline.util.toDurationInList
 
 @Composable
-fun TasksList(tasks: List<TaskData>, navController: NavController, amount: Int = 0) {
+fun TasksList(viewModel: TodayViewModel, navController: NavController, amount: Int = 0) {
     LazyColumn {
 //        item {
 //            Spacer(modifier = Modifier.size(20.dp))
 //        }
         if (amount == 0)
-            items(tasks) { task ->
-                TaskCard(task, navController)
+            items(viewModel.state.value.tasks) { task ->
+                TaskCard(task, navController, viewModel)
             }
         else
-            items(tasks.take(amount)) { task ->
-                TaskCard(task, navController)
+            items(viewModel.state.value.tasks.take(amount)) { task ->
+                TaskCard(task, navController, viewModel)
             }
     }
 }
 
 @Composable
-fun TaskCard(t: TaskData, navController: NavController) {
+fun TaskCard(t: TaskData, navController: NavController, viewModel: TodayViewModel) {
     Surface(
         shape = MaterialTheme.shapes.medium,
         elevation = 0.dp,
@@ -58,8 +60,7 @@ fun TaskCard(t: TaskData, navController: NavController) {
                 else navController.navigate(Screen.AddDeadlineScreen.route + "?taskId=${t.id}")
             }
     ) {
-        val isChecked = remember { mutableStateOf(false) }
-
+        val checkedStatus = remember { mutableStateOf(t.isChecked) }
         Row(
             modifier = Modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -74,9 +75,12 @@ fun TaskCard(t: TaskData, navController: NavController) {
 
                 )
                 Checkbox(
-                    checked = isChecked.value,
+                    checked = checkedStatus.value,
                     onCheckedChange = {
-                        isChecked.value = it
+                        viewModel.onEvent(TodayEvent.ToggleButton(it, t))
+                        checkedStatus.value = it
+
+
                     },
                     colors = CheckboxDefaults.colors(Color.Blue),
                 )

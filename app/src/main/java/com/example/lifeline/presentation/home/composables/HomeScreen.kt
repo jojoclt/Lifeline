@@ -34,21 +34,27 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
+import com.example.lifeline.domain.model.HomeScreenElement
+import com.example.lifeline.domain.model.Priority
+import com.example.lifeline.domain.model.weatherList
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
 import com.example.lifeline.presentation.today.TodayViewModel
 import com.example.lifeline.presentation.ui.theme.*
 import com.example.lifeline.util.Screen
 import java.text.SimpleDateFormat
+import java.time.LocalTime
 import java.util.*
 
 const val TAG = "HomeScreen"
+
 @OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltViewModel()) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
     val currentScreen = Screen.HomeScreen
+
     /**
      * weather[0] denotes the previous, now and next
      */
@@ -57,17 +63,39 @@ fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltVie
     Scaffold(
         topBar = { TopNav(currentScreen = currentScreen) },
 
-    ) { _ ->
-        Log.e(TAG, "start home screen")
-        var weatherState by rememberSaveable { Log.e(TAG, "weather is updated"); mutableStateOf(if (magicBoolean) R.drawable.camp else R.drawable.weather_thunder) }
-        val weather = listOf("Rainy", "Thunder", "Sunny")
+        ) { _ ->
 
-        weatherState = if (magicBoolean) {
-            Log.e(TAG, "it is empty")
-            R.drawable.camp
-        } else {
-            R.drawable.weather_thunder
+        var weatherState by rememberSaveable {
+            Log.e(
+                TAG,
+                "weather is updated"
+            ); mutableStateOf(if (magicBoolean) R.drawable.camp else R.drawable.weather_thunder)
         }
+
+        var weatherValue by rememberSaveable { mutableStateOf(0) }
+
+        val calcState: MutableList<Float> = mutableListOf()
+        val elementBg: MutableList<HomeScreenElement> = mutableListOf()
+
+        if (magicBoolean) {
+            Log.e(TAG, "it is empty")
+            weatherState = R.drawable.camp
+        } else {
+            for (i in 0..2) {
+                calcState.add(weatherCalculationState(viewModel, i))
+                elementBg.add(
+                    when {
+                        calcState[i] < 0.3F -> weatherList[0]
+                        calcState[i] < 0.6F -> weatherList[1]
+                        calcState[i] < 1f -> weatherList[2]
+                        else -> weatherList[3]
+                    }
+                )
+            }
+            Log.e(TAG, calcState.toString())
+            weatherState = elementBg[0].weatherBg
+        }
+
 
 //        if (viewModel.getTasks().isEmpty()) {
 //            Log.e("HomeScreen", "")
@@ -122,6 +150,7 @@ fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltVie
                 }
             }
 
+
             Row(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
@@ -132,22 +161,9 @@ fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltVie
 //                }
                 if (!magicBoolean) {
                     Log.e(TAG, "print weather card")
+
                     WeatherCard(
-                        weather = weather[0],
-                        delta = -1,
-                        offset = 100.dp,
-                        width = 90.dp,
-                        height = 160.dp,
-                        roundedDp = 70.dp,
-                        cardColor = CardColor,
-                        textColor = textColor
-                    )
-                    Spacer(
-                        modifier = Modifier
-                            .size(10.dp)
-                    )
-                    WeatherCard(
-                        weather = weather[1],
+                        weather = elementBg[0],
                         delta = 0,
                         offset = 60.dp,
                         width = 100.dp,
@@ -161,8 +177,23 @@ fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltVie
                             .size(10.dp)
                     )
                     WeatherCard(
-                        weather = weather[2],
+                        weather = elementBg[1],
                         delta = 1,
+                        offset = 100.dp,
+                        width = 90.dp,
+                        height = 160.dp,
+                        roundedDp = 70.dp,
+                        cardColor = CardColor,
+                        textColor = textColor
+                    )
+
+                    Spacer(
+                        modifier = Modifier
+                            .size(10.dp)
+                    )
+                    WeatherCard(
+                        weather = elementBg[2],
+                        delta = 2,
                         offset = 100.dp,
                         width = 90.dp,
                         height = 160.dp,
@@ -182,7 +213,7 @@ fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltVie
 
 @Composable
 fun WeatherCard(
-    weather: String,
+    weather: HomeScreenElement,
     delta: Int,
     offset: Dp,
     width: Dp,
@@ -191,16 +222,7 @@ fun WeatherCard(
     cardColor: Color,
     textColor: Color
 ) {
-    /**
-     * fetch icon from weather name
-     */
-    val icon = when(weather) {
-        "Sunny" -> ImageVector.vectorResource(id = R.drawable.ic_sun)
-        "Rainy" -> ImageVector.vectorResource(id = R.drawable.ic_rain)
-        "Windy" -> ImageVector.vectorResource(id = R.drawable.ic_wind)
-        "Thunder" -> ImageVector.vectorResource(id = R.drawable.ic_thunder)
-        else -> ImageVector.vectorResource(id = R.drawable.ic_alarm)
-    }
+
     Card(
         elevation = 8.dp,
         shape = RoundedCornerShape(roundedDp),
@@ -218,7 +240,7 @@ fun WeatherCard(
                 .fillMaxWidth()
         ) {
             Image(
-                imageVector = icon,
+                imageVector = ImageVector.vectorResource(weather.weatherIcon),
                 modifier = Modifier
                     .fillMaxWidth(),
                 contentDescription = "weatherIcon"
@@ -226,7 +248,7 @@ fun WeatherCard(
             )
             Text(
                 color = textColor,
-                text = weather,
+                text = weather.str,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -255,6 +277,25 @@ fun getWeatherTime(
     else dateFormat.format(currentTime.time)
 }
 
+fun weatherCalculationState(viewModel: TodayViewModel, delta: Int): Float {
+
+    val curTime = LocalTime.now()
+    val remainingHour = 24 - curTime.hour - 1 - delta
+    val remainingMin = 60 - curTime.minute
+    var burden = 0f
+    viewModel.getTodoTask().forEach {
+        if (!it.isChecked) {
+            burden += when (it.priority) {
+                Priority.ESPRESSO -> 1.5f * it.duration / 60f
+                Priority.MILK -> 1f * it.duration / 60f
+                else -> 0f
+            }
+        }
+    }
+    val cc = remainingHour + remainingMin / 60f
+    if (cc == 0.0f) return 0.0f
+    return burden / cc
+}
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Preview
@@ -267,7 +308,8 @@ fun HomeScreenPreview() {
             content = { HomeScreen(navController) },
             bottomBar = {
                 BottomNav(
-                    navController = navController)
+                    navController = navController
+                )
             }
         )
     }

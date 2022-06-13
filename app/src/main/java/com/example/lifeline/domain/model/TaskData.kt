@@ -39,4 +39,17 @@ data class PriorityRes(
     var priority: Priority
 )
 
+data class HomeScreenElement(
+    var str: String,
+    @DrawableRes var weatherIcon: Int,
+    @DrawableRes var weatherBg: Int
+)
+
 val priorityList = listOf(R.drawable.p_coffee, R.drawable.p_milk, R.drawable.p_ice)
+
+val weatherList = listOf(
+    HomeScreenElement("Sunny", R.drawable.ic_sun, R.drawable.weather_sunny),
+    HomeScreenElement("Windy", R.drawable.ic_wind, R.drawable.weather_windy),
+    HomeScreenElement("Rainy", R.drawable.ic_rain, R.drawable.weather_rainy),
+    HomeScreenElement("Thunder", R.drawable.ic_thunder, R.drawable.weather_thunder)
+)
