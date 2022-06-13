@@ -155,14 +155,16 @@ fun AddDeadlineScreen(navController: NavController, viewModel: AddEditTodoViewMo
                         val mHour = mCalendar[Calendar.HOUR_OF_DAY]
                         val mMinute = mCalendar[Calendar.MINUTE]
 
-                        // Value for storing time as a string
-                        val mTime = remember { mutableStateOf("$mHour:$mMinute") }
-
                         // Creating a TimePicker dialod
+
+                        // Value for storing time as a string
+                        val mTime = remember { mutableStateOf("%02d:%02d".format(mHour,mMinute)) }
+
+
                         val mTimePickerDialog = TimePickerDialog(
                             context,
                             {_, mHour : Int, mMinute: Int ->
-                                mTime.value = "$mHour:$mMinute"
+                                mTime.value = "%02d:%02d".format(mHour,mMinute)
                                 viewModel.onEvent(AddEditTodoEvent.EnteredTime(mTime.value))
                             }, mHour, mMinute, false
                         )
@@ -171,7 +173,7 @@ fun AddDeadlineScreen(navController: NavController, viewModel: AddEditTodoViewMo
                             value = mTime.value,
                             leadingIcon = {
                                 Icon(
-                                    painter = painterResource(id = R.drawable.ic_alarm),
+                                    painter = painterResource(id = ),
                                     contentDescription = "DurationIcon",
                                     modifier = Modifier.size(24.dp)
                                 )
