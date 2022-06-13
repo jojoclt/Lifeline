@@ -228,7 +228,7 @@ fun AddDeadlineScreen(navController: NavController, viewModel: AddEditTodoViewMo
                         .weight(1f, false)
                         .padding(innerPadding).fillMaxHeight()
                 ) {
-                    Button(onClick = { navController.navigate(Screen.HomeScreen.route) }) {
+                    Button(onClick = { navController.navigateUp() }) {
                         Text(text = "Cancel")
                     }
                     Button(onClick = {

@@ -28,10 +28,10 @@ fun NavGraph(
             HomeScreen(navController, todayViewModel)
         }
         composable(Screen.CalendarScreen.route) {
-            CalendarScreen(navController, todayViewModel)
+            CalendarScreen(navController)
         }
         composable(Screen.TodayScreen.route) {
-            TodayScreen(navController, todayViewModel)
+            TodayScreen(navController,todayViewModel)
         }
         composable(Screen.TodosScreen.route) {
             TodosScreen(navController, todayViewModel)

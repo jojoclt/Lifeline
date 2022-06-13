@@ -33,6 +33,7 @@ class TodayViewModel @Inject constructor(
 
 
     init {
+        getTaskAll()
     }
 
     // getAllTask

@@ -23,7 +23,7 @@ import com.example.lifeline.util.toDurationInList
 @Composable
 fun TodosScreen(navController: NavController, viewModel: TodayViewModel = hiltViewModel()) {
     val currentScreen = Screen.TodosScreen
-
+    val taskList = viewModel.getTodoTask()
     Scaffold(topBar = { TopNav(currentScreen) }) { _ ->
         Column(modifier = Modifier.fillMaxSize()) {
             Card(modifier = Modifier.padding(20.dp), shape = RoundedCornerShape(40.dp)) {
@@ -42,14 +42,14 @@ fun TodosScreen(navController: NavController, viewModel: TodayViewModel = hiltVi
                             .weight(2f)
                     ) {
                         Text("Est. time to complete")
-                        Text(viewModel.duration.value.toDurationInList(), fontSize = 20.sp,
+                        Text(viewModel.getDuration().toDurationInList(), fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.Red)
                     }
                 }
             }
             Spacer(modifier = Modifier.size(4.dp))
-            TasksList(viewModel.state.value.tasks, navController)
+            TasksList(taskList, navController)
 
         }
     }

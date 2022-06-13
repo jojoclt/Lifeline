@@ -218,7 +218,7 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
                         .weight(1f, false)
                         .padding(innerPadding).fillMaxHeight()
                 ) {
-                    Button(onClick = { navController.navigate(Screen.HomeScreen.route) }) {
+                    Button(onClick = { navController.navigateUp() }) {
                         Text(text = "Cancel")
                     }
                     Button(onClick = {

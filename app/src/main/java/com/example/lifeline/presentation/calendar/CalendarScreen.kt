@@ -1,14 +1,13 @@
 package com.example.lifeline.presentation.calendar
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -26,7 +25,6 @@ import com.himanshoe.kalendar.ui.KalendarType
 import io.github.boguszpawlowski.composecalendar.day.DayState
 import io.github.boguszpawlowski.composecalendar.header.MonthState
 import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
-import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.TextStyle
 import java.util.*
@@ -35,8 +33,8 @@ import java.util.*
 fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hiltViewModel()) {
     val currentScreen = Screen.CalendarScreen
 //    val calendarState = rememberSelectableCalendarState()
-    val currentDate = rememberSaveable { mutableStateOf(LocalDate.now()) }
-    var task = viewModel.getTaskAll()
+    var task = viewModel.state.value.tasks
+    Log.e("Calendar", "getTask")
 
     Scaffold(
         topBar = {
@@ -47,11 +45,9 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
             Surface {
                 Kalendar(
                     kalendarType = KalendarType.Firey(),
-                    selectedDay = currentDate.value,
                     onCurrentDayClick = { day, event ->
                         //handle the date click listener
                         task = viewModel.getTaskAll(Date.from(day.atStartOfDay(ZoneId.systemDefault()).toInstant()))
-                        currentDate.value = day
                     },
                     errorMessage = {
                         //Handle the error if any
