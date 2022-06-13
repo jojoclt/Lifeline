@@ -19,6 +19,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.lifeline.R
+import com.example.lifeline.domain.model.Priority
+import com.example.lifeline.domain.model.TaskData
 import com.example.lifeline.presentation.ui.theme.PrimaryColor
 import com.example.lifeline.util.VectorHelper
 
@@ -26,7 +28,7 @@ import com.example.lifeline.util.VectorHelper
 // https://stackoverflow.com/questions/65653560/jetpack-compose-applying-porterduffmode-to-image BUG
 @Composable
 //@Preview
-fun CupCanvas(scale: Float) {
+fun CupCanvas(scale: Float, todayList: List<TaskData>) {
     val context = LocalContext.current
 
     val mask = VectorHelper.createPainter(img = R.drawable.coffeemask)
@@ -35,6 +37,13 @@ fun CupCanvas(scale: Float) {
     val screenWidth = configuration.screenWidthDp
     val screenHeight = configuration.screenHeightDp
 
+    var espressoDuration = 0f
+    var milkDuration = 0f
+
+    todayList.forEach { task ->
+        if (task.priority == Priority.ESPRESSO) espressoDuration += task.duration
+        else if (task.priority == Priority.MILK) milkDuration += task.duration
+    }
 
     Canvas(
         modifier = Modifier
@@ -58,11 +67,11 @@ fun CupCanvas(scale: Float) {
                     block = { draw(size, colorFilter = ColorFilter.tint(color = PrimaryColor)) })
             }
             // espressoHeight and milkHeight are both dummy variables
-            val espressoHeight: Float = ((size.height) * 0.1f) * 3f
+            val espressoHeight: Float = espressoDuration * 0.067f * ((size.height) * 0.021f)
             // offset value is returned as a way to calculate where the milk will start
             // 90f is the magic value because size.height includes the saucer so need to subtract it to get cupsize
             val offset = drawLiquid(Color.Yellow, y = size.height, height = espressoHeight)
-            val milkHeight = (size.height * 0.1f) * 3f
+            val milkHeight: Float  = milkDuration * 0.067f * ((size.height) * 0.021f)
             drawLiquid(Color.Green, y = offset, height = milkHeight)
             restoreToCount(checkPoint)
         }

@@ -26,6 +26,9 @@ class TodayViewModel @Inject constructor(
     private val _state = mutableStateOf(TodayState())
     val state: State<TodayState> = _state
 
+    private val _duration = mutableStateOf(0)
+    val duration: State<Int> = _duration
+
     private var getTasksJob: Job? = null
 
 
@@ -56,7 +59,15 @@ class TodayViewModel @Inject constructor(
             }
                 .launchIn(viewModelScope)
         }
+
         return state.value.tasks
     }
 
+    fun getDuration(): Int {
+        _duration.value = 0
+        state.value.tasks.forEach { task ->
+            _duration.value += task.duration
+        }
+        return _duration.value
+    }
 }

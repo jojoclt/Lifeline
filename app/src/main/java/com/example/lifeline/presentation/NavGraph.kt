@@ -1,6 +1,7 @@
 package com.example.lifeline.presentation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,6 +11,7 @@ import com.example.lifeline.presentation.home.composables.HomeScreen
 import com.example.lifeline.presentation.task.AddDeadlineScreen
 import com.example.lifeline.presentation.task.AddTodoScreen
 import com.example.lifeline.presentation.today.TodayScreen
+import com.example.lifeline.presentation.today.TodayViewModel
 import com.example.lifeline.presentation.today.TodosScreen
 import com.example.lifeline.util.Screen
 
@@ -17,18 +19,22 @@ import com.example.lifeline.util.Screen
 fun NavGraph(
     navController: NavHostController,
 ) {
+    val todayViewModel: TodayViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         startDestination = Screen.HomeScreen.route,
     ) {
         composable(Screen.HomeScreen.route) {
-            HomeScreen(navController)
+            HomeScreen(navController, todayViewModel)
         }
         composable(Screen.CalendarScreen.route) {
-            CalendarScreen(navController)
+            CalendarScreen(navController, todayViewModel)
         }
         composable(Screen.TodayScreen.route) {
-            TodayScreen(navController)
+            TodayScreen(navController, todayViewModel)
+        }
+        composable(Screen.TodosScreen.route) {
+            TodosScreen(navController, todayViewModel)
         }
         composable(
             route = Screen.AddTodoScreen.route + "?taskId={taskId}",
@@ -52,9 +58,7 @@ fun NavGraph(
         ) {
             AddDeadlineScreen(navController)
         }
-        composable(Screen.TodosScreen.route) {
-            TodosScreen(navController)
-        }
+
     }
 }
 

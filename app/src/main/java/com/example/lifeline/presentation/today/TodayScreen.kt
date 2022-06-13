@@ -50,6 +50,7 @@ fun TodayScreen(navController: NavController, viewModel: TodayViewModel = hiltVi
     val currentScreen = Screen.TodayScreen
 
     val taskList = viewModel.getTodoTask()
+    val time = viewModel.getDuration()
 
     Scaffold(
         topBar = { TopNav(currentScreen) },
@@ -63,8 +64,14 @@ fun TodayScreen(navController: NavController, viewModel: TodayViewModel = hiltVi
             Text(
                 text = "Estimated Time to Completed"
             )
-            TimeRemain()
-            CupCanvas(0.7f)
+//            TimeRemain()
+            Text(
+                text = time.toDurationInList(),
+                fontSize = 44.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Red
+            )
+            CupCanvas(0.7f, taskList)
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier
                     .fillMaxWidth()
