@@ -20,6 +20,7 @@ fun NavGraph(
     navController: NavHostController,
 ) {
     val todayViewModel: TodayViewModel = hiltViewModel()
+    val calendarViewModel: TodayViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         startDestination = Screen.HomeScreen.route,
@@ -28,7 +29,7 @@ fun NavGraph(
             HomeScreen(navController, todayViewModel)
         }
         composable(Screen.CalendarScreen.route) {
-            CalendarScreen(navController)
+            CalendarScreen(navController, calendarViewModel)
         }
         composable(Screen.TodayScreen.route) {
             TodayScreen(navController,todayViewModel)

@@ -72,7 +72,7 @@ fun CalendarScreen(navController: NavController, viewModel: TodayViewModel = hil
                             eventTextColor = Red700
                         ),
                     ),
-                    kalendarEvents = viewModel.calendarState.value
+                    kalendarEvents = viewModel.getAllTasksForCalendar()
                 )
 //                SelectableCalendar(
 ////                dayContent = {dayState -> MyDay(dayState) },
