@@ -8,12 +8,14 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lifeline.presentation.task.AddEditTodoEvent
 import com.example.lifeline.presentation.task.AddEditTodoViewModel
+import com.example.lifeline.presentation.ui.theme.textColor
 import com.example.lifeline.util.toDuration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -53,7 +55,8 @@ fun DurationDrawer(
                             .offset(0.dp, 10.dp),
                         fontSize = 60.sp,
                         fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        color = Color.Red
                     )
                 }
                 Spacer(modifier = Modifier.size(20.dp))

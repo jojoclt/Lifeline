@@ -85,6 +85,8 @@ fun LifelineApp() {
                             overlayVisible = !expanded
                             speedDialState = speedDialState.toggle()
                         },
+                        fabClosedContentColor = Color.White,
+                        fabOpenedContentColor = Color.White
                     ) {
                         item {
                             FabWithLabel(
