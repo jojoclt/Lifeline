@@ -7,10 +7,8 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.materialIcon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,12 +18,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.graphics.drawscope.inset
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -97,27 +97,6 @@ fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltVie
         }
 
 
-//        if (viewModel.getTasks().isEmpty()) {
-//            Log.e("HomeScreen", "")
-//            isTaskEmpty = true
-//        }
-        /* TODO : Change the drawable depending on the weather */
-//        lateinit var vector: ImageVector
-//        if(!isTaskEmpty) {
-//            vector = when (weather[1]) {
-//                "Sunny" -> ImageVector.vectorResource(id = R.drawable.weather_sunny)
-//                "Windy" -> ImageVector.vectorResource(id = R.drawable.weather_windy)
-//                "Rainy" -> ImageVector.vectorResource(id = R.drawable.weather_rainy)
-//                else -> ImageVector.vectorResource(id = R.drawable.weather_thunder)
-//            }
-//        } else {
-//            vector = ImageVector.vectorResource(id = R.drawable.camp)
-//        }
-//        Image(
-//            painterResource(id = weatherState),
-//            contentDescription = "backgroundState",
-//            modifier = Modifier.background(Color.Black).fillMaxSize()
-//        )
         val painter = rememberVectorPainter(image = ImageVector.vectorResource(id = weatherState))
 
         /* set the background to camp when there is no task */
@@ -204,6 +183,55 @@ fun HomeScreen(navController: NavController, viewModel: TodayViewModel = hiltVie
                 } else {
                     /* TODO : Show dialog box you haven't planned for today */
                     Log.e(TAG, "doesn't print weather card")
+                    Card(
+                        shape = RoundedCornerShape(30.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 30.dp, vertical = 20.dp)
+                            .offset(y = 40.dp)
+                            .fillMaxHeight(0.18f)
+                            .alpha(0.7f)
+                    ) {
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                text = "!",
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight()
+                                    .fillMaxWidth()
+                                    .offset(y = 8.dp, x = 20.dp),
+                                textAlign = TextAlign.Center,
+                                fontSize = 60.sp,
+                                color = Red
+                            )
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(4f)
+                                    .fillMaxHeight(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.SpaceEvenly,
+                            )
+                            {
+                                Text(text = "Oops", textAlign = TextAlign.Center, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                                Text(
+                                    text = "You haven't planned",
+                                    color = Color.Red,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center,
+                                    fontSize = 20.sp
+                                )
+                                Text(
+                                    text = "anything today",
+                                    color = Color.Red,
+                                    fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center,
+                                    fontSize = 20.sp
+                                )
+                            }
+                        }
+                    }
+
 
                 }
             }
