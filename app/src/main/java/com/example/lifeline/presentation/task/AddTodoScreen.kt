@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.lifeline.R
+import com.example.lifeline.domain.model.Priority
 import com.example.lifeline.domain.model.TaskType
 import com.example.lifeline.presentation.BottomNav
 import com.example.lifeline.presentation.TopNav
@@ -157,6 +158,8 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
                         /**
                          * Duration Picker for AddTodoTask
                          */
+                        if (viewModel.taskEntry.value.priority != Priority.ICE)
+
                         TextField(
                             value = durationValue.value.toDuration(),
                             leadingIcon = {
