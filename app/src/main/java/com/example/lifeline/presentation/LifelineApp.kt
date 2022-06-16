@@ -6,25 +6,21 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.lifeline.R
-import com.example.lifeline.presentation.ui.theme.DeadlineColor
 import com.example.lifeline.presentation.ui.theme.LifelineTheme
-import com.example.lifeline.presentation.ui.theme.TodoColor
 import com.example.lifeline.util.Screen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.leinardi.android.speeddial.compose.FabWithLabel
-import com.leinardi.android.speeddial.compose.SpeedDial
 import com.leinardi.android.speeddial.compose.SpeedDialOverlay
 import com.leinardi.android.speeddial.compose.SpeedDialState
 
@@ -55,8 +51,7 @@ fun LifelineApp() {
             )
         }
         val navController = rememberNavController()
-//        val backstackEntry = navController.currentBackStackEntryAsState()
-//        val currentScreen = Screen.fromRoute(backstackEntry.value?.destination?.route)
+
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
         val screen = currentRoute?.substringBefore("?")
@@ -78,44 +73,17 @@ fun LifelineApp() {
                 )
             },
             floatingActionButton = {
-                if (fabState.value)
-                    SpeedDial(
-                        state = speedDialState,
-                        onFabClick = { expanded ->
-                            overlayVisible = !expanded
-                            speedDialState = speedDialState.toggle()
-                        },
-                        fabClosedContentColor = Color.White,
-                        fabOpenedContentColor = Color.White
-                    ) {
-                        item {
-                            FabWithLabel(
-                                onClick = {
-                                    speedDialState = speedDialState.toggle()
-                                    overlayVisible = false
-                                    navController.navigate(Screen.AddTodoScreen.route)
-                                },
-                                labelContent = { Text(text = "Add Todo") },
-                                fabBackgroundColor = TodoColor
-                            ) {
-                                Icon(painterResource(id = R.drawable.ic_todo), null)
-                            }
-                        }
-                        item {
-                            FabWithLabel(
-                                onClick = {
-                                    speedDialState = speedDialState.toggle()
-                                    overlayVisible = false
-                                    navController.navigate(Screen.AddDeadlineScreen.route)
+                if (fabState.value) {
+                    FabSpeedDial(
+                        navController,
+                        speedDialState = speedDialState
+                    ) { bool, state ->
+                        overlayVisible = bool
+                        speedDialState = state
 
-                                },
-                                labelContent = { Text(text = "Add Deadline") },
-                                fabBackgroundColor = DeadlineColor
-                            ) {
-                                Icon(painterResource(id = R.drawable.ic_deadline), null)
-                            }
-                        }
                     }
+                }
+
 
                 //FABElement(navController = navController)
             }) { innerPadding ->
