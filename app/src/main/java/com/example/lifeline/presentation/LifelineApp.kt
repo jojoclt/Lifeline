@@ -26,7 +26,6 @@ import com.leinardi.android.speeddial.compose.SpeedDialState
 
 private const val TAG = "MyActivity"
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
 @Preview
 @Composable
 fun LifelineApp() {
@@ -91,8 +90,6 @@ fun LifelineApp() {
                     }
                 }
 
-
-                //FABElement(navController = navController)
             }) {
 
 
