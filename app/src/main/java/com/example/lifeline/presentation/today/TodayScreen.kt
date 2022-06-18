@@ -222,21 +222,3 @@ fun TimeRemain() {
 
 }
 
-
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-//@Preview
-@Composable
-fun TodayScreenPreview() {
-    val navController = rememberNavController()
-    val currentScreen = Screen.TodayScreen
-    LifelineTheme {
-        Scaffold(
-            content = { TodayScreen(navController) },
-            bottomBar = {
-                BottomNav(
-                    navController = navController
-                )
-            }
-        )
-    }
-}

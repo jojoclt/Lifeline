@@ -24,8 +24,8 @@ import com.example.lifeline.util.toDurationInList
 fun TodosScreen(navController: NavController, viewModel: TodayViewModel = hiltViewModel()) {
     val currentScreen = Screen.TodosScreen
     val taskList = viewModel.getTodoTask()
-    Scaffold(topBar = { TopNav(currentScreen) }) { _ ->
-        Column(modifier = Modifier.fillMaxSize()) {
+    Scaffold(topBar = { TopNav(currentScreen) }) { innerPadding ->
+        Column(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
             Card(modifier = Modifier.padding(20.dp), shape = RoundedCornerShape(40.dp)) {
                 Row(
                     modifier = Modifier

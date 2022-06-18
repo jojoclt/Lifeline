@@ -56,8 +56,15 @@ fun LifelineApp() {
         val currentRoute = navBackStackEntry?.destination?.route
         val screen = currentRoute?.substringBefore("?")
         val fabState = rememberSaveable { (mutableStateOf(true)) }
+        val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
+
         fabState.value = when (screen) {
             Screen.AddTodoScreen.route, Screen.AddDeadlineScreen.route -> false
+            else -> true
+        }
+        bottomBarState.value = when (screen) {
+            Screen.AddTodoScreen.route, Screen.AddDeadlineScreen.route -> false
+            Screen.TodosScreen.route -> false
             else -> true
         }
         Scaffold(
@@ -69,32 +76,30 @@ fun LifelineApp() {
                             topStart = 20.dp,
                             topEnd = 20.dp
                         )
-                    )
+                    ),
+                    bottomBarState = bottomBarState.value
                 )
             },
             floatingActionButton = {
-                if (fabState.value) {
+                if (bottomBarState.value) {
                     FabSpeedDial(
                         navController,
                         speedDialState = speedDialState
-                    ) { bool, state ->
-                        overlayVisible = bool
-                        speedDialState = state
+                    ) {
+                        speedDialState = it
 
                     }
                 }
 
 
                 //FABElement(navController = navController)
-            }) { innerPadding ->
-            Box(modifier = Modifier.padding(innerPadding)) {
+            }) {
 
-                NavGraph(navController)
-            }
+
+            NavGraph(navController)
             SpeedDialOverlay(
-                visible = overlayVisible,
+                visible = speedDialState.isExpanded(),
                 onClick = {
-                    overlayVisible = false
                     speedDialState = speedDialState.toggle()
                 },
             )

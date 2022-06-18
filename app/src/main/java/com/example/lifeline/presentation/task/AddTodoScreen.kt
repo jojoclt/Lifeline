@@ -253,20 +253,3 @@ fun AddTodoScreen(navController: NavController, viewModel: AddEditTodoViewModel 
     }
 }
 
-
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview
-@Composable
-fun AddTodoScreenPreview() {
-    val navController = rememberNavController()
-    val currentScreen = Screen.AddTodoScreen
-    LifelineTheme {
-        Scaffold(
-            content = { AddTodoScreen(navController) },
-            bottomBar = {
-                BottomNav(
-                    navController = navController)
-            }
-        )
-    }
-}

@@ -29,32 +29,28 @@ import com.example.lifeline.util.bottomNavItems
 @Composable
 fun BottomNav(
     navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    bottomBarState: Boolean
 ) {
-    val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-    val screen = currentRoute?.substringBefore("?")
-    if (currentRoute != null) {
-        Log.d(
-            "BottomNav",
-            "SubstringBefore $currentRoute = $screen"
-        )
-    }
-    bottomBarState.value = when (screen) {
-        Screen.AddTodoScreen.route, Screen.AddDeadlineScreen.route -> false
-        Screen.TodosScreen.route -> false
-        else -> true
-    }
+
+//    val screen = currentRoute?.substringBefore("?")
+//    if (currentRoute != null) {
+//        Log.d(
+//            "BottomNav",
+//            "SubstringBefore $currentRoute = $screen"
+//        )
+//    }
+
     AnimatedVisibility(
-        visible = bottomBarState.value,
+        visible = bottomBarState,
         enter = slideInVertically(initialOffsetY = { it }),
         exit = slideOutVertically(targetOffsetY = { it }),
     ) {
 
 
         BottomNavigation(backgroundColor = Color.White, elevation = 16.dp, modifier = modifier) {
-
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
             bottomNavItems.forEach { item ->
                 BottomNavigationItem(
                     icon = {

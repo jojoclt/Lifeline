@@ -18,11 +18,11 @@ import com.leinardi.android.speeddial.compose.SpeedDialState
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
 @Composable
-fun FabSpeedDial(navController: NavController, speedDialState: SpeedDialState ,updateState: (Boolean, SpeedDialState) -> Unit) {
+fun FabSpeedDial(navController: NavController, speedDialState: SpeedDialState ,updateState: (SpeedDialState) -> Unit) {
     SpeedDial(
         state = speedDialState,
-        onFabClick = { expanded ->
-            updateState(expanded, speedDialState.toggle())
+        onFabClick = {
+            updateState(speedDialState.toggle())
         },
         fabClosedContentColor = Color.White,
         fabOpenedContentColor = Color.White
@@ -30,7 +30,7 @@ fun FabSpeedDial(navController: NavController, speedDialState: SpeedDialState ,u
         item {
             FabWithLabel(
                 onClick = {
-                    updateState(false, speedDialState.toggle())
+                    updateState(speedDialState.toggle())
                     navController.navigate(Screen.AddTodoScreen.route)
                 },
                 labelContent = { Text(text = "Add Todo") },
@@ -42,7 +42,7 @@ fun FabSpeedDial(navController: NavController, speedDialState: SpeedDialState ,u
         item {
             FabWithLabel(
                 onClick = {
-                    updateState(false, speedDialState.toggle())
+                    updateState(speedDialState.toggle())
                     navController.navigate(Screen.AddDeadlineScreen.route)
 
                 },

@@ -108,21 +108,3 @@ fun TitleCalendar(monthState: MonthState) {
     Text(" ")
     Text(text = monthState.currentMonth.year.toString(), style = MaterialTheme.typography.h6)
 }
-
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview
-@Composable
-fun CalendarScreenPreview() {
-    val navController = rememberNavController()
-    val currentScreen = Screen.CalendarScreen
-    LifelineTheme {
-        Scaffold(
-            content = { CalendarScreen(navController) },
-            bottomBar = {
-                BottomNav(
-                    navController = navController
-                )
-            }
-        )
-    }
-}

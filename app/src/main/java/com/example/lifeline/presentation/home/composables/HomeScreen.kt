@@ -325,20 +325,4 @@ fun weatherCalculationState(viewModel: TodayViewModel, delta: Int): Float {
     return burden / cc
 }
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Preview
-@Composable
-fun HomeScreenPreview() {
-    val navController = rememberNavController()
-    val currentScreen = Screen.HomeScreen
-    LifelineTheme {
-        Scaffold(
-            content = { HomeScreen(navController) },
-            bottomBar = {
-                BottomNav(
-                    navController = navController
-                )
-            }
-        )
-    }
-}
+
