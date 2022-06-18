@@ -109,17 +109,8 @@ class TodayViewModel @Inject constructor(
             is TodayEvent.ToggleButton -> {
                 viewModelScope.launch(Dispatchers.IO) {
                     try {
-                        useCases.editTask(
-                            TaskData(
-                                id = event.value.id,
-                                taskName = event.value.taskName,
-                                date = event.value.date,
-                                time = event.value.time,
-                                duration = event.value.duration,
-                                priority = event.value.priority,
-                                isChecked = event.isChecked,
-                                taskType = event.value.taskType
-                            )
+                        useCases.markedTask(
+                            event.isChecked, event.id
                         )
                         Log.e("TodayViewModel", "Task Checked")
 

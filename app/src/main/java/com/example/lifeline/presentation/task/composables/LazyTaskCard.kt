@@ -7,9 +7,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,26 +30,42 @@ import com.example.lifeline.util.toDurationInList
 
 @Composable
 fun TasksList(viewModel: TodayViewModel, navController: NavController, amount: Int = 0) {
-    LazyColumn {
-//        item {
-//            Spacer(modifier = Modifier.size(20.dp))
-//        }
+    var taskData = viewModel.state.value.tasks
+    if (amount > 0) taskData = taskData.take(amount)
 
-        if (amount == 0)
-            items(viewModel.state.value.tasks) { task ->
-                TaskCard(task, navController, viewModel)
+    LazyColumn {
+        items(taskData) { task ->
+            TaskCard(task, navController) { checkedStatus, id ->
+                viewModel.onEvent(TodayEvent.ToggleButton(checkedStatus, id))
             }
-        else
-            items(viewModel.state.value.tasks.take(amount)) { task ->
-                TaskCard(task, navController, viewModel)
-            }
+        }
     }
 }
 
 @Composable
-fun TaskCard(t: TaskData, navController: NavController, viewModel: TodayViewModel) {
-    val checkedStatus = remember { mutableStateOf(t.isChecked) }
+fun TaskCard(
+    taskData: TaskData,
+    navController: NavController,
+    onCheckedChange: (Boolean, Int) -> Unit
+) {
+    var checkedState by remember { mutableStateOf(taskData.isChecked) }
+    TaskItem(
+        taskData = taskData,
+        navController = navController,
+        checked = checkedState
+    ) { boolean, id ->
+        onCheckedChange(boolean, id)
+        checkedState = boolean
+    }
+}
 
+@Composable
+fun TaskItem(
+    taskData: TaskData,
+    navController: NavController,
+    checked: Boolean,
+    onCheckedChange: (Boolean, Int) -> Unit
+) {
     Surface(
         shape = MaterialTheme.shapes.medium,
         elevation = 0.dp,
@@ -59,10 +74,11 @@ fun TaskCard(t: TaskData, navController: NavController, viewModel: TodayViewMode
             .height(60.dp)
             .padding(8.dp)
             .clickable {
-                if (t.taskType == TaskType.TODO) navController.navigate(Screen.AddTodoScreen.route + "?taskId=${t.id}")
-                else navController.navigate(Screen.AddDeadlineScreen.route + "?taskId=${t.id}")
+                if (taskData.taskType == TaskType.TODO) navController.navigate(Screen.AddTodoScreen.route + "?taskId=${taskData.id}")
+                else navController.navigate(Screen.AddDeadlineScreen.route + "?taskId=${taskData.id}")
             }
     ) {
+
         Row(
             modifier = Modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -73,23 +89,21 @@ fun TaskCard(t: TaskData, navController: NavController, viewModel: TodayViewMode
                         .width(10.dp)
                         .fillMaxHeight()
                         .clip(RectangleShape)
-                        .background(if (t.taskType == TaskType.TODO) TodoColor else DeadlineColor)
+                        .background(if (taskData.taskType == TaskType.TODO) TodoColor else DeadlineColor)
 
                 )
                 Checkbox(
-                    checked = checkedStatus.value,
+                    checked = checked,
                     onCheckedChange = {
-                        viewModel.onEvent(TodayEvent.ToggleButton(it, t))
-                        checkedStatus.value = it
-
-
+                        onCheckedChange(it, taskData.id!!)
                     },
                     colors = CheckboxDefaults.colors(Color.Blue),
                 )
-                Text(text = t.taskName)
+                Text(text = taskData.taskName)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                val str = if (t.taskType == TaskType.TODO) t.duration.toDurationInList() else t.time
+                val str =
+                    if (taskData.taskType == TaskType.TODO) taskData.duration.toDurationInList() else taskData.time
                 Text(
                     text = str,
                     modifier = Modifier.offset(x = (-2).dp, y = 0.dp)
@@ -101,9 +115,9 @@ fun TaskCard(t: TaskData, navController: NavController, viewModel: TodayViewMode
                         .aspectRatio(1f)
                         .padding(horizontal = 6.dp)
                 ) {
-                    if (t.taskType == TaskType.TODO)
+                    if (taskData.taskType == TaskType.TODO)
                         Image(
-                            imageVector = ImageVector.vectorResource(priorityList[t.priority.ordinal]),
+                            imageVector = ImageVector.vectorResource(priorityList[taskData.priority.ordinal]),
                             contentDescription = null,
                             modifier = Modifier
                                 .fillMaxSize()
