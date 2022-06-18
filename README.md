@@ -2,6 +2,7 @@
 
 An Android App for Software Studio Team 21
 Jojo Song Audrey KK
+MAIN BRANCH IS FOR FINAL
 
 ## Getting started
 
